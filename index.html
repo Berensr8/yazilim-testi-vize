@@ -1,0 +1,1039 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Yazılım Testi Vize</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Yazılım testi dersi vize çalışması: 5 haftanın konu özetleri, deneme sınavı ve kavram kartları.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: sticky header with icon tabs → hero (intro + progress ring) → 5 week cards, each with its own colour → week rail + reading column. Quiz = single question card; result = test-runner output. */
+:root{
+  --bg:#F4F7FD; --surface:#FFFFFF; --sunk:#EBF0FA; --ink:#0F172A; --muted:#4A5568; --line:#DAE2F0;
+  --primary:#2563EB; --primary-soft:#E3ECFE; --on-primary:#FFFFFF;
+  --gold:#A84F06; --gold-soft:#FEF3DC;
+  --pass:#15803D; --pass-soft:#DCFCE7; --fail:#B91C1C; --fail-soft:#FEE2E2;
+  --w1:#2563EB; --w2:#7C3AED; --w3:#0D7A70; --w4:#C2410C; --w5:#BE185D;
+  --shadow:0 1px 2px rgb(15 23 42 / .05), 0 6px 20px rgb(15 23 42 / .05);
+  --f-display:"Lexend","Segoe UI",system-ui,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --r-s:8px; --r-m:12px; --r-l:18px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1120; --surface:#111A2E; --sunk:#172239; --ink:#E5EAF3; --muted:#9DABC2; --line:#24314C;
+  --primary:#7FA9FF; --primary-soft:#1A2850; --on-primary:#0B1120;
+  --gold:#F2B654; --gold-soft:#2A2213;
+  --pass:#4ADE80; --pass-soft:#10281B; --fail:#F87171; --fail-soft:#331517;
+  --w1:#7FA9FF; --w2:#B197FC; --w3:#3CCFC0; --w4:#FB9A5B; --w5:#F472B6;
+  --shadow:0 1px 2px rgb(0 0 0 / .35);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0B1120; --surface:#111A2E; --sunk:#172239; --ink:#E5EAF3; --muted:#9DABC2; --line:#24314C;
+  --primary:#7FA9FF; --primary-soft:#1A2850; --on-primary:#0B1120;
+  --gold:#F2B654; --gold-soft:#2A2213;
+  --pass:#4ADE80; --pass-soft:#10281B; --fail:#F87171; --fail-soft:#331517;
+  --w1:#7FA9FF; --w2:#B197FC; --w3:#3CCFC0; --w4:#FB9A5B; --w5:#F472B6;
+  --shadow:0 1px 2px rgb(0 0 0 / .35);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;margin:0;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.2;text-wrap:balance;margin:0;font-weight:600}
+p{margin:0}
+button{font:inherit;color:inherit;touch-action:manipulation}
+svg.i{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+:focus-visible{outline:3px solid var(--primary);outline-offset:2px;border-radius:6px}
+.skip{position:absolute;left:12px;top:-60px;z-index:40;background:var(--primary);color:var(--on-primary);padding:10px 14px;border-radius:var(--r-s);text-decoration:none;font-weight:600}
+.skip:focus{top:calc(env(safe-area-inset-top,0px) + 8px)}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* ---------- header ---------- */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px 20px;flex-wrap:wrap;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto;min-width:0}
+.brand .mark{width:36px;height:36px;border-radius:10px;background:var(--primary);color:var(--on-primary);display:grid;place-items:center;flex:none}
+.brand .mark svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.brand h1{font-size:1.1rem;font-weight:700;letter-spacing:-.01em}
+.brand small{display:block;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;color:var(--muted);font-weight:400}
+.tabs{display:flex;gap:4px;background:var(--sunk);padding:4px;border-radius:999px}
+.tabs button{display:flex;align-items:center;gap:8px;border:0;background:transparent;min-height:40px;padding:0 16px;border-radius:999px;cursor:pointer;font-weight:600;font-size:.95rem;color:var(--muted);transition:background .2s var(--ease),color .2s var(--ease)}
+.tabs button svg.i{width:18px;height:18px}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--primary);box-shadow:var(--shadow)}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border:1px solid var(--line);background:var(--surface);padding:0 16px;border-radius:var(--r-s);cursor:pointer;font-weight:600;font-size:.95rem;transition:border-color .2s var(--ease),background .2s var(--ease),transform .15s var(--ease)}
+.btn:hover{border-color:var(--primary);color:var(--primary)}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.btn.primary:hover{filter:brightness(1.08);color:var(--on-primary)}
+.btn.ghost{background:transparent}
+.btn svg.i{width:18px;height:18px}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px;align-items:stretch;padding-block:36px 24px}
+.hero-text{display:flex;flex-direction:column;gap:14px;justify-content:center}
+.eyebrow{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);font-weight:600}
+.hero h2{font-size:clamp(1.9rem,4.2vw,2.9rem);font-weight:700;letter-spacing:-.025em;line-height:1.1}
+.hero h2 em{font-style:normal;color:var(--primary)}
+.hero p{color:var(--muted);max-width:56ch;font-size:1.05rem}
+.hero .row{margin-top:6px}
+.prog-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:22px;display:flex;flex-direction:column;gap:18px;box-shadow:var(--shadow)}
+.ring-row{display:flex;align-items:center;gap:18px}
+.ring{width:96px;height:96px;flex:none;position:relative}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .track{stroke:var(--sunk);fill:none;stroke-width:9}
+.ring .val{stroke:var(--pass);fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset .5s var(--ease)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
+.ring-row h3{font-size:1.05rem}
+.ring-row p{color:var(--muted);font-size:.93rem;margin-top:2px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stats div{background:var(--sunk);border-radius:var(--r-m);padding:10px 12px;display:flex;flex-direction:column}
+.stats b{font-family:var(--f-display);font-size:1.3rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.stats span{font-size:.82rem;color:var(--muted)}
+
+/* ---------- week overview ---------- */
+.weekgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding-bottom:12px}
+.wcard{--wc:var(--w1);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.wcard .num{font-family:var(--f-display);font-size:1.9rem;font-weight:700;color:var(--wc);line-height:1;font-variant-numeric:tabular-nums}
+.wcard h3{font-size:1rem;line-height:1.3;flex:1}
+.wcard .meta{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.mini{height:6px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.mini i{display:block;height:100%;width:0;background:var(--wc);border-radius:99px;transition:width .4s var(--ease)}
+.wcard .acts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.wcard .acts button{min-height:40px;border:1px solid var(--line);background:transparent;border-radius:var(--r-s);cursor:pointer;font-weight:600;font-size:.88rem;transition:border-color .2s,color .2s}
+.wcard .acts button:hover{border-color:var(--wc);color:var(--wc)}
+
+/* ---------- study ---------- */
+.study{display:grid;grid-template-columns:240px minmax(0,1fr);gap:40px;padding-block:28px 96px}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 84px);align-self:start;display:flex;flex-direction:column;gap:2px}
+.rail .lbl{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px 12px}
+.rail button{--wc:var(--w1);display:grid;grid-template-columns:10px 1fr auto;gap:10px;align-items:center;text-align:left;border:0;background:transparent;min-height:44px;padding:6px 12px;border-radius:var(--r-s);cursor:pointer;transition:background .2s}
+.rail button:hover{background:var(--surface)}
+.rail .dot{width:10px;height:10px;border-radius:50%;background:var(--wc)}
+.rail .nm{font-size:.92rem;line-height:1.3;font-weight:500}
+.rail .ct{font-family:var(--f-mono);font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.rail .ct.done{color:var(--pass);font-weight:600}
+
+.week{--wc:var(--w1);scroll-margin-top:92px;margin-bottom:64px}
+.week-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px 20px;padding-bottom:16px;margin-bottom:6px;border-bottom:3px solid var(--wc)}
+.week-head .t{flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.week-head .eyebrow{color:var(--wc)}
+.week-head h2{font-size:clamp(1.45rem,2.8vw,2rem);font-weight:700;letter-spacing:-.02em}
+.week-head p{color:var(--muted)}
+
+.topic{padding-block:26px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:14px;max-width:780px}
+.topic-h{display:flex;gap:14px;align-items:flex-start}
+.topic-h .no{flex:none;font-family:var(--f-mono);font-size:.78rem;font-weight:600;color:var(--wc);background:color-mix(in srgb,var(--wc) 13%,transparent);border-radius:999px;padding:3px 10px;margin-top:2px;font-variant-numeric:tabular-nums}
+.topic-h h3{font-size:1.25rem;font-weight:600;flex:1;letter-spacing:-.01em}
+.topic h4{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:4px}
+.topic ul,.topic ol{margin:0;padding-left:1.25em;display:flex;flex-direction:column;gap:6px}
+.topic li::marker{color:var(--wc)}
+.topic b{font-weight:700}
+.topic code{font-family:var(--f-mono);font-size:.84em;background:var(--sunk);padding:1px 6px;border-radius:5px}
+pre.code{margin:0;font-family:var(--f-mono);font-size:.84rem;line-height:1.6;background:var(--sunk);padding:14px 16px;border-radius:var(--r-m);overflow-x:auto}
+pre.code .c{color:var(--muted)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pair>div{border:1px solid var(--line);border-radius:var(--r-m);padding:14px 16px;display:flex;flex-direction:column;gap:6px;background:var(--surface);min-width:0}
+.pair>div>b{font-family:var(--f-display);font-size:1rem;font-weight:600}
+.pair>div>span{color:var(--muted);font-size:.96rem}
+.pair .plus{color:var(--pass)} .pair .minus{color:var(--fail)}
+.pair .plus::before{content:"+ "} .pair .minus::before{content:"− "}
+.chain{list-style:none;padding:0 !important;display:grid !important;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px !important;counter-reset:none}
+.chain li{border:1px solid var(--line);border-radius:var(--r-m);padding:14px;background:var(--surface);display:flex;flex-direction:column;gap:6px}
+.chain li .k{font-family:var(--f-mono);font-size:.72rem;color:var(--wc);letter-spacing:.05em;text-transform:uppercase;font-weight:600}
+.chain li b{font-family:var(--f-display);font-size:1.02rem;font-weight:600}
+.chain li span:not(.k){font-size:.94rem;color:var(--muted)}
+.steps{list-style:none;padding:0 !important;counter-reset:s;display:flex !important;flex-wrap:wrap;gap:8px !important}
+.steps li{counter-increment:s;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 14px 5px 6px;font-size:.93rem;font-weight:500}
+.steps li::before{content:counter(s);font-family:var(--f-mono);font-size:.72rem;font-weight:600;background:var(--wc);color:var(--surface);width:24px;height:24px;border-radius:50%;display:grid;place-items:center;flex:none}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface)}
+.tbl table{border-collapse:collapse;width:100%;min-width:560px;font-size:.93rem}
+.tbl th,.tbl td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.tbl tr:last-child td{border-bottom:0}
+.tbl th{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--sunk)}
+.tbl td:first-child{font-weight:700}
+.formula{font-family:var(--f-mono);font-size:1.05rem;background:color-mix(in srgb,var(--wc) 11%,var(--surface));padding:14px 16px;border-radius:var(--r-m);overflow-x:auto;white-space:nowrap}
+.formula b{color:var(--wc)}
+.hook{display:flex;gap:12px;align-items:flex-start;background:var(--gold-soft);border-radius:var(--r-m);padding:12px 16px;font-size:.98rem;font-weight:500}
+.hook svg.i{color:var(--gold);margin-top:2px}
+.hook .hk{display:block;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;font-weight:600;color:var(--gold);margin-bottom:2px}
+.learn{display:inline-flex;align-items:center;gap:10px;min-height:44px;font-size:.92rem;font-weight:600;color:var(--muted);cursor:pointer;align-self:flex-start;user-select:none;padding:0 14px 0 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface);transition:border-color .2s,color .2s,background .2s}
+.learn input{width:18px;height:18px;accent-color:var(--pass);cursor:pointer;margin:0}
+.learn:hover{border-color:var(--pass)}
+.learn:has(input:checked){color:var(--pass);border-color:var(--pass);background:var(--pass-soft)}
+figure.cfg{margin:0;overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-m);padding:12px}
+figure.cfg svg{display:block;width:100%;min-width:460px;max-width:620px;height:auto;margin:0 auto}
+figure.cfg .box{fill:var(--sunk);stroke:var(--line)}
+figure.cfg .lab{fill:var(--wc);font-family:var(--f-mono);font-size:12px;font-weight:600}
+figure.cfg .txt{fill:var(--ink);font-family:var(--f-mono);font-size:12.5px}
+figure.cfg .edge{stroke:var(--muted);stroke-width:1.5;fill:none}
+figure.cfg .elab{fill:var(--muted);font-family:var(--f-mono);font-size:11px}
+figure.cfg .ah{fill:var(--muted)}
+
+/* ---------- quiz ---------- */
+.panel{max-width:780px;margin:0 auto;padding-block:32px 96px;display:flex;flex-direction:column;gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:24px;box-shadow:var(--shadow)}
+.setup h2,.panel-h h2{font-size:1.7rem;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
+.setup p.sub,.panel-h p{color:var(--muted)}
+.field{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.field .fl{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{--wc:var(--primary);display:inline-flex;align-items:center;gap:6px;min-height:40px;border:1px solid var(--line);background:var(--surface);padding:0 14px;border-radius:999px;cursor:pointer;font-size:.92rem;font-weight:600;transition:all .2s var(--ease)}
+.chip .dot{width:8px;height:8px;border-radius:50%;background:var(--wc)}
+.chip small{font-family:var(--f-mono);color:var(--muted);font-size:.72rem;font-weight:400}
+.chip:hover{border-color:var(--wc)}
+.chip[aria-pressed="true"]{background:var(--wc);color:var(--surface);border-color:var(--wc)}
+.chip[aria-pressed="true"] .dot{background:var(--surface)}
+.chip[aria-pressed="true"] small{color:inherit;opacity:.8}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:var(--f-mono);font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.qhead .sc{display:flex;gap:12px}
+.qhead .sc span{display:inline-flex;align-items:center;gap:4px}
+.qhead .sc .p{color:var(--pass)} .qhead .sc .f{color:var(--fail)}
+.qhead svg.i{width:14px;height:14px;stroke-width:2.6}
+.qprog{height:6px;background:var(--sunk);border-radius:99px;overflow:hidden;margin-top:10px}
+.qprog i{display:block;height:100%;background:var(--primary);border-radius:99px;transition:width .3s var(--ease)}
+.qwk{--wc:var(--primary);display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--wc);font-weight:600}
+.qwk::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--wc)}
+.qtext{font-family:var(--f-display);font-size:1.28rem;font-weight:600;line-height:1.4;margin:10px 0 18px;letter-spacing:-.01em}
+.qtext code{font-family:var(--f-mono);font-size:.82em;background:var(--sunk);padding:1px 6px;border-radius:5px;font-weight:400}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:grid;grid-template-columns:30px 1fr 22px;gap:12px;align-items:center;text-align:left;min-height:52px;border:1.5px solid var(--line);background:var(--surface);border-radius:var(--r-m);padding:10px 14px;cursor:pointer;font-size:1rem;line-height:1.45;transition:border-color .2s var(--ease),background .2s var(--ease)}
+.opt:hover:not(:disabled){border-color:var(--primary);background:var(--primary-soft)}
+.opt .L{font-family:var(--f-mono);font-size:.8rem;font-weight:600;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:var(--sunk);color:var(--muted)}
+.opt .st{display:grid;place-items:center}
+.opt .st svg.i{width:20px;height:20px;stroke-width:2.6}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--pass);background:var(--pass-soft)}
+.opt.right .L{background:var(--pass);color:var(--surface)}
+.opt.right .st{color:var(--pass)}
+.opt.wrong{border-color:var(--fail);background:var(--fail-soft)}
+.opt.wrong .L{background:var(--fail);color:var(--surface)}
+.opt.wrong .st{color:var(--fail)}
+.opt.dim{opacity:.5}
+.explain{margin-top:16px;padding:14px 16px;border-radius:var(--r-m);display:flex;gap:12px;align-items:flex-start}
+.explain.ok{background:var(--pass-soft)} .explain.no{background:var(--fail-soft)}
+.explain svg.i{margin-top:2px;stroke-width:2.6}
+.explain.ok svg.i{color:var(--pass)} .explain.no svg.i{color:var(--fail)}
+.explain .v{display:block;font-weight:700;margin-bottom:2px}
+.explain.ok .v{color:var(--pass)} .explain.no .v{color:var(--fail)}
+.qfoot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px;flex-wrap:wrap}
+.kbd{font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.kbd kbd{font-family:inherit;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--sunk)}
+.runner{font-family:var(--f-mono);font-size:.88rem;background:var(--sunk);border-radius:var(--r-m);padding:14px 16px;line-height:1.75;overflow-x:auto;white-space:nowrap}
+.runner .p{color:var(--pass);font-weight:600} .runner .f{color:var(--fail);font-weight:600} .runner .m{color:var(--muted)}
+.score{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:8px 0 16px}
+.score .ring{width:110px;height:110px}
+.score .ring b{font-size:1.6rem}
+.score .msg{color:var(--muted);flex:1 1 220px;font-size:1.02rem}
+.score .msg strong{display:block;color:var(--ink);font-family:var(--f-display);font-size:1.15rem;font-weight:600;margin-bottom:2px}
+.miss{display:flex;flex-direction:column;gap:10px}
+.miss .it{border:1px solid var(--line);border-radius:var(--r-m);padding:14px 16px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
+.miss .it .q{font-weight:600}
+.miss .it .a{font-size:.95rem;display:flex;flex-direction:column;gap:2px}
+.miss .it .a s{color:var(--fail)}
+.miss .it .a .ok{color:var(--pass);font-weight:700}
+.miss .it .e{font-size:.92rem;color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ---------- cards ---------- */
+.deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.fc{--wc:var(--w1);border:1px solid var(--line);background:var(--surface);border-radius:var(--r-l);padding:18px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:10px;min-height:150px;transition:border-color .2s var(--ease),background .2s var(--ease),transform .15s var(--ease)}
+.fc:hover{border-color:var(--wc)}
+.fc:active{transform:scale(.985)}
+.fc .w{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:.68rem;color:var(--wc);letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.fc .w::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--wc)}
+.fc .term{font-family:var(--f-display);font-size:1.12rem;font-weight:600;line-height:1.3}
+.fc .def{font-size:.98rem}
+.fc .hint{display:flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:.7rem;color:var(--muted);margin-top:auto}
+.fc .hint svg.i{width:14px;height:14px}
+.fc[aria-expanded="true"]{background:color-mix(in srgb,var(--wc) 9%,var(--surface));border-color:var(--wc)}
+
+@media (max-width:1080px){ .weekgrid{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (max-width:900px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .study{grid-template-columns:minmax(0,1fr);gap:12px}
+  .rail{position:static;flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:6px}
+  .rail .lbl{display:none}
+  .rail button{flex:none;grid-template-columns:10px auto;border:1px solid var(--line);background:var(--surface)}
+  .rail .ct{display:none}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .weekgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pair,.chain{grid-template-columns:1fr}
+  .brand small{display:none}
+  .tabs{width:100%}
+  .tabs button{flex:1;justify-content:center;padding:0 8px}
+  .card{padding:18px}
+  .qtext{font-size:1.12rem}
+  .stats b{font-size:1.15rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto !important}html{scroll-behavior:auto}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+  <symbol id="i-check-sq" viewBox="0 0 24 24"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7l10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="m6 4 14 8-14 8V4z"/></symbol>
+  <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-redo" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></symbol>
+  <symbol id="i-tap" viewBox="0 0 24 24"><path d="M9 11V5a2 2 0 0 1 4 0v6"/><path d="M13 9a2 2 0 0 1 4 0v3a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.7L3 14a2 2 0 0 1 3.3-2.2L9 15"/></symbol>
+</svg>
+
+<a class="skip" href="#main">İçeriğe geç</a>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div><h1>Yazılım Testi</h1><small>VİZE · HAFTA 1–5</small></div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Bölümler">
+      <button role="tab" id="tab-konular" data-view="konular" aria-selected="true"><svg class="i"><use href="#i-book"/></svg>Konular</button>
+      <button role="tab" id="tab-test" data-view="test" aria-selected="false"><svg class="i"><use href="#i-check-sq"/></svg>Test</button>
+      <button role="tab" id="tab-kartlar" data-view="kartlar" aria-selected="false"><svg class="i"><use href="#i-layers"/></svg>Kartlar</button>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section id="view-konular" class="wrap">
+    <div class="hero">
+      <div class="hero-text">
+        <span class="eyebrow">Vize hazırlık · 5 hafta</span>
+        <h2>Bütün konular kısa ve net, <em>sonunda test.</em></h2>
+        <p>Her başlık hocanın anlattığı gibi 2–3 cümle. Okuduğun başlığı “Öğrendim” diye işaretle, sonra o haftanın testini çöz. Sarı kutulardaki cümleler sınavda aklına gelecek kısa kancalar.</p>
+        <div class="row">
+          <button class="btn primary" data-go="test"><svg class="i"><use href="#i-play"/></svg>Deneme sınavı</button>
+          <button class="btn" data-go="kartlar"><svg class="i"><use href="#i-layers"/></svg>Kavram kartları</button>
+        </div>
+      </div>
+      <aside class="prog-card" aria-label="İlerleme">
+        <div class="ring-row">
+          <div class="ring" id="ring"><svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="42"/><circle class="val" id="ring-val" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"/></svg><b id="ring-pct">%0</b></div>
+          <div><h3>Çalışma ilerlemen</h3><p id="ov-txt">0 başlık öğrenildi</p></div>
+        </div>
+        <div class="stats">
+          <div><b id="st-topics">0</b><span>başlık</span></div>
+          <div><b id="st-qs">0</b><span>soru</span></div>
+          <div><b id="st-cards">0</b><span>kart</span></div>
+        </div>
+      </aside>
+    </div>
+    <div class="weekgrid" id="weekgrid"></div>
+    <div class="study">
+      <nav class="rail" id="rail" aria-label="Haftalar"><div class="lbl">Haftalar</div></nav>
+      <div id="weeks"></div>
+    </div>
+  </section>
+
+  <section id="view-test" class="wrap" hidden>
+    <div class="panel" id="quiz"></div>
+  </section>
+
+  <section id="view-kartlar" class="wrap" hidden>
+    <div class="panel" style="max-width:1120px">
+      <div class="panel-h">
+        <h2>Kavram kartları</h2>
+        <p>Terimi oku, tanımı kafanda söyle, sonra karta dokunup kontrol et.</p>
+      </div>
+      <div class="row" style="align-items:center;justify-content:space-between">
+        <div class="chips" id="card-filter"></div>
+        <div class="row">
+          <button class="btn" id="card-shuffle"><svg class="i"><use href="#i-shuffle"/></svg>Karıştır</button>
+          <button class="btn" id="card-reveal"><svg class="i"><use href="#i-eye"/></svg>Hepsini aç / kapat</button>
+        </div>
+      </div>
+      <div class="deck" id="deck"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ===================== İÇERİK ===================== */
+const WEEKS = [
+{ id:1, title:"Yazılım Analizine Giriş", sum:"Terimler, statik ve dinamik analiz, kusursuz test aracının neden olamayacağı.", topics:[
+ { no:"1.1", t:"Yazılım neden çöker? Test ve analiz farkı", body:`
+  <p>Yazılım telefondan otomobil frenine, uçuş bilgisayarından tıbbi cihazlara kadar her yerde. Mimari ne kadar iyi kurulursa kurulsun, kodlamadaki küçük bir dikkatsizlik bütün sistemi çökertebilir. Test ve analiz bu hataları ürün kullanıcıya ulaşmadan bulma işidir.</p>
+  <div class="pair"><div><b>Yazılım testi</b><span>Programı çalıştırır, girdi verir, çıktıya bakar. İçinde ne olduğuyla ilgilenmez: kara kutu mantığı.</span></div><div><b>Yazılım analizi</b><span>Programın iç yapısını ve yapı taşlarını inceler: beyaz kutu doğası.</span></div></div>
+  <h4>Tarihten iki felaket</h4>
+  <ul><li><b>Therac-25 (1985–87):</b> Tıbbi radyasyon cihazı. Yazılım hatası yüzünden hastalara normalin yaklaşık 100 katı radyasyon verildi.</li>
+  <li><b>Ariane 5, Uçuş 501 (1996):</b> 64-bit bir sayı 16-bit tamsayıya dönüştürülürken taştı. Roket kalkıştan yaklaşık 40 saniye sonra patladı.</li></ul>
+  <p><b>Maliyet:</b> Bu örneklerde bedel can kaybı ve yüz milyonlarca dolardır. Bir hata ne kadar geç bulunursa (kodlamada değil de kullanıcıda) düzeltmesi o kadar pahalı olur.</p>`,
+  hook:"Therac = hastane, radyasyon dozu. Ariane = roket, 64 bit 16 bite sığmadı." },
+ { no:"1.2", t:"Hata (Error), Kusur (Fault), Başarısızlık (Failure)", body:`
+  <p>Günlük dildeki “bug” kelimesi mühendislikte yetmez. IEEE standartları bu üç kavramı kesin çizgilerle ayırır ve aralarında bir sebep-sonuç zinciri vardır.</p>
+  <ol class="chain">
+   <li><span class="k">1 · insanda</span><b>Error (Hata)</b><span>Geliştirici veya tasarımcının yaptığı yanlış eylem ya da karar.</span></li>
+   <li><span class="k">2 · kodda</span><b>Fault (Kusur)</b><span>Bu hatanın koda, tasarıma veya dokümana yansımış fiziksel hali (bug, defect).</span></li>
+   <li><span class="k">3 · çalışırken</span><b>Failure (Başarısızlık)</b><span>Program çalışırken kusurun tetiklenmesi ve sistemin beklenen işi yapamaması.</span></li>
+  </ol>
+  <p>Kusurlu satır hiç çalışmazsa başarısızlık oluşmaz; kusur kodda sessizce bekler.</p>`,
+  hook:"Error kafada, Fault kodda, Failure ekranda. İnsan hata yapar → kod kusur taşır → sistem başarısız olur." },
+ { no:"1.3", t:"Doğrulama ve Geçerli Kılma (V&V)", body:`
+  <div class="pair"><div><b>Verification · Doğrulama</b><span>“Ürünü doğru mu inşa ediyoruz?” Ürün tasarıma ve spesifikasyona uygun mu?</span></div><div><b>Validation · Geçerli kılma</b><span>“Doğru ürünü mü inşa ediyoruz?” Ürün kullanıcının gerçek ihtiyacını karşılıyor mu?</span></div></div>`,
+  hook:"Verification: plana uydum mu? Validation: müşteri bunu mu istiyordu?" },
+ { no:"1.4", t:"Statik analiz", body:`
+  <p>Kodun <b>çalıştırılmadan</b> incelenmesidir. Bir kitabın imla hatalarını okuyarak bulmaya benzer: metne bakarsın ama hikayeyi canlandırmazsın.</p>
+  <h4>Yöntemleri</h4>
+  <ol>
+   <li><b>Sözdizimsel analiz (lexical/syntax):</b> Derleyicinin ilk adımı. Kod ağaç yapısına (AST) çevrilir, eksik parantez gibi yazım hataları bulunur.</li>
+   <li><b>Kontrol akış grafiği (CFG):</b> if, while, switch gibi karar yapıları düğüm olarak modellenir. Hiç ulaşılamayan <b>ölü kod</b> bu sayede bulunur.</li>
+   <li><b>Veri akışı analizi:</b> Değişkenin yaşam döngüsünü izler. Değer atanmadan kullanılıyor mu, hiç kullanılmadan mı bitiyor?</li>
+   <li><b>İşaretçi analizi:</b> C/C++ gibi dillerde hangi işaretçinin bellekte hangi adresi gösterdiğini statik olarak tahmin eder.</li>
+  </ol>
+  <div class="pair"><div><b class="plus">Avantajları</b><span>Kodun tamamını tarar (%100 kapsam). Hatanın dosyasını ve satırını verir. Kod çalışmadan, çok erken yapılabilir.</span></div><div><b class="minus">Dezavantajları</b><span>Çok fazla yanlış alarm (false positive) üretebilir. Çalışma zamanı ortamına bağlı hataları bulamaz.</span></div></div>`,
+  hook:"Statik = okuyarak bul. Geniş tarar ama şüphecidir, yanlış alarm çoktur." },
+ { no:"1.5", t:"Dinamik analiz", body:`
+  <p>Programın gerçek bir donanım üzerinde <b>çalıştırılarak</b> incelenmesidir.</p>
+  <h4>Kullanım alanları</h4>
+  <ul>
+   <li><b>Bellek sızıntısı tespiti:</b> Alınıp geri bırakılmayan, zamanla sistemi çökerten RAM bulunur.</li>
+   <li><b>Performans profilleme:</b> Hangi fonksiyonun ne kadar CPU süresi harcadığı ölçülür.</li>
+   <li><b>Kapsama analizi:</b> Yazılan testlerin kodun yüzde kaçından geçtiği hesaplanır.</li>
+  </ul>
+  <div class="pair"><div><b class="plus">Avantajları</b><span>Bulunan hatalar gerçektir, yanlış alarm sıfıra yakındır. Kütüphaneler, 3. parti bileşenler, ağ gecikmesi gibi çalışma zamanı gerçeklerini hesaba katar.</span></div><div><b class="minus">Dezavantajları</b><span>Yalnızca çalıştırılan yolları görür: bir if bloğuna hiç girilmediyse oradaki hata bulunmaz. Uygulamayı yavaşlatır.</span></div></div>`,
+  hook:"Statik geniş ama şüpheci; dinamik dar ama kesin." },
+ { no:"1.6", t:"Teorik sınırlar: Durma Problemi ve Rice Teoremi", body:`
+  <p>“Neden bütün hataları %100 bulan bir analiz programı yazamıyoruz?” sorusunun cevabı matematikseldir.</p>
+  <ul>
+   <li><b>Alan Turing, Durma Problemi:</b> Verilen herhangi bir programın, verilen bir girdiyle çalışmayı bitirip bitirmeyeceğini (sonsuz döngüye girip girmeyeceğini) her durumda doğru söyleyen genel bir algoritma yazılamaz.</li>
+   <li><b>Rice Teoremi:</b> Durma probleminin genelleştirilmiş hali. Bir programın davranışıyla ilgili (anlamsal) önemsiz olmayan hiçbir özelliğe genel olarak karar verilemez. Koda dışarıdan bakarak her girdide nasıl davranacağını kesin söyleyemeyiz.</li>
+  </ul>
+  <div class="pair"><div><b>Sıradan (sözdizimsel) özellik</b><span>Kodun metnine bakarak cevaplanır. “Kod 100 satırdan uzun mu?”, “İçinde while var mı?”</span></div><div><b>Anlamsal özellik</b><span>Çalışınca ne yaptığıyla ilgilidir. “Bu program hiç sıfıra böler mi?”, “Her girdide doğru sonuç verir mi?” Karar verilemez.</span></div></div>`,
+  hook:"Turing: durur mu bilemezsin. Rice: ne yapacağını da genel olarak bilemezsin. Bu yüzden kusursuz test aracı yok." },
+ { no:"1.7", t:"Kesinlik ve Tamlık ikilemi", body:`
+  <div class="pair"><div><b>Kesinlik (Soundness)</b><span>Gerçekte var olan hiçbir hatayı kaçırmamak. Hepsini yakalar ama yanlış alarm verebilir.</span></div><div><b>Tamlık (Completeness)</b><span>“Raporladığım her şey kesinlikle ve tartışmasız %100 hatadır.” Yanlış alarm yok ama bazı hataları kaçırabilir.</span></div></div>
+  <p>Rice teoremi yüzünden bir araç ikisini aynı anda %100 sağlayamaz; birinden ödün verir. Statik analiz genelde kesinliğe, dinamik analiz tamlığa yakındır.</p>`,
+  hook:"Kesinlik = hiçbirini kaçırma. Tamlık = söylediğin her şey doğru olsun. İkisi birden olmaz." },
+ { no:"1.8", t:"Güncel süreç: Shift-Left yaklaşımı", body:`
+  <p>Geleneksel şelale modelinde test en sona bırakılırdı. Shift-left’te test, zaman çizelgesinde sola, yani geliştirmenin en başına çekilir. Erken bulunan hata çok daha ucuza düzeltilir.</p>`,
+  hook:"Zaman çizgisini soldan sağa düşün: testi sola, en başa kaydır." }
+]},
+{ id:2, title:"Yazılım Testine Giriş", sum:"Testin amacı, 7 prensip, test seviyeleri, kara/beyaz/gri kutu ve STLC.", topics:[
+ { no:"2.1", t:"Yazılım testi nedir, neden mühendislik disiplinidir?", body:`
+  <p>Yazılım testi, yazılımın beklenen koşullarda doğru çalıştığını doğrulamanın yanında, beklenmeyen koşullarda nasıl çöktüğünü bulma sanatıdır. Geliştirme sürecinin en yanlış anlaşılan aşamalarından biridir; rastgele tıklamak değil, planlı ve sistematik bir iştir.</p>
+  <div class="pair"><div><b>İnşa etme zihniyeti</b><span>Geliştirici: “Bunu nasıl çalıştırırım?”</span></div><div><b>Yıkma zihniyeti</b><span>Testçi: “Bunu nasıl çökertebilirim?”</span></div></div>`,
+  hook:"Geliştirici inşa eder, testçi yıkmaya çalışır." },
+ { no:"2.2", t:"Testin başlıca amaçları", body:`
+  <ul><li><b>Kusurları bulmak:</b> Hataları kullanıcıdan önce yakalamak.</li><li><b>Güven oluşturmak:</b> Yazılımın beklenen şekilde çalıştığına dair kanıt toplamak.</li><li><b>Karar vermeyi desteklemek:</b> “Yayına çıkabilir miyiz?” sorusuna veri sağlamak.</li></ul>
+  <p>Test kaliteyi tek başına artırmaz; kalitenin seviyesinden haberdar eder. Kaliteyi bulunan hataların düzeltilmesi artırır.</p>`,
+  hook:"Bul, güven ver, karar verdir. Test termometredir, ilaç değil." },
+ { no:"2.3", t:"Yazılım testinin 7 evrensel prensibi", body:`
+  <ol>
+   <li><b>Test hataların varlığını gösterir,</b> yokluğunu kanıtlamaz.</li>
+   <li><b>Kapsamlı (exhaustive) test imkansızdır.</b> Tüm girdi kombinasyonları denenemez; risk ve önceliğe göre seçilir.</li>
+   <li><b>Erken test (Shift-Left).</b> Test yaşam döngüsünde olabildiğince erken başlamalı.</li>
+   <li><b>Hataların kümelenmesi (Pareto, 80/20).</b> Hataların %80’i genellikle modüllerin %20’sinde toplanır.</li>
+   <li><b>Pestisit paradoksu.</b> Aynı testler tekrar tekrar koşulursa artık yeni hata bulamaz, böceklerin ilaca bağışıklık kazanması gibi. Testler yenilenmeli.</li>
+   <li><b>Test bağlama bağlıdır.</b> Bankacılık uygulaması ile oyun aynı şekilde test edilmez; herkese uyan tek strateji yoktur.</li>
+   <li><b>Hatasızlık yanılgısı.</b> Yazılım %100 hatasız olsa bile kullanıcının ihtiyacını karşılamıyorsa başarısızdır.</li>
+  </ol>`,
+  hook:"Sırayla ezber cümlesi: “Varlık Kapsamı Erken Kümelenir, Pestisit Bağlamı Yanıltır.”" },
+ { no:"2.4", t:"Test seviyeleri: Birim, Entegrasyon, Sistem, Kabul", body:`
+  <p>Küçükten büyüğe dört seviye: tuğla → duvar → bina → anahtar teslim.</p>
+  <div class="pair">
+   <div><b>A. Birim (Unit) testi</b><span>Bağımsız test edilebilen en küçük parça (fonksiyon, metot) test edilir. Kodu yazan geliştirici yapar, beyaz kutu kullanır. <b>İzolasyon şartı:</b> Fonksiyon veritabanına bağlıysa bu bağımlılık sahte nesnelerle (mock/stub) yalıtılır.</span></div>
+   <div><b>B. Entegrasyon testi</b><span>Birimler tek başına çalışır ama birbiriyle konuşunca işler karışabilir. Bileşenler arası veri akışı ve arayüzler test edilir.</span></div>
+   <div><b>C. Sistem testi</b><span>Yazılım, donanım, ağ ve veritabanı tamamen entegre halde, bütün olarak test edilir. Kara kutu yaklaşımı.</span></div>
+   <div><b>D. Kabul testi</b><span>Kullanıma sunulmadan önceki son durak. Amaç kullanıcının asıl iş ihtiyaçlarına uygunluğu görmektir: UAT (kullanıcı kabul testi), Alfa ve Beta.</span></div>
+  </div>
+  <h4>Entegrasyon türleri</h4>
+  <ul><li><b>Big Bang:</b> Tüm modüller aynı anda birleştirilip test edilir. Hata çıkarsa yeri zor bulunur.</li>
+  <li><b>Yukarıdan aşağıya (top-down):</b> Üst modülden başlanır; henüz yazılmamış alt modüllerin yerine <b>stub</b> konur.</li>
+  <li><b>Aşağıdan yukarıya (bottom-up):</b> Alt modüllerden başlanır; onları çağıracak üst modülün yerine <b>driver (sürücü)</b> konur.</li></ul>
+  <h4>Sistem testinin kapsamı</h4>
+  <ul><li><b>Performans:</b> Sistem aynı anda 1000 kullanıcıyı kaldırabiliyor mu?</li><li><b>Güvenlik:</b> SQL injection ve XSS açıklarına karşı dayanıklı mı?</li><li><b>Stres:</b> RAM ve CPU sonuna kadar zorlandığında veri kaybetmeden düzgün çökebiliyor mu?</li></ul>
+  <h4>Kabul testi türleri</h4>
+  <ul><li><b>Alfa:</b> Şirket içinde, geliştirici ortamında yapılır.</li><li><b>Beta:</b> Gerçek kullanıcılar, gerçek ortamda dener.</li></ul>`,
+  hook:"Stub aşağıyı taklit eder (top-down), Driver yukarıyı taklit eder (bottom-up)." },
+ { no:"2.5", t:"Tasarım yaklaşımları: Kara, Beyaz, Gri kutu", body:`
+  <div class="tbl"><table>
+   <tr><th></th><th>Kara kutu</th><th>Beyaz kutu</th><th>Gri kutu</th></tr>
+   <tr><td>Bildiği yapı</td><td>İç kodu ve algoritmayı bilmez</td><td>Kaynak kodu, algoritmayı ve mimariyi tamamen bilir</td><td>Kod detayını bilmez; veritabanı şemasını ve mimariyi bilir</td></tr>
+   <tr><td>Odak</td><td>Girdi ve çıktı</td><td>Kod satırları</td><td>Hem kullanıcı arayüzü hem arka plan verisi</td></tr>
+   <tr><td>Test temeli</td><td>Gereksinim dokümanları, kullanım senaryoları</td><td>Mimari dokümanlar, kaynak kod</td><td>API dokümanları, veritabanı diyagramları</td></tr>
+   <tr><td>Kim yapar?</td><td>Bağımsız test mühendisleri, son kullanıcılar</td><td>Yazılım geliştiriciler</td><td>Güvenlik uzmanları, teknik test mühendisleri</td></tr>
+   <tr><td>Teknikler</td><td>Sınır değer analizi, eşdeğerlik bölümleme</td><td>İfade kapsama, dal kapsama</td><td>Matris testi</td></tr>
+  </table></div>
+  <ul>
+   <li><b>Sınır değer analizi:</b> Hatalar sınırlarda çıkar. 1–100 arası kabul eden alan için 0, 1, 100, 101 denenir.</li>
+   <li><b>Eşdeğerlik bölümleme:</b> Girdiler aynı davranan gruplara ayrılır (geçersiz küçük, geçerli, geçersiz büyük) ve her gruptan bir temsilci denenir.</li>
+   <li><b>İfade / dal kapsama:</b> Her satırın (ifade) ve her if dalının (doğru/yanlış) en az bir kez çalışması hedeflenir.</li>
+  </ul>`,
+  hook:"Kara = içini görmez, Beyaz = her şeyi görür, Gri = yarısını (şema ve mimari) görür." },
+ { no:"2.6", t:"Yazılım Test Yaşam Döngüsü (STLC)", body:`
+  <ol class="steps"><li>Gereksinim analizi</li><li>Test planlama</li><li>Test senaryosu tasarımı ve geliştirme</li><li>Test ortamının kurulumu</li><li>Test yürütme</li><li>Test kapanışı</li></ol>
+  <ul><li><b>Gereksinim analizi:</b> Neyin test edileceği anlaşılır.</li><li><b>Planlama:</b> Strateji, kapsam, kaynak, takvim belirlenir.</li><li><b>Senaryo tasarımı:</b> Test case’ler ve test verileri yazılır.</li><li><b>Ortam kurulumu:</b> Donanım, yazılım ve veri hazırlanır.</li><li><b>Yürütme:</b> Testler koşulur, hatalar raporlanır.</li><li><b>Kapanış:</b> Sonuç raporu yazılır, dersler çıkarılır.</li></ul>`,
+  hook:"Anla → Planla → Yaz → Kur → Koş → Kapat." }
+]},
+{ id:3, title:"Rastgele Test ve Bulanıklaştırma", sum:"Rastgele test adımları, sistematik testle karşılaştırma, maymun testi ve fuzzing.", topics:[
+ { no:"3.1", t:"Rastgele test (Random testing)", body:`
+  <p>Test edilen sisteme (<b>SUT</b>, System Under Test) otomatik üretilen rastgele girdiler verilir. Amaç, testçinin hep aklına gelen girdileri denemesinden doğan <b>insan yanlılığını kırmak</b> ve test sürecindeki <b>maliyetleri düşürmektir</b>.</p>
+  <h4>Adımlar</h4>
+  <ol class="steps"><li>Modelleme</li><li>Dağılım seçimi</li><li>Veri üretimi</li><li>Koşturma ve gözlemleme</li><li>Kahin (Oracle)</li></ol>
+  <ul><li><b>Modelleme:</b> Girdi alanı tanımlanır (tür, aralık).</li><li><b>Dağılım seçimi:</b> Girdilerin hangi olasılıkla seçileceği belirlenir.</li><li><b>Veri üretimi:</b> Rastgele girdiler üretilir.</li><li><b>Koşturma ve gözlemleme:</b> Program bu girdilerle çalıştırılır.</li><li><b>Kahin (oracle):</b> Çıkan sonucun doğru mu yanlış mı olduğuna karar veren mekanizma.</li></ul>`,
+  hook:"SUT = test edilen sistem. Oracle = “bu sonuç doğru mu?” diyen hakem." },
+ { no:"3.2", t:"Dağılım seçimi", body:`
+  <div class="pair"><div><b>Düzgün dağılım (uniform)</b><span>Aralıktaki her değer eşit olasılıkla seçilir.</span></div><div><b>Sınır odaklı dağılım</b><span>Hatalar çoğunlukla sınırlarda çıktığı için 0, -1, en büyük değer, boş metin gibi uç değerlere daha fazla ağırlık verilir.</span></div></div>`,
+  hook:"Düzgün = herkes eşit. Sınır odaklı = kenarlara torpil." },
+ { no:"3.3", t:"Sistematik test ve rastgele test karşılaştırması", body:`
+  <p>Sistematik test geleneksel yöntemdir: testçi sınır değer, eşdeğerlik bölümleme gibi tekniklerle girdileri bilinçli seçer.</p>
+  <div class="tbl"><table>
+   <tr><th>Kriter</th><th>Sistematik test</th><th>Rastgele test</th></tr>
+   <tr><td>Tasarım eforu ve maliyet</td><td>Yüksek, insan düşünür</td><td>Düşük, makine üretir</td></tr>
+   <tr><td>İnsan yanlılığı</td><td>Testçinin varsayımlarına bağlı</td><td>Yanlılık yok, akla gelmeyen girdileri dener</td></tr>
+   <tr><td>Hata bulma verimliliği</td><td>Hedefli, az testle çok iş</td><td>Çok sayıda test gerekir, dar koşulları kaçırabilir</td></tr>
+   <tr><td>Test kahini problemi</td><td>Beklenen sonuç önceden yazılır</td><td>Binlerce çıktının doğruluğunu kim kontrol edecek? En büyük sorun</td></tr>
+  </table></div>`,
+  hook:"Rastgele test ucuz ve tarafsız; ama “doğru sonuç neydi?” sorusu (kahin) baş ağrısıdır." },
+ { no:"3.4", t:"Maymun testi (Monkey testing)", body:`
+  <p>Sisteme tamamen rastgele girdiler, tıklamalar ve hareketler gönderilir; klavyenin başına bir maymun oturmuş gibi.</p>
+  <div class="pair"><div><b>Aptal maymun (dumb)</b><span>Sistem hakkında hiçbir şey bilmez, tamamen rastgele basar.</span></div><div><b>Akıllı maymun (smart)</b><span>Sistemin yapısı hakkında hafif bilgiye sahiptir (hangi ekran, hangi buton), daha anlamlı rastgelelik üretir.</span></div></div>`,
+  hook:"Aptal maymun her yere basar; akıllı maymun haritayı biraz bilir." },
+ { no:"3.5", t:"Bulanıklaştırma (Fuzzing)", body:`
+  <p>Rastgele testin <b>siber güvenlik versiyonudur</b>. Programa bozuk, beklenmedik veya geçersiz girdiler verilerek çökme, bellek taşması gibi güvenlik açıkları aranır.</p>
+  <div class="pair"><div><b>Mutasyon tabanlı (mutation-based)</b><span>Geçerli bir örnek girdi (ör. bir PDF) alınır, baytları rastgele değiştirilerek bozulur. Format bilgisi gerekmez, kolaydır.</span></div><div><b>Üretim tabanlı (generation-based)</b><span>Girdinin formatı ya da grameri modellenir, girdiler sıfırdan kurala uygun ama uç değerli üretilir. Zahmetli ama derine iner.</span></div></div>`,
+  hook:"Mutasyon = var olanı boz. Üretim = kuralı bilip sıfırdan üret." }
+]},
+{ id:4, title:"Otomatik Test Üretimi", sum:"Elle testin sorunları, sembolik çalıştırma, concolic, SBST, MBT ve araçlar.", topics:[
+ { no:"4.1", t:"Neden otomatik test üretimi? Elle yazılan testin üç sorunu", body:`
+  <ul>
+   <li><b>Kod kapsamı (coverage) yetersizliği:</b> İnsan, kod tabanındaki bütün mantıksal yolları hayal edemez. <code>if (x == 123456)</code> gibi dar bir koşula ne elle ne de rastgele girdiyle kolayca girilir.</li>
+   <li><b>Bakım (maintenance) maliyeti:</b> Kaynak kod her değiştiğinde elle yazılmış test senaryolarının da güncellenmesi gerekir (regresyon).</li>
+   <li><b>Test oracle darboğazı:</b> Test girdisi üretmek kolaydır, ama her girdi için beklenen çıktının ne olduğunu belirlemek zordur.</li>
+  </ul>
+  <p><b>Çözüm:</b> Test senaryosu yazmayı makineye öğretmek. Bu yolda karşımıza ilk çıkan teknik <b>sembolik çalıştırmadır</b>.</p>`,
+  hook:"Kapsam, Bakım, Kahin: elle testin üç derdi. Çözüm: testi makine yazsın." },
+ { no:"4.2", t:"Sembolik çalıştırma (Symbolic execution)", body:`
+  <p>Program somut değerler (x = 5) yerine <b>semboller</b> (x = α) ile çalıştırılır. Her dallanmada bir yol koşulu toplanır: if (α &gt; 10) için yol 1’de α &gt; 10, yol 2’de α ≤ 10.</p>
+  <ul>
+   <li><b>SMT çözücüler</b> (ör. Z3): Toplanan yol koşulunu sağlayan somut değeri bulur. Bu değer o yolun test girdisi olur.</li>
+   <li><b>Yol patlaması problemi (path explosion):</b> Her if yol sayısını ikiye katlar; n tane if için 2ⁿ yol, döngülerde neredeyse sonsuz yol. Büyük programlarda pratik değildir.</li>
+  </ul>`,
+  hook:"Sayı yerine harf koy, her if’te koşul topla, SMT çözsün. Ama her if yolları ikiye katlar: patlama." },
+ { no:"4.3", t:"Dinamik sembolik çalıştırma (Concolic)", body:`
+  <p><b>Concolic = Concrete + Symbolic.</b> Program hem somut bir girdiyle gerçekten çalıştırılır hem de yanında sembolik koşullar toplanır. SMT’nin çözemediği karmaşık yerlerde somut değer kullanılarak takılmadan devam edilir.</p>
+  <ol class="steps"><li>Başlangıç: rastgele somut girdiyle çalıştır</li><li>Toplama: geçilen yolun koşullarını topla</li><li>Tersleme: son koşulu tersine çevir</li><li>Çözüm: SMT yeni girdiyi bulur, tekrarla</li></ol>
+  <p>Örnek araçlar: <b>KLEE, DART, CUTE</b>.</p>`,
+  hook:"Somut çalıştır, koşulu topla, tersle, çöz, tekrarla." },
+ { no:"4.4", t:"Arama tabanlı yazılım testi (SBST) ve genetik algoritmalar", body:`
+  <p>SBST, test üretimini bir arama/optimizasyon problemi olarak görür.</p>
+  <ul><li><b>Uygunluk fonksiyonu (fitness):</b> Bir test girdisinin hedefe ne kadar yakın olduğunu puanlar. Hedef <code>x == 100</code> ise x = 98, x = 5’ten daha uygundur (|x − 100| mesafesi küçük).</li></ul>
+  <h4>Genetik algoritma ile test üretimi</h4>
+  <ol class="steps"><li>Başlangıç popülasyonu</li><li>Değerlendirme</li><li>Çaprazlama</li><li>Mutasyon</li><li>Evrim</li></ol>
+  <ul><li><b>Başlangıç popülasyonu:</b> Rastgele test girdileri üretilir.</li><li><b>Değerlendirme:</b> Her biri fitness ile puanlanır.</li><li><b>Çaprazlama:</b> İyi iki bireyin parçaları birleştirilir.</li><li><b>Mutasyon:</b> Küçük rastgele değişiklik yapılır.</li><li><b>Evrim:</b> En iyiler yeni nesle geçer; hedefe ulaşana kadar tekrar edilir.</li></ul>`,
+  hook:"Doğal seçilim: en uygun test girdileri hayatta kalır, çiftleşir, mutasyona uğrar." },
+ { no:"4.5", t:"Model tabanlı test (MBT)", body:`
+  <p>Sistemin beklenen davranışı bir modelle (durum makinesi, akış diyagramı) tanımlanır ve test senaryoları bu modelden otomatik üretilir. Model beklenen çıktıyı da söylediği için kahin problemini hafifletir.</p>`,
+  hook:"Önce sistemin haritasını çiz, testleri haritadan otomatik çıkar." },
+ { no:"4.6", t:"Uygulamalı örnek: otomatik test verisi", body:`
+  <p>Bankacılık uygulamasında para çekme fonksiyonunda her dal için ayrı bir test verisi gerekir. Sembolik/concolic çalıştırma bu verileri koşullardan otomatik hesaplar.</p>
+<pre class="code">if (miktar &gt; bakiye)        <span class="c">// yol 1 → bakiye=100, miktar=150</span>
+    hata("Yetersiz bakiye");
+else if (miktar &gt; limit)    <span class="c">// yol 2 → bakiye=1000, miktar=600, limit=500</span>
+    hata("Günlük limit aşıldı");
+else
+    paraCek(miktar);         <span class="c">// yol 3 → bakiye=1000, miktar=200, limit=500</span></pre>
+  <h4>Ödev: üçgen türü, en az if ile</h4>
+<pre class="code">if (a == b &amp;&amp; b == c)            print("Eşkenar")
+else if (a == b || b == c || a == c) print("İkizkenar")
+else                                 print("Çeşitkenar")</pre>
+  <p>Üç dalın hepsini çalıştırmak için en az üç test girdisi yeter: (3,3,3), (3,3,5), (3,4,5).</p>`,
+  hook:"Her dal = bir test verisi. Üç dal → en az üç test." },
+ { no:"4.7", t:"Endüstride kullanılan otomatik test üretim araçları", body:`
+  <div class="tbl"><table>
+   <tr><th>Araç</th><th>Dil</th><th>Teknik</th></tr>
+   <tr><td>EvoSuite</td><td>Java</td><td>Genetik algoritma (SBST), otomatik JUnit testi üretir</td></tr>
+   <tr><td>KLEE</td><td>C / C++ (LLVM)</td><td>Sembolik çalıştırma</td></tr>
+   <tr><td>Pex</td><td>.NET / C# (Microsoft)</td><td>Dinamik sembolik çalıştırma (bugün IntelliTest)</td></tr>
+   <tr><td>PyExZ3</td><td>Python</td><td>Z3 çözücüsüyle dinamik sembolik çalıştırma</td></tr>
+   <tr><td>Atheris</td><td>Python (Google)</td><td>Kapsam güdümlü fuzzing</td></tr>
+  </table></div>`,
+  hook:"Evo = Evrim (Java). KLEE = C. Pex = .NET. PyExZ3 = Python + Z3. Atheris = Python fuzz." }
+]},
+{ id:5, title:"Veri Akışı Analizi", sum:"CFG ve temel blok, U/D/R durumları, anomaliler, GEN/KILL, klasik problemler, iş listesi.", topics:[
+ { no:"5.1", t:"Kodun matematiksel haritası: Kontrol Akış Grafiği ve temel blok", body:`
+  <p>Rastgele test, fuzzing ve otomatik test üretimi kodu çalıştırarak sonuca bakar. Veri akışı analizi ise <b>statiktir</b>: kodu çalıştırmadan değerlerin program boyunca nasıl aktığını inceler. Bunun için önce kodun haritası, yani kontrol akış grafiği (CFG) çizilir: düğümler temel bloklar, oklar olası geçişlerdir.</p>
+  <p><b>Temel blok (basic block):</b> İçine sadece ilk satırından girilebilen, sadece son satırından çıkılabilen ve içinde hiç dallanma (if, switch, döngü) olmayan kod dizisi.</p>
+  <ul><li><b>Çalışma garantisi:</b> Bloğun ilk satırı çalıştıysa diğer bütün satırları da sırayla çalışır.</li><li><b>Bölünemezlik:</b> Blok tek bir birim gibi davranır; ortasından girilip çıkılamaz.</li></ul>
+<pre class="code">int a = 5;          <span class="c">// B1</span>
+int b = 10;         <span class="c">// B1</span>
+if (a &lt; b) {        <span class="c">// B1 (dallanma bloğun son satırı)</span>
+    a = a + 1;      <span class="c">// B2</span>
+} else {
+    b = b - 1;      <span class="c">// B3</span>
+}
+c = a + b;          <span class="c">// B4</span></pre>
+  <figure class="cfg" aria-label="Örnek kodun kontrol akış grafiği: B1'den B2 ve B3'e, ikisinden B4'e ok">
+   <svg viewBox="0 0 560 270" role="img">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+    <rect class="box" x="190" y="10" width="180" height="62" rx="8"/><text class="lab" x="202" y="28">B1</text><text class="txt" x="202" y="46">a=5; b=10;</text><text class="txt" x="202" y="62">if (a &lt; b)</text>
+    <rect class="box" x="40" y="110" width="150" height="46" rx="8"/><text class="lab" x="52" y="128">B2</text><text class="txt" x="52" y="146">a = a + 1;</text>
+    <rect class="box" x="370" y="110" width="150" height="46" rx="8"/><text class="lab" x="382" y="128">B3</text><text class="txt" x="382" y="146">b = b - 1;</text>
+    <rect class="box" x="205" y="200" width="150" height="46" rx="8"/><text class="lab" x="217" y="218">B4</text><text class="txt" x="217" y="236">c = a + b;</text>
+    <path class="edge" d="M230,72 L140,108" marker-end="url(#ar)"/><text class="elab" x="150" y="86">doğru</text>
+    <path class="edge" d="M330,72 L420,108" marker-end="url(#ar)"/><text class="elab" x="382" y="86">yanlış</text>
+    <path class="edge" d="M120,156 L240,198" marker-end="url(#ar)"/>
+    <path class="edge" d="M440,156 L320,198" marker-end="url(#ar)"/>
+   </svg>
+  </figure>`,
+  hook:"Temel blok = tek giriş, tek çıkış, arada if yok. Örnekte 4 blok var." },
+ { no:"5.2", t:"Değişken durum makinesi ve veri akışı anomalileri", body:`
+  <ol class="chain">
+   <li><span class="k">U</span><b>Undefined</b><span>Değişken için bellekte yer ayrılmış ama içine henüz değer konmamış.</span></li>
+   <li><span class="k">D</span><b>Defined</b><span>Değer atanmış: <code>x = 10</code> ya da bir hesaplamanın sonucu.</span></li>
+   <li><span class="k">R</span><b>Referenced</b><span>Değeri okunmuş, başka bir yerde kullanılmış: <code>y = x + 1</code>.</span></li>
+  </ol>
+  <p>Normal ve sağlıklı geçiş <b>D → R</b>’dir: önce ata, sonra kullan.</p>
+  <div class="tbl"><table>
+   <tr><th>Anomali</th><th>Ne oluyor?</th><th>Örnek</th><th>Sonuç</th></tr>
+   <tr><td>UR</td><td>Değer atanmadan okunuyor</td><td><code>int x; y = x + 1;</code></td><td>Kritik hata</td></tr>
+   <tr><td>DU</td><td>Değer atanmış ama hiç kullanılmadan değişken yok oluyor</td><td><code>x = 5;</code> sonra fonksiyon bitiyor</td><td>Ölü kod, israf</td></tr>
+   <tr><td>DD</td><td>Değer atanmış, okunmadan tekrar atanıyor</td><td><code>x = 5; x = 10;</code></td><td>Mantıksal kusur şüphesi</td></tr>
+  </table></div>`,
+  hook:"UR = okunan değer yok (kritik). DU = atanan değer unutuldu (israf). DD = okunmadan ezildi (mantık hatası)." },
+ { no:"5.3", t:"Veri akışı matematiği: GEN, KILL, IN, OUT", body:`
+  <ul>
+   <li><b>GEN[B]:</b> Blokta üretilen yeni tanımlar (atamalar).</li>
+   <li><b>KILL[B]:</b> Bloktaki yeni atamalar yüzünden ezilen, öldürülen eski tanımlar.</li>
+   <li><b>IN[B]:</b> Bloğa girişte geçerli olan bilgi.</li>
+   <li><b>OUT[B]:</b> Bloktan çıkışta geçerli olan bilgi.</li>
+  </ul>
+  <h4>Evrensel transfer fonksiyonu</h4>
+  <div class="formula"><b>OUT[B]</b> = GEN[B] ∪ ( IN[B] − KILL[B] )</div>
+  <p>Örnek: IN = {d1: x=1, d2: y=2}. Blokta d3: x=5 var. GEN = {d3}, KILL = {d1}. OUT = {d3} ∪ ({d1, d2} − {d1}) = <b>{d2, d3}</b>.</p>`,
+  hook:"Girenden ölenleri çıkar, yeni doğanları ekle." },
+ { no:"5.4", t:"Klasik veri akışı problemleri", body:`
+  <p><b>Meet operatörü:</b> Bir noktaya birden fazla yoldan gelen bilgiyi birleştirme kuralı. “Herhangi bir yol yeter” ise birleşim (∪), “bütün yollarda olmalı” ise kesişim (∩).</p>
+  <div class="tbl"><table>
+   <tr><th>Analiz</th><th>Sorduğu soru</th><th>Yön</th><th>Meet</th><th>Kullanım</th></tr>
+   <tr><td>Ulaşan tanımlar</td><td>Bu noktaya hangi atamalar ezilmeden ulaşıyor?</td><td>İleri (baştan sona)</td><td>∪ birleşim</td><td>Sabit yayılımı (constant propagation) optimizasyonu</td></tr>
+   <tr><td>Canlı değişkenler</td><td>Bu değişkenin değeri ileride okunacak mı?</td><td>Geri</td><td>∪ birleşim (ardıl blokların giriş kümeleri)</td><td>Register ataması, ölü kod tespiti</td></tr>
+   <tr><td>Mevcut ifadeler</td><td>x*y bu noktaya gelen bütün yollarda önceden hesaplanmış mı?</td><td>İleri</td><td>∩ kesişim</td><td>Tekrar hesaplamayı önleme (ortak alt ifade)</td></tr>
+   <tr><td>Çok meşgul ifadeler</td><td>Bu noktadan çıkan bütün yollarda ifade mutlaka hesaplanacak mı?</td><td>Geri</td><td>∩ kesişim</td><td>İfadeyi öne alıp bir kez hesaplama (code hoisting)</td></tr>
+  </table></div>`,
+  hook:"Ulaşan ve Mevcut ileri bakar; Canlı ve Meşgul geriye bakar. “Herhangi” = ∪, “bütün yollar” = ∩." },
+ { no:"5.5", t:"Derleyicilerde iş listesi (worklist) algoritması", body:`
+  <ol>
+   <li>Bütün blokların IN/OUT kümeleri başlangıç değeriyle (genelde boş) doldurulur.</li>
+   <li>Bütün bloklar iş listesine eklenir.</li>
+   <li>Listeden bir blok çekilir.</li>
+   <li>Kendisinden önceki (ileri analizde) ya da sonraki (geri analizde) bloklara bakılarak yeni IN hesaplanır.</li>
+   <li>Transfer fonksiyonu (GEN ∪ (IN − KILL)) ile yeni OUT hesaplanır.</li>
+   <li>OUT değiştiyse, bundan etkilenen bloklar tekrar listeye eklenir.</li>
+   <li>Liste boşalınca durulur: <b>sabit noktaya (fixed point)</b> ulaşılmıştır.</li>
+  </ol>
+  <p><b>Kafes (lattice) teorisinin monotonluk ilkesi:</b> Kümeler yalnızca tek yönde büyür (monoton büyüme) ve sonludur, sonsuza kadar değişemez. Bu yüzden algoritma deterministiktir ve graf ne kadar karmaşık olursa olsun eninde sonunda durur (termination).</p>`,
+  hook:"Değişen olduğu sürece tekrar hesapla. Kümeler hep büyür ve sınırlıdır, o yüzden mutlaka durur." },
+ { no:"5.6", t:"Siber güvenlik: Leke analizi ve MISRA C", body:`
+  <div class="pair"><div><b>Leke analizi (Taint analysis)</b><span>Veri akışı analizinin en meşhur özelleştirilmiş hali. Dışarıdan gelen güvenilmez veri (kaynak/source) “lekeli” işaretlenir. Temizlenmeden (sanitize) SQL sorgusu veya sistem komutu gibi tehlikeli bir yere (sink) ulaşırsa alarm verilir. SQL injection ve XSS böyle yakalanır.</span></div>
+  <div><b>MISRA C ve otomotiv standartları</b><span>Otomotiv gibi güvenlik kritik sistemlerde C kodu için kural setidir (ör. değişken başlatılmadan kullanılmaz). Statik ve veri akışı analiz araçları bu kurallara uyumu otomatik denetler.</span></div></div>`,
+  hook:"Leke = kirli veri temizlenmeden tehlikeli yere ulaştı mı? MISRA = arabadaki C kodunun kuralları." },
+ { no:"5.7", t:"Karşılaştırmalar: Rastgele test vs DFA, UR’nin diller arası etkisi", body:`
+  <div class="tbl"><table>
+   <tr><th>Kriter</th><th>Rastgele test (dinamik)</th><th>Veri akışı analizi (statik)</th></tr>
+   <tr><td>Hata bulma kapasitesi</td><td>Sadece çalışan yollardaki gerçek hataları bulur</td><td>Bütün yolları matematiksel olarak tarar, hiç çalışmayan yollardaki hataları da yakalar</td></tr>
+   <tr><td>Hız</td><td>Milyonlarca çalıştırma gerekebilir, yavaş</td><td>Kod çalışmaz, derleme sırasında biter, hızlı</td></tr>
+   <tr><td>Yanlış pozitif oranı</td><td>Sıfıra yakın, çökme gerçektir</td><td>Daha yüksek, gerçekte mümkün olmayan yolları da hesaba katar</td></tr>
+  </table></div>
+  <h4>UR anomalisinin diller arası etkisi</h4>
+  <div class="pair"><div><b>C / C++ (yönetilmeyen dil)</b><span>Başlatılmamış yerel değişken bellekte kalan rastgele çöp değeri taşır. Tanımsız davranış, öngörülemeyen hata ve güvenlik açığı doğar. Derleyici en fazla uyarı verir.</span></div>
+  <div><b>Java ve C# (yönetilen dil)</b><span>Derleyici kendisi veri akışı analizi yapar; başlatılmamış yerel değişkenin okunmasına izin vermez, derleme hatası verir. Sınıf alanları varsayılan değer (0, null) alır.</span></div></div>`,
+  hook:"C/C++ çöp değerle çalışmaya devam eder; Java/C# derlemeyi baştan reddeder." }
+]}
+];
+
+/* ===================== SORULAR ===================== */
+const QS = [
+// Hafta 1
+{w:1,q:"IEEE terminolojisine göre geliştiricinin yaptığı yanlış eylem veya karar hangisidir?",o:["Error (Hata)","Fault (Kusur)","Failure (Başarısızlık)","Defect report"],a:0,e:"Error insan kaynaklıdır. Koda yansıyınca Fault, çalışırken tetiklenince Failure olur."},
+{w:1,q:"Program çalışırken koddaki kusurun tetiklenmesi sonucu sistemin beklenen işlevi yerine getirememesine ne denir?",o:["Failure (Başarısızlık)","Error (Hata)","Fault (Kusur)","Validation"],a:0,e:"Failure, çalışma zamanında görülen sonuçtur."},
+{w:1,q:"Hatanın koda, tasarıma veya dokümana yansımış fiziksel haline ne denir?",o:["Fault (Kusur)","Error (Hata)","Failure (Başarısızlık)","Oracle"],a:0,e:"Fault = Error’ın kodda bıraktığı iz (bug/defect)."},
+{w:1,q:"Hata kavramları arasındaki doğru sebep-sonuç sırası hangisidir?",o:["Error → Fault → Failure","Fault → Error → Failure","Failure → Fault → Error","Error → Failure → Fault"],a:0,e:"İnsan hata yapar, kod kusur taşır, sistem başarısız olur."},
+{w:1,q:"“Ürünü doğru mu inşa ediyoruz?” sorusu hangi kavrama aittir?",o:["Doğrulama (Verification)","Geçerli kılma (Validation)","Kabul testi","Regresyon testi"],a:0,e:"Verification ürünün spesifikasyona uygunluğunu sorar."},
+{w:1,q:"“Doğru ürünü mü inşa ediyoruz?” sorusu hangi kavrama aittir?",o:["Geçerli kılma (Validation)","Doğrulama (Verification)","Birim testi","Statik analiz"],a:0,e:"Validation ürünün kullanıcının gerçek ihtiyacını karşılayıp karşılamadığını sorar."},
+{w:1,q:"Ariane 5 Uçuş 501 (1996) felaketinin yazılımsal nedeni nedir?",o:["64-bit sayının 16-bit tamsayıya dönüştürülürken taşması","Radyasyon dozunun yanlış hesaplanması","Bellek sızıntısı","Ağ gecikmesi"],a:0,e:"Dönüşümde taşma oldu, roket kalkıştan kısa süre sonra patladı."},
+{w:1,q:"Therac-25 vakası neyle ilgilidir?",o:["Hastalara aşırı doz radyasyon veren tıbbi cihaz","Patlayan bir uzay roketi","Çöken bir banka sistemi","Uçuş kontrol bilgisayarı"],a:0,e:"Therac-25 (1985–87) hastalara yaklaşık 100 kat fazla radyasyon verdi."},
+{w:1,q:"Statik analiz için hangisi doğrudur?",o:["Kod çalıştırılmadan incelenir","Program gerçek donanımda çalıştırılır","Yalnızca çalışan kod yollarını görür","Yanlış alarm oranı sıfırdır"],a:0,e:"Statik = çalıştırmadan, kitabı okuyarak imla hatası bulmak gibi."},
+{w:1,q:"Statik analizin dezavantajı hangisidir?",o:["Çok fazla yanlış pozitif (false positive) üretebilir","Uygulamayı yavaşlatır","Hatanın satır numarasını veremez","Ancak kod bittikten sonra yapılabilir"],a:0,e:"Kod aslında güvenli olsa bile araç anlayamayıp uyarı verebilir."},
+{w:1,q:"Dinamik analizin dezavantajı hangisidir?",o:["Yalnızca çalıştırılan kod yollarındaki hataları bulabilir","Çok fazla yanlış alarm üretir","Kodun %100’ünü tarar","Hatanın kaynağını gösteremez"],a:0,e:"Bir if bloğuna hiç girilmezse oradaki hata görünmez. Ayrıca uygulamayı yavaşlatır."},
+{w:1,q:"Hangisi dinamik analizin kullanım alanlarından biri DEĞİLDİR?",o:["Sözdizimsel analiz (AST oluşturma)","Bellek sızıntısı tespiti","Performans profilleme","Kapsama analizi"],a:0,e:"Sözdizimsel analiz derleyicinin yaptığı statik bir adımdır."},
+{w:1,q:"Hiç ulaşılamayan ölü kod (dead code) statik analizde hangi yöntemle bulunur?",o:["Kontrol akış grafiği (CFG)","Performans profilleme","İşaretçi analizi","Bellek sızıntısı tespiti"],a:0,e:"CFG’de hiçbir oktan ulaşılamayan düğüm ölü koddur."},
+{w:1,q:"Bir değişkenin değer atanmadan kullanılmasını hangi statik yöntem tespit eder?",o:["Veri akışı analizi","Sözdizimsel analiz","Performans profilleme","Kapsama analizi"],a:0,e:"Veri akışı analizi değişkenin yaşam döngüsünü izler."},
+{w:1,q:"C/C++’ta hangi işaretçinin bellekte hangi adresi gösterdiğini statik olarak tahmin eden yöntem hangisidir?",o:["İşaretçi analizi","Veri akışı analizi","Kontrol akış grafiği","Bellek profilleme"],a:0,e:"İşaretçi (pointer) analizi."},
+{w:1,q:"Turing’in Durma Problemi neyi gösterir?",o:["Her programın her girdide durup durmayacağına karar veren genel bir algoritma yazılamaz","Bütün programlar sonunda sonsuz döngüye girer","Statik analiz bütün hataları bulabilir","Dinamik analiz her zaman yavaştır"],a:0,e:"Bu yüzden %100 kusursuz bir analiz aracı yazılamaz."},
+{w:1,q:"Rice Teoremi için hangisi doğrudur?",o:["Programın önemsiz olmayan anlamsal özelliklerine genel olarak karar verilemez","Sözdizimsel özellikler hiçbir zaman bulunamaz","Durma problemini çözer","Her program tamamen test edilebilir"],a:0,e:"Rice, durma probleminin genelleştirilmiş halidir."},
+{w:1,q:"Hangisi bir programın anlamsal (semantic) özelliğine örnektir?",o:["“Bu program herhangi bir girdide sıfıra böler mi?”","“Kod 100 satırdan uzun mu?”","“Kodda while döngüsü var mı?”","“Değişken adları İngilizce mi?”"],a:0,e:"Anlamsal özellik davranışla ilgilidir; diğerleri metne bakarak cevaplanır."},
+{w:1,q:"“Raporladığım her şey kesinlikle ve tartışmasız %100 hatadır” ilkesi hangisidir?",o:["Tamlık (Completeness)","Kesinlik (Soundness)","Pestisit paradoksu","Shift-Left"],a:0,e:"Tamlık = yanlış alarm yok."},
+{w:1,q:"Gerçekte var olan hiçbir hatayı kaçırmamayı hedefleyen özellik hangisidir?",o:["Kesinlik (Soundness)","Tamlık (Completeness)","Doğrulama","İzolasyon"],a:0,e:"Kesinlik = hepsini yakala, gerekirse yanlış alarm ver."},
+{w:1,q:"Shift-Left yaklaşımı neyi ifade eder?",o:["Testin yaşam döngüsünde mümkün olan en erken aşamaya çekilmesi","Testin en sona bırakılması","Sadece kabul testinin yapılması","Hataların bir sonraki sürüme ertelenmesi"],a:0,e:"Şelalede test en sondaydı; shift-left onu başa taşır."},
+// Hafta 2
+{w:2,q:"Testle ilgili hangisi doğrudur?",o:["Test kaliteyi doğrudan artırmaz, kalite seviyesinden haberdar eder","Test hataların yokluğunu kanıtlar","Kapsamlı test her zaman mümkündür","Test yalnızca geliştirme bitince yapılır"],a:0,e:"Kaliteyi hataların düzeltilmesi artırır; test ölçer."},
+{w:2,q:"Hangisi testin başlıca amaçlarından biri DEĞİLDİR?",o:["Kodu yazmak","Kusurları bulmak","Güven oluşturmak","Karar vermeyi desteklemek"],a:0,e:"Üç amaç: kusur bulmak, güven oluşturmak, karar vermeyi desteklemek."},
+{w:2,q:"Aynı test senaryoları tekrar tekrar koşulduğunda artık yeni hata bulamaması hangi prensiptir?",o:["Pestisit paradoksu","Hataların kümelenmesi","Hatasızlık yanılgısı","Test bağlama bağlıdır"],a:0,e:"Böceklerin ilaca bağışıklık kazanması gibi; testler yenilenmeli."},
+{w:2,q:"Hataların %80’inin modüllerin %20’sinde toplanması hangi prensiptir?",o:["Hataların kümelenmesi (Pareto)","Pestisit paradoksu","Kapsamlı test imkansızdır","Erken test"],a:0,e:"Pareto 80/20 kuralı."},
+{w:2,q:"Yazılım %100 hatasız ama kullanıcının ihtiyacını karşılamıyor. Hangi prensip?",o:["Hatasızlık yanılgısı","Test hataların varlığını gösterir","Test bağlama bağlıdır","Pestisit paradoksu"],a:0,e:"Hatasız olmak başarılı olmak demek değildir."},
+{w:2,q:"Bankacılık uygulaması ile bir oyunun aynı şekilde test edilmemesi hangi prensiptir?",o:["Test bağlama bağlıdır","Kapsamlı test imkansızdır","Hataların kümelenmesi","Erken test"],a:0,e:"Herkese uyan tek bir test stratejisi yoktur."},
+{w:2,q:"Bir sistemin bütün girdi kombinasyonlarının denenememesi hangi prensiptir?",o:["Kapsamlı (exhaustive) test imkansızdır","Pestisit paradoksu","Hatasızlık yanılgısı","Shift-Left"],a:0,e:"Risk ve önceliğe göre seçim yapılır."},
+{w:2,q:"“Test hataların varlığını gösterir” prensibinin devamı nedir?",o:["Yokluğunu kanıtlamaz","Yokluğunu da kanıtlar","Sadece sistem testinde geçerlidir","Hataları otomatik düzeltir"],a:0,e:"Hiç hata bulunmaması, hata olmadığı anlamına gelmez."},
+{w:2,q:"Birim testi genellikle kim tarafından ve hangi yaklaşımla yapılır?",o:["Geliştirici, beyaz kutu","Son kullanıcı, kara kutu","Güvenlik uzmanı, gri kutu","Müşteri, kabul testi"],a:0,e:"Kodu yazan geliştirici, kodun yapısını bilerek test eder."},
+{w:2,q:"Birim testinde veritabanına bağlı bir fonksiyon için ne yapılır?",o:["Bağımlılık mock/stub ile yalıtılır (izolasyon)","Canlı veritabanı kullanılır","Fonksiyon test edilmez","Sistem testine bırakılır"],a:0,e:"İzolasyon şartı: birim tek başına test edilmeli."},
+{w:2,q:"Bütün modüllerin aynı anda birleştirilip test edildiği entegrasyon yaklaşımı hangisidir?",o:["Big Bang","Yukarıdan aşağıya","Aşağıdan yukarıya","Sandviç"],a:0,e:"Big Bang’de hata çıkınca yerini bulmak zordur."},
+{w:2,q:"Yukarıdan aşağıya (top-down) entegrasyonda henüz yazılmamış alt modüllerin yerine ne kullanılır?",o:["Stub","Driver (sürücü)","Oracle","Mutant"],a:0,e:"Stub aşağıyı taklit eder; driver yukarıyı."},
+{w:2,q:"Aşağıdan yukarıya (bottom-up) entegrasyonda alt modülleri çağıran üst modülün yerine ne kullanılır?",o:["Driver (sürücü)","Stub","Mock veritabanı","Kahin"],a:0,e:"Driver, alt modülü çağıran sahte üst katmandır."},
+{w:2,q:"“Sistem aynı anda 1000 kullanıcıyı kaldırabiliyor mu?” sorusu hangi teste aittir?",o:["Performans testi","Güvenlik testi","Birim testi","Kabul testi"],a:0,e:"Sistem testinin kapsamındaki performans testidir."},
+{w:2,q:"“RAM ve CPU sonuna kadar zorlandığında sistem veri kaybetmeden düzgün çökebiliyor mu?” hangi testtir?",o:["Stres testi","Performans testi","Entegrasyon testi","Birim testi"],a:0,e:"Stres testi sınırların ötesinde davranışı inceler."},
+{w:2,q:"SQL injection ve XSS açıklarına karşı dayanıklılık hangi testin konusudur?",o:["Güvenlik testi","Stres testi","Birim testi","Kabul testi"],a:0,e:"Sistem testi kapsamındaki güvenlik testi."},
+{w:2,q:"Sistem kullanıma sunulmadan önceki son durak hangi testtir?",o:["Kabul testi (UAT)","Sistem testi","Entegrasyon testi","Birim testi"],a:0,e:"Kullanıcının iş ihtiyaçlarına uygunluk kontrol edilir."},
+{w:2,q:"Sınır değer analizi ve eşdeğerlik bölümleme hangi yaklaşımın teknikleridir?",o:["Kara kutu","Beyaz kutu","Gri kutu","Statik analiz"],a:0,e:"İç yapıyı bilmeden girdi-çıktıya odaklanırlar."},
+{w:2,q:"İfade kapsama ve dal kapsama hangi yaklaşımın teknikleridir?",o:["Beyaz kutu","Kara kutu","Gri kutu","Kabul testi"],a:0,e:"Kod satırlarını ve dalları bilmeyi gerektirir."},
+{w:2,q:"Kod detayını bilmeyen ama veritabanı şemasını ve mimariyi bilen, matris testi uygulayan yaklaşım hangisidir?",o:["Gri kutu","Kara kutu","Beyaz kutu","Maymun testi"],a:0,e:"Gri kutuyu genelde güvenlik uzmanları ve teknik test mühendisleri yapar."},
+{w:2,q:"Sistem testinde genellikle hangi yaklaşım kullanılır?",o:["Kara kutu","Beyaz kutu","Gri kutu","Sembolik çalıştırma"],a:0,e:"Sistem bir bütün olarak dışarıdan test edilir."},
+{w:2,q:"1–100 arası değer kabul eden bir alan için sınır değer analizinde hangi değerler denenir?",o:["0, 1, 100, 101","Sadece 50","-1000 ve 5000","1, 50, 99"],a:0,e:"Sınırın hemen altı, sınır, sınır ve hemen üstü."},
+{w:2,q:"Yazılım Test Yaşam Döngüsünün (STLC) ilk aşaması hangisidir?",o:["Gereksinim analizi","Test yürütme","Test ortamının kurulumu","Test kapanışı"],a:0,e:"Sıra: Gereksinim analizi → Planlama → Senaryo tasarımı → Ortam kurulumu → Yürütme → Kapanış."},
+{w:2,q:"Testçinin sahip olması gereken zihniyet hangisidir?",o:["“Bunu nasıl çökertebilirim?”","“Bunu nasıl inşa ederim?”","“Bunu nasıl hızlandırırım?”","“Bunu nasıl satarım?”"],a:0,e:"Geliştirici inşa eder, testçi yıkmaya çalışır."},
+// Hafta 3
+{w:3,q:"Rastgele testin temel amaçlarından biri hangisidir?",o:["İnsan yanlılığını kırmak ve maliyeti düşürmek","Kahin ihtiyacını tamamen ortadan kaldırmak","Kod kapsamını %100 garanti etmek","Kaynak kodu satır satır okumak"],a:0,e:"Testçinin hep aynı tür girdileri denemesinin önüne geçer."},
+{w:3,q:"Rastgele testte SUT kısaltması neyi ifade eder?",o:["System Under Test (test edilen sistem)","Software Unit Tool","Symbolic Unit Testing","System User Table"],a:0,e:"Rastgele girdilerin verildiği sistemdir."},
+{w:3,q:"Çıktının doğru mu yanlış mı olduğuna karar veren mekanizmaya ne denir?",o:["Kahin (Oracle)","Stub","Driver","Fitness fonksiyonu"],a:0,e:"Rastgele testin en büyük sorunu kahin problemidir."},
+{w:3,q:"Rastgele test adımlarının doğru sırası hangisidir?",o:["Modelleme → Dağılım seçimi → Veri üretimi → Koşturma → Kahin","Veri üretimi → Modelleme → Kahin → Dağılım seçimi → Koşturma","Kahin → Koşturma → Modelleme → Veri üretimi → Dağılım seçimi","Dağılım seçimi → Kahin → Modelleme → Koşturma → Veri üretimi"],a:0,e:"Önce girdi alanını modelle, dağılımı seç, üret, çalıştır, sonucu kahinle değerlendir."},
+{w:3,q:"Aralıktaki her değerin eşit olasılıkla seçildiği dağılım hangisidir?",o:["Düzgün dağılım","Sınır odaklı dağılım","Normal dağılım","Mutasyon dağılımı"],a:0,e:"Uniform dağılım."},
+{w:3,q:"Uç değerlere (0, -1, en büyük değer) daha fazla ağırlık veren dağılım hangisidir?",o:["Sınır odaklı dağılım","Düzgün dağılım","Genetik dağılım","Sembolik dağılım"],a:0,e:"Hatalar sınırlarda yoğunlaştığı için."},
+{w:3,q:"Rastgele testin sistematik teste göre avantajı hangisidir?",o:["Tasarım eforu ve maliyeti düşüktür","Daha az testle hedefe ulaşır","Kahin problemi yoktur","Dar koşullara kolayca girer"],a:0,e:"Girdileri makine üretir, insan emeği azdır."},
+{w:3,q:"Rastgele testin en büyük sorunu olarak bilinen problem hangisidir?",o:["Test kahini (oracle) problemi","Yol patlaması","Pestisit paradoksu","Big Bang problemi"],a:0,e:"Binlerce çıktının doğru olup olmadığını kim kontrol edecek?"},
+{w:3,q:"Sistem yapısı hakkında hafif bilgiye sahip olan maymun testi türü hangisidir?",o:["Akıllı maymun","Aptal maymun","Kör maymun","Sembolik maymun"],a:0,e:"Aptal maymun hiçbir şey bilmez, akıllı maymun ekranları/butonları biraz bilir."},
+{w:3,q:"Fuzzing (bulanıklaştırma) için en doğru tanım hangisidir?",o:["Rastgele testin bozuk/beklenmedik girdilerle güvenlik açığı arayan siber güvenlik versiyonu","Kodun çalıştırılmadan incelenmesi","Kullanıcı kabul testinin bir türü","Genetik algoritmayla test üretimi"],a:0,e:"Çökme, bellek taşması gibi açıkları bulur."},
+{w:3,q:"Geçerli bir örnek dosyanın baytlarının rastgele değiştirilmesiyle girdi üreten fuzzing türü hangisidir?",o:["Mutasyon tabanlı","Üretim tabanlı","Model tabanlı","Sembolik"],a:0,e:"Var olanı bozar, format bilgisi gerektirmez."},
+{w:3,q:"Girdi formatının/gramerinin modellenip girdilerin sıfırdan üretildiği fuzzing türü hangisidir?",o:["Üretim tabanlı","Mutasyon tabanlı","Aptal maymun","Düzgün dağılımlı"],a:0,e:"Zahmetlidir ama programın derinlerine iner."},
+// Hafta 4
+{w:4,q:"İnsanın kod tabanındaki bütün mantıksal yolları hayal edememesi, otomatik test üretimini gerektiren hangi sorundur?",o:["Kod kapsamı yetersizliği","Bakım maliyeti","Test oracle darboğazı","Yol patlaması"],a:0,e:"<code>if (x == 123456)</code> gibi dar koşullara elle de rastgele de zor girilir."},
+{w:4,q:"Kaynak kod her değiştiğinde elle yazılmış testlerin de güncellenmesi gerekmesi hangi sorundur?",o:["Bakım (maintenance) maliyeti","Kod kapsamı yetersizliği","Test oracle darboğazı","Pestisit paradoksu"],a:0,e:"Regresyon yükü: kod değiştikçe testler de değişmeli."},
+{w:4,q:"“Test girdisi üretmek kolay ama beklenen çıktıyı belirlemek zor” cümlesi hangi sorunu anlatır?",o:["Test oracle darboğazı","Yol patlaması","Bakım maliyeti","Big Bang problemi"],a:0,e:"Kahin (oracle) beklenen sonucu söyleyen mekanizmadır."},
+{w:4,q:"Elle test yazmanın sorunlarına çözüm olarak karşımıza ilk çıkan otomatik test üretim tekniği hangisidir?",o:["Sembolik çalıştırma","Maymun testi","Kabul testi","Big Bang entegrasyon"],a:0,e:"Notlarda: “Bu noktada karşımıza ilk olarak sembolik çalıştırma çıkar.”"},
+{w:4,q:"Sembolik çalıştırmada değişkenler nasıl tutulur?",o:["Somut değer yerine sembol (α) olarak","Hep sıfır olarak","Rastgele sayı olarak","Sadece string olarak"],a:0,e:"Her dallanmada sembol üzerinde bir yol koşulu toplanır."},
+{w:4,q:"Toplanan yol koşulunu sağlayan somut test girdisini bulan araç türü hangisidir?",o:["SMT çözücü (ör. Z3)","Fuzzer","Profiler","Derleyici"],a:0,e:"SMT = Satisfiability Modulo Theories."},
+{w:4,q:"Sembolik çalıştırmadaki yol patlaması problemi nedir?",o:["Her dallanmanın yol sayısını katlaması; n if için 2ⁿ yol","Programın bellek sızdırması","SMT çözücünün yanlış sonuç vermesi","Testlerin çok hızlı bitmesi"],a:0,e:"Döngülerde yol sayısı neredeyse sonsuza gider."},
+{w:4,q:"Concolic kelimesi hangi iki kelimenin birleşimidir?",o:["Concrete + Symbolic","Control + Logic","Concurrent + Logic","Constant + Symbolic"],a:0,e:"Somut ve sembolik çalıştırma bir arada."},
+{w:4,q:"Dinamik sembolik çalıştırmada yeni bir yol keşfetmek için ne yapılır?",o:["Son yol koşulu terslenir ve SMT çözücüyle yeni girdi bulunur","Program yeniden derlenir","Rastgele yeni girdi üretilir","Kahin devre dışı bırakılır"],a:0,e:"Başlangıç → Toplama → Tersleme → Çözüm döngüsü."},
+{w:4,q:"KLEE, DART ve CUTE hangi tekniğin örnek araçlarıdır?",o:["Dinamik sembolik çalıştırma","Genetik algoritma","Maymun testi","Model tabanlı test"],a:0,e:"Notlarda concolic başlığı altında geçer."},
+{w:4,q:"SBST’de bir test girdisinin hedefe ne kadar yakın olduğunu ölçen fonksiyon hangisidir?",o:["Uygunluk (fitness) fonksiyonu","Transfer fonksiyonu","Meet operatörü","Kahin fonksiyonu"],a:0,e:"Arama, bu puanı iyileştirmeye çalışır."},
+{w:4,q:"Hedef dal <code>x == 100</code> ise hangi girdi uygunluk fonksiyonuna göre daha iyidir?",o:["x = 98","x = 5","x = -300","x = 1000"],a:0,e:"|98 − 100| = 2, en küçük mesafe."},
+{w:4,q:"Genetik algoritmada iyi iki bireyin parçalarının birleştirilmesine ne denir?",o:["Çaprazlama","Mutasyon","Değerlendirme","Evrim"],a:0,e:"Mutasyon ise tek bireyde küçük rastgele değişikliktir."},
+{w:4,q:"Genetik algoritma ile test üretiminin adım sırası hangisidir?",o:["Başlangıç popülasyonu → Değerlendirme → Çaprazlama → Mutasyon → Evrim","Mutasyon → Evrim → Başlangıç popülasyonu → Çaprazlama → Değerlendirme","Değerlendirme → Mutasyon → Başlangıç popülasyonu → Evrim → Çaprazlama","Evrim → Çaprazlama → Değerlendirme → Mutasyon → Başlangıç popülasyonu"],a:0,e:"Notlardaki sırayla aynı."},
+{w:4,q:"Test senaryolarının sistemin durum makinesi gibi bir modelinden otomatik üretildiği yaklaşım hangisidir?",o:["Model tabanlı test (MBT)","Arama tabanlı test (SBST)","Maymun testi","Fuzzing"],a:0,e:"Model beklenen çıktıyı da verdiği için kahin problemini hafifletir."},
+{w:4,q:"Java için genetik algoritma ile otomatik JUnit testleri üreten araç hangisidir?",o:["EvoSuite","KLEE","Atheris","Pex"],a:0,e:"Evo = evrim."},
+{w:4,q:"C/C++ (LLVM) programları için sembolik çalıştırma aracı hangisidir?",o:["KLEE","EvoSuite","PyExZ3","Atheris"],a:0,e:"KLEE LLVM bit kodu üzerinde çalışır."},
+{w:4,q:"Microsoft’un .NET için geliştirdiği dinamik sembolik çalıştırma aracı hangisidir?",o:["Pex","KLEE","EvoSuite","Atheris"],a:0,e:"Bugün Visual Studio’da IntelliTest olarak geçer."},
+{w:4,q:"Google’ın Python için geliştirdiği fuzzing aracı hangisidir?",o:["Atheris","PyExZ3","EvoSuite","DART"],a:0,e:"PyExZ3 ise Z3 ile dinamik sembolik çalıştırma yapar."},
+{w:4,q:"Üçgen türünü (eşkenar, ikizkenar, çeşitkenar) bulan programın bütün dallarını çalıştırmak için en az kaç test girdisi gerekir?",o:["3","1","2","6"],a:0,e:"Her dal için bir girdi: (3,3,3), (3,3,5), (3,4,5)."},
+// Hafta 5
+{w:5,q:"Veri akışı analizi hangi tür analizdir?",o:["Statik","Dinamik","Rastgele","Kabul"],a:0,e:"Kodu çalıştırmadan değerlerin akışını inceler."},
+{w:5,q:"Temel blok (basic block) için doğru tanım hangisidir?",o:["Sadece ilk satırından girilip son satırından çıkılabilen, dallanma içermeyen kod dizisi","İçinde en az bir if bulunan kod parçası","Bir fonksiyonun tamamı","Sadece döngülerden oluşan kod"],a:0,e:"Tek giriş, tek çıkış, arada dallanma yok."},
+{w:5,q:"“Bloğun ilk satırı çalıştıysa diğer bütün satırları da çalışır” özelliği hangisidir?",o:["Çalışma garantisi","Bölünemezlik","Monotonluk","Tamlık"],a:0,e:"Bölünemezlik ise bloğun ortasından girilip çıkılamamasıdır."},
+{w:5,q:"<code>a=5; b=10; if(a&lt;b){a=a+1;} else {b=b-1;} c=a+b;</code> kodunda kaç temel blok vardır?",o:["4","2","3","5"],a:0,e:"B1: atamalar ve if, B2: a=a+1, B3: b=b-1, B4: c=a+b."},
+{w:5,q:"Değişken için bellekte yer ayrılmış ama içine henüz değer konmamış durum hangisidir?",o:["U (Undefined)","D (Defined)","R (Referenced)","K (Killed)"],a:0,e:"U → D → R normal yaşam döngüsüdür."},
+{w:5,q:"<code>int x; int y = x + 1;</code> kodunda hangi anomali vardır?",o:["UR","DU","DD","DR"],a:0,e:"Tanımsız değişken okunuyor: kritik hata."},
+{w:5,q:"<code>x = 5; x = 10;</code> (arada x okunmadan) hangi anomalidir?",o:["DD","UR","DU","RR"],a:0,e:"İlk atama boşa gitti: mantıksal kusur şüphesi."},
+{w:5,q:"Değer atanıp hiç kullanılmadan değişkenin kapsamdan çıkması hangi anomalidir?",o:["DU","UR","DD","DR"],a:0,e:"Ölü kod / israf."},
+{w:5,q:"Hangi geçiş normal (anomali olmayan) bir geçiştir?",o:["D → R","U → R","D → D","D → U"],a:0,e:"Önce ata, sonra kullan."},
+{w:5,q:"Notlarda “kritik hata” olarak nitelenen anomali hangisidir?",o:["UR","DU","DD","Hiçbiri"],a:0,e:"DU israf, DD mantıksal kusur, UR kritik."},
+{w:5,q:"Evrensel transfer fonksiyonu hangisidir?",o:["OUT[B] = GEN[B] ∪ (IN[B] − KILL[B])","OUT[B] = KILL[B] ∪ (IN[B] − GEN[B])","IN[B] = GEN[B] ∩ KILL[B]","OUT[B] = IN[B] ∩ GEN[B]"],a:0,e:"Girenden ölenleri çıkar, yeni üretilenleri ekle."},
+{w:5,q:"KILL[B] kümesi neyi içerir?",o:["Bloktaki yeni atamalar yüzünden ezilen eski tanımları","Blokta üretilen yeni tanımları","Bloğa giren bütün bilgileri","Bloktan çıkan bütün bilgileri"],a:0,e:"GEN üretilenler, KILL ezilenlerdir."},
+{w:5,q:"IN = {d1, d2}, GEN = {d3}, KILL = {d1} ise OUT nedir?",o:["{d2, d3}","{d1, d2, d3}","{d3}","{d1, d3}"],a:0,e:"{d3} ∪ ({d1,d2} − {d1}) = {d2, d3}."},
+{w:5,q:"Canlı değişken analizinin yönü ve meet operatörü hangisidir?",o:["Geriye doğru, birleşim (∪)","İleri, kesişim (∩)","İleri, birleşim (∪)","Geriye doğru, kesişim (∩)"],a:0,e:"Ardıl blokların giriş kümeleri birleştirilir."},
+{w:5,q:"Mevcut ifadeler analizinde meet operatörü neden kesişimdir (∩)?",o:["İfade bütün geliş yollarında önceden hesaplanmış olmalıdır","Herhangi bir yolda hesaplanması yeterlidir","Analiz geriye doğru yapılır","Değişkenler canlı olmalıdır"],a:0,e:"“Bütün yollar” şartı kesişim demektir."},
+{w:5,q:"Ulaşan tanımlar analizinin endüstriyel kullanımı hangisidir?",o:["Sabit yayılımı (constant propagation) optimizasyonu","Register ataması","Code hoisting","Taint analizi"],a:0,e:"Notlardaki örnek kullanım."},
+{w:5,q:"Hangi iki analiz ileri yönlüdür?",o:["Ulaşan tanımlar ve mevcut ifadeler","Canlı değişkenler ve çok meşgul ifadeler","Canlı değişkenler ve ulaşan tanımlar","Mevcut ifadeler ve çok meşgul ifadeler"],a:0,e:"Canlı ve meşgul geriye bakar."},
+{w:5,q:"İş listesi algoritmasının eninde sonunda durmasını ne garanti eder?",o:["Kafes teorisinin monotonluk ilkesi (sabit noktaya ulaşma)","SMT çözücü","Rastgele seçim","Pestisit paradoksu"],a:0,e:"Kümeler sadece büyür ve sonludur; sabit noktada durulur."},
+{w:5,q:"İş listesi algoritmasında bir bloğun OUT kümesi değiştiğinde ne yapılır?",o:["Etkilenen bloklar tekrar listeye eklenir","Algoritma hemen durur","Bütün kümeler sıfırlanır","Blok listeden silinir ve bir daha bakılmaz"],a:0,e:"Liste boşalana kadar devam edilir."},
+{w:5,q:"Leke (taint) analizi neyi izler?",o:["Güvenilmez girdinin temizlenmeden tehlikeli bir noktaya ulaşıp ulaşmadığını","Programın CPU kullanımını","Bellek sızıntılarını","Kod satırı sayısını"],a:0,e:"Kaynak (source) → temizleme (sanitize) → tehlikeli nokta (sink)."},
+{w:5,q:"MISRA C nedir?",o:["Otomotiv gibi güvenlik kritik sistemler için C kodlama standartları","Bir fuzzing aracı","Bir genetik algoritma","Bir C derleyicisi"],a:0,e:"Statik analiz araçları uyumu otomatik denetler."},
+{w:5,q:"Java veya C#’ta başlatılmamış bir yerel değişken okunmaya çalışılırsa ne olur?",o:["Derleme hatası verilir","Rastgele çöp değer okunur","Program sessizce çalışır","Değer otomatik 42 olur"],a:0,e:"Yönetilen diller UR’yi derleme anında yakalar."},
+{w:5,q:"C/C++’ta başlatılmamış yerel değişken okunursa genellikle ne olur?",o:["Bellekte kalan çöp değer okunur, tanımsız davranış oluşur","Derleme hatası verilir","Değişken otomatik 0 olur","Program hemen güvenle durur"],a:0,e:"Yönetilmeyen dil olduğu için öngörülemez sonuçlar doğar."},
+{w:5,q:"Veri akışı analizini rastgele testle karşılaştırınca hangisi doğrudur?",o:["DFA hiç çalışmayan yollardaki hataları da bulabilir ama yanlış pozitif oranı daha yüksektir","DFA yalnızca çalışan yollardaki hataları bulur","Rastgele testin yanlış pozitif oranı DFA’dan yüksektir","DFA kodu milyonlarca kez çalıştırır"],a:0,e:"Statik geniş ama şüpheci, dinamik dar ama kesin."}
+];
+
+/* ===================== KARTLAR ===================== */
+const CARDS = [
+[1,"Error (Hata)","İnsanın yaptığı yanlış eylem veya karar."],
+[1,"Fault (Kusur)","Hatanın koda, tasarıma veya dokümana yansımış fiziksel hali."],
+[1,"Failure (Başarısızlık)","Kod çalışırken kusurun tetiklenip sistemin beklenen işi yapamaması."],
+[1,"Verification","Doğrulama: “Ürünü doğru mu inşa ediyoruz?”"],
+[1,"Validation","Geçerli kılma: “Doğru ürünü mü inşa ediyoruz?”"],
+[1,"Statik analiz","Kodu çalıştırmadan inceleme. Geniş tarar, yanlış alarm çok."],
+[1,"Dinamik analiz","Kodu gerçek donanımda çalıştırarak inceleme. Hatalar gerçek, ama sadece çalışan yollar."],
+[1,"Durma Problemi","Bir programın durup durmayacağına her durumda karar veren genel algoritma yazılamaz (Turing)."],
+[1,"Rice Teoremi","Programın anlamsal (davranışsal) önemsiz olmayan özelliklerine genel olarak karar verilemez."],
+[1,"Kesinlik (Soundness)","Var olan hiçbir hatayı kaçırmamak."],
+[1,"Tamlık (Completeness)","Raporlanan her şeyin %100 gerçek hata olması."],
+[1,"Shift-Left","Testi yaşam döngüsünde en başa çekmek."],
+[2,"Testin 3 amacı","Kusurları bulmak, güven oluşturmak, karar vermeyi desteklemek."],
+[2,"Pestisit paradoksu","Aynı testler tekrarlandıkça yeni hata bulamaz."],
+[2,"Pareto (80/20)","Hataların %80’i modüllerin %20’sinde kümelenir."],
+[2,"Hatasızlık yanılgısı","Hatasız ama ihtiyacı karşılamayan yazılım başarısızdır."],
+[2,"Birim testi","En küçük bağımsız parçanın testi; geliştirici, beyaz kutu, mock/stub ile izolasyon."],
+[2,"Stub / Driver","Stub alt modülü taklit eder (top-down). Driver üst modülü taklit eder (bottom-up)."],
+[2,"Big Bang","Bütün modüller aynı anda birleştirilip test edilir."],
+[2,"Kabul testi (UAT)","Kullanıma sunulmadan önceki son durak; alfa ve beta."],
+[2,"Gri kutu","Kodu bilmez, şemayı ve mimariyi bilir; matris testi."],
+[2,"STLC","Gereksinim analizi → Planlama → Senaryo tasarımı → Ortam kurulumu → Yürütme → Kapanış."],
+[3,"SUT","System Under Test: test edilen sistem."],
+[3,"Kahin (Oracle)","Çıktının doğru olup olmadığına karar veren mekanizma."],
+[3,"Rastgele test adımları","Modelleme → Dağılım seçimi → Veri üretimi → Koşturma → Kahin."],
+[3,"Akıllı maymun","Sistemin yapısı hakkında hafif bilgisi olan rastgele test."],
+[3,"Fuzzing","Rastgele testin siber güvenlik versiyonu; bozuk girdiyle açık arar."],
+[3,"Mutasyon / Üretim tabanlı","Mutasyon var olan girdiyi bozar. Üretim formatı bilip sıfırdan üretir."],
+[4,"Yol patlaması","Her if yol sayısını ikiye katlar: n if → 2ⁿ yol."],
+[4,"SMT çözücü","Yol koşulunu sağlayan somut girdiyi bulur (ör. Z3)."],
+[4,"Concolic","Concrete + Symbolic. Araçlar: KLEE, DART, CUTE."],
+[4,"Fitness fonksiyonu","Test girdisinin hedefe yakınlığını puanlar (SBST)."],
+[4,"Genetik algoritma","Başlangıç popülasyonu → Değerlendirme → Çaprazlama → Mutasyon → Evrim."],
+[4,"MBT","Model tabanlı test: testler sistemin modelinden otomatik üretilir."],
+[4,"EvoSuite · KLEE · Pex","Java/genetik · C/sembolik · .NET/dinamik sembolik."],
+[4,"PyExZ3 · Atheris","Python + Z3 sembolik · Google’ın Python fuzzer’ı."],
+[5,"Temel blok","Tek giriş, tek çıkış, içinde dallanma yok."],
+[5,"UR anomalisi","Atanmamış değişken okunuyor. Kritik hata."],
+[5,"DU anomalisi","Atanan değer hiç kullanılmadan kayboluyor. İsraf."],
+[5,"DD anomalisi","Değer okunmadan tekrar atanıyor. Mantıksal kusur."],
+[5,"Transfer fonksiyonu","OUT = GEN ∪ (IN − KILL)"],
+[5,"Meet operatörü","Birden fazla yoldan gelen bilgiyi birleştirme: ∪ ya da ∩."],
+[5,"Ulaşan tanımlar","İleri, ∪. Sabit yayılımı optimizasyonu."],
+[5,"Canlı değişkenler","Geri, ∪. Değer ileride okunacak mı?"],
+[5,"Mevcut ifadeler","İleri, ∩. İfade bütün yollarda hesaplanmış mı?"],
+[5,"Çok meşgul ifadeler","Geri, ∩. İfade her çıkış yolunda hesaplanacak mı?"],
+[5,"Sabit nokta","İş listesi algoritmasında hiçbir küme değişmeyince ulaşılan durum."],
+[5,"Leke analizi","Kirli girdinin temizlenmeden tehlikeli noktaya ulaşmasını izler."]
+];
+
+/* ===================== YARDIMCILAR ===================== */
+const $ = s => document.querySelector(s);
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+const shuffle = a => { a = a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+const icon = (id, cls="i") => `<svg class="${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
+const wc = id => `--wc:var(--w${id})`;
+const learned = new Set(store.get("yt-learned", []));
+const totalTopics = WEEKS.reduce((n,w)=>n+w.topics.length,0);
+const RING = 263.9;
+const ringSvg = (pct, color="var(--pass)") => `<div class="ring"><svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="42"/><circle class="val" cx="50" cy="50" r="42" stroke-dasharray="${RING}" stroke-dashoffset="${RING*(1-pct/100)}" style="stroke:${color}"/></svg><b>%${pct}</b></div>`;
+
+/* ===================== GÖRÜNÜMLER ===================== */
+const VIEWS = ["konular","test","kartlar"];
+function show(v, keepScroll){
+  if(!VIEWS.includes(v)) v = "konular";
+  VIEWS.forEach(x=>{ $("#view-"+x).hidden = x!==v; $("#tab-"+x).setAttribute("aria-selected", x===v); });
+  if(location.hash.slice(1)!==v){ try{ history.replaceState(null,"","#"+v); }catch(e){} }
+  if(!keepScroll) window.scrollTo(0,0);
+}
+document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.view)));
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.go)));
+window.addEventListener("hashchange",()=>show(location.hash.slice(1)));
+const goWeek = id => document.getElementById("w"+id).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"});
+function quizWeek(id){ quizState.scope = id; quizState.count = "all"; startQuiz(); show("test"); }
+
+/* ===================== KONULAR ===================== */
+function renderStudy(){
+  $("#st-topics").textContent = totalTopics;
+  $("#st-qs").textContent = QS.length;
+  $("#st-cards").textContent = CARDS.length;
+
+  $("#weekgrid").innerHTML = WEEKS.map(w=>`<article class="wcard" style="${wc(w.id)}">
+    <span class="num">0${w.id}</span>
+    <h3>${w.title}</h3>
+    <div class="meta"><span>${w.topics.length} başlık</span><span>${QS.filter(q=>q.w===w.id).length} soru</span></div>
+    <div class="mini" aria-hidden="true"><i id="mini-${w.id}"></i></div>
+    <div class="acts"><button data-read="${w.id}">Oku</button><button data-quiz="${w.id}">Test et</button></div>
+  </article>`).join("");
+
+  const rail = $("#rail");
+  WEEKS.forEach(w=>{
+    const b = document.createElement("button");
+    b.style.cssText = wc(w.id);
+    b.innerHTML = `<span class="dot" aria-hidden="true"></span><span class="nm">${w.title}</span><span class="ct" id="ct-${w.id}"></span>`;
+    b.addEventListener("click",()=>goWeek(w.id));
+    rail.appendChild(b);
+  });
+
+  $("#weeks").innerHTML = WEEKS.map(w=>`<section class="week" id="w${w.id}" style="${wc(w.id)}">
+    <div class="week-head"><div class="t"><span class="eyebrow">Hafta ${w.id}</span><h2>${w.title}</h2><p>${w.sum}</p></div>
+      <button class="btn primary" data-quiz="${w.id}" style="background:var(--wc);border-color:var(--wc)">${icon("play")}Bu haftayı test et</button></div>
+    ${w.topics.map(t=>{ const id="learn-"+t.no.replace(".","-"); return `<article class="topic">
+      <div class="topic-h"><span class="no">${t.no}</span><h3>${t.t}</h3></div>
+      ${t.body}
+      <div class="hook">${icon("bulb")}<div><span class="hk">AKILDA KALSIN</span>${t.hook}</div></div>
+      <label class="learn" for="${id}"><input type="checkbox" id="${id}" data-no="${t.no}" ${learned.has(t.no)?"checked":""}> Öğrendim</label>
+    </article>`; }).join("")}
+  </section>`).join("");
+
+  const vk = $("#view-konular");
+  vk.addEventListener("change",e=>{
+    const c = e.target.closest("input[data-no]"); if(!c) return;
+    c.checked ? learned.add(c.dataset.no) : learned.delete(c.dataset.no);
+    store.set("yt-learned",[...learned]); updateProgress();
+  });
+  vk.addEventListener("click",e=>{
+    const q = e.target.closest("[data-quiz]"); if(q) return quizWeek(+q.dataset.quiz);
+    const r = e.target.closest("[data-read]"); if(r) goWeek(+r.dataset.read);
+  });
+  updateProgress();
+}
+function updateProgress(){
+  const pct = Math.round(learned.size/totalTopics*100);
+  $("#ov-txt").textContent = `${learned.size} / ${totalTopics} başlık öğrenildi`;
+  $("#ring-pct").textContent = "%"+pct;
+  $("#ring-val").setAttribute("stroke-dashoffset", RING*(1-pct/100));
+  WEEKS.forEach(w=>{
+    const d = w.topics.filter(t=>learned.has(t.no)).length, el = $("#ct-"+w.id);
+    el.textContent = `${d}/${w.topics.length}`; el.classList.toggle("done", d===w.topics.length);
+    $("#mini-"+w.id).style.width = (d/w.topics.length*100)+"%";
+  });
+}
+
+/* ===================== TEST ===================== */
+const quizState = { scope:"all", count:20, list:[], i:0, answers:[] };
+const LET = ["A","B","C","D"];
+function renderSetup(){
+  const best = store.get("yt-best", {});
+  const scopes = [["all","Tümü",QS.length], ...WEEKS.map(w=>[w.id,"Hafta "+w.id,QS.filter(q=>q.w===w.id).length])];
+  const counts = [[10,"10 soru"],[20,"20 soru"],[30,"30 soru"],["all","Hepsi"]];
+  const pad = s => s + "&nbsp;".repeat(Math.max(0, 9 - s.length));
+  $("#quiz").innerHTML = `<div class="card setup">
+    <h2>Deneme sınavı</h2>
+    <p class="sub">Soru bankasında ${QS.length} çoktan seçmeli soru var. Şıklar her seferinde karışır. Cevapladığın an doğrusunu ve kısa açıklamasını görürsün.</p>
+    <div class="field"><span class="fl" id="lbl-sc">Kapsam</span><div class="chips" id="sc" role="group" aria-labelledby="lbl-sc">${scopes.map(([v,l,n])=>`<button class="chip" data-v="${v}" style="${v==="all"?"":wc(v)}" aria-pressed="${String(quizState.scope)===String(v)}">${v==="all"?"":'<span class="dot" aria-hidden="true"></span>'}${l}<small>${n}</small></button>`).join("")}</div></div>
+    <div class="field"><span class="fl" id="lbl-cn">Soru sayısı</span><div class="chips" id="cn" role="group" aria-labelledby="lbl-cn">${counts.map(([v,l])=>`<button class="chip" data-v="${v}" aria-pressed="${String(quizState.count)===String(v)}">${l}</button>`).join("")}</div></div>
+    <div class="field"><span class="fl">En iyi sonuçların</span><div class="runner">${scopes.map(([v,l])=>{const b=best[v];return `${pad(l)} ${b!=null?`<span class="${b>=70?"p":"f"}">${b>=70?"PASS":"FAIL"} %${b}</span>`:'<span class="m">henüz yok</span>'}`;}).join("<br>")}</div></div>
+    <div class="row" style="margin-top:22px"><button class="btn primary" id="go">${icon("play")}Sınavı başlat</button></div>
+  </div>`;
+  $("#sc").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;quizState.scope=b.dataset.v==="all"?"all":+b.dataset.v;renderSetup();});
+  $("#cn").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;quizState.count=b.dataset.v==="all"?"all":+b.dataset.v;renderSetup();});
+  $("#go").addEventListener("click",()=>startQuiz());
+}
+function startQuiz(list){
+  let pool = list || (quizState.scope==="all" ? QS : QS.filter(q=>q.w===quizState.scope));
+  pool = shuffle(pool);
+  if(!list && quizState.count!=="all") pool = pool.slice(0, quizState.count);
+  quizState.list = pool.map(q=>({...q, opts: shuffle(q.o.map((t,i)=>({t, ok:i===q.a})))}));
+  quizState.i = 0; quizState.answers = []; quizState.retry = !!list;
+  renderQ();
+}
+function renderQ(){
+  const s = quizState, q = s.list[s.i], n = s.list.length;
+  const wk = WEEKS.find(w=>w.id===q.w);
+  const p = s.answers.filter(a=>a.ok).length, f = s.answers.length - p;
+  $("#quiz").innerHTML = `<div class="card">
+    <div class="qhead"><span>Soru ${s.i+1} / ${n}</span><span class="sc"><span class="p">${icon("check")}${p}</span><span class="f">${icon("x")}${f}</span></span></div>
+    <div class="qprog" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${s.i}"><i style="width:${s.i/n*100}%"></i></div>
+    <div style="margin-top:18px"><span class="qwk" style="${wc(q.w)}">Hafta ${q.w} · ${wk.title}</span></div>
+    <div class="qtext" id="qtext">${q.q}</div>
+    <div class="opts" id="opts" role="group" aria-labelledby="qtext">${q.opts.map((o,i)=>`<button class="opt" data-i="${i}"><span class="L">${LET[i]}</span><span>${o.t}</span><span class="st"></span></button>`).join("")}</div>
+    <div id="fb" aria-live="polite"></div>
+    <div class="qfoot"><span class="kbd"><kbd>A</kbd>–<kbd>D</kbd> ile seç · <kbd>Enter</kbd> ile ilerle</span><div class="row"><button class="btn ghost" id="quit">Sınavı bitir</button><button class="btn primary" id="next" hidden>${s.i+1<n?"Sonraki soru":"Sonucu gör"}${icon("arrow")}</button></div></div>
+  </div>`;
+  $("#opts").addEventListener("click",e=>{const b=e.target.closest(".opt");if(b)answer(+b.dataset.i);});
+  $("#next").addEventListener("click",next);
+  $("#quit").addEventListener("click",()=>{ if(s.answers.length) renderResult(); else renderSetup(); });
+}
+function answer(i){
+  const s = quizState, q = s.list[s.i];
+  if(s.answers.length > s.i) return;
+  const ok = q.opts[i].ok;
+  s.answers.push({q, picked:q.opts[i].t, ok});
+  document.querySelectorAll(".opt").forEach((b,j)=>{
+    b.disabled = true;
+    if(q.opts[j].ok){ b.classList.add("right"); b.querySelector(".st").innerHTML = icon("check"); }
+    else if(j===i){ b.classList.add("wrong"); b.querySelector(".st").innerHTML = icon("x"); }
+    else b.classList.add("dim");
+  });
+  const right = q.opts.find(o=>o.ok).t;
+  $("#fb").innerHTML = `<div class="explain ${ok?"ok":"no"}">${icon(ok?"check":"x")}<div><span class="v">${ok?"Doğru":"Yanlış. Doğru cevap: "+right}</span><span>${q.e}</span></div></div>`;
+  const nb = $("#next"); nb.hidden = false; nb.focus({preventScroll:true});
+  $("#fb").scrollIntoView({block:"nearest"});
+}
+function next(){
+  const s = quizState;
+  if(s.answers.length <= s.i) return;
+  s.i++;
+  s.i < s.list.length ? renderQ() : renderResult();
+  $("#view-test").scrollIntoView({block:"start"});
+}
+function renderResult(){
+  const s = quizState, done = s.answers.length, pass = s.answers.filter(a=>a.ok).length, fail = done-pass;
+  const pct = done ? Math.round(pass/done*100) : 0;
+  if(!s.retry && done===s.list.length){
+    const best = store.get("yt-best",{}), k = String(quizState.scope);
+    if(best[k]==null || pct>best[k]){ best[k]=pct; store.set("yt-best",best); }
+  }
+  const [title,msg] = pct>=85 ? ["Çok iyi","Bu kapsam hazır, başka haftaya geçebilirsin."] : pct>=70 ? ["İyi","Yanlış yaptığın sorulara bir kez daha bak."] : pct>=50 ? ["Ortalama","Yanlış çıkan haftaların konularını tekrar oku."] : ["Biraz daha çalış","Konuları bir tur daha okuyup tekrar dene."];
+  const color = pct>=70 ? "var(--pass)" : pct>=50 ? "var(--gold)" : "var(--fail)";
+  const byWeek = WEEKS.map(w=>{const a=s.answers.filter(x=>x.q.w===w.id);return a.length?{w:w.id,t:a.length,p:a.filter(x=>x.ok).length}:null;}).filter(Boolean);
+  const wrong = s.answers.filter(a=>!a.ok);
+  $("#quiz").innerHTML = `<div class="card">
+    <h2 style="font-size:1.6rem;font-weight:700">Sonuç</h2>
+    <div class="score">${ringSvg(pct,color)}<p class="msg"><strong>${title}</strong>${msg}</p></div>
+    <div class="runner">
+      <span class="m">$ yazilim-testi --vize</span><br>
+      ${byWeek.map(b=>`${b.p===b.t?'<span class="p">PASS</span>':'<span class="f">FAIL</span>'}&nbsp; Hafta ${b.w}&nbsp; <span class="m">${b.p}/${b.t}</span>`).join("<br>")}<br><br>
+      Tests: <span class="p">${pass} passed</span>, <span class="f">${fail} failed</span>, ${done} total
+    </div>
+    <div class="row" style="margin-top:18px">
+      ${wrong.length?`<button class="btn primary" id="retry">${icon("redo")}Yanlışları tekrar çöz</button>`:""}
+      <button class="btn${wrong.length?"":" primary"}" id="again">${icon("play")}Yeni sınav</button>
+      <button class="btn ghost" id="tostudy">${icon("book")}Konulara dön</button>
+    </div>
+  </div>
+  ${wrong.length?`<div><h3 style="font-size:1.15rem;margin-bottom:12px">Yanlış yaptığın sorular</h3><div class="miss">${wrong.map(a=>`<div class="it"><span class="qwk" style="${wc(a.q.w)}">Hafta ${a.q.w}</span><span class="q">${a.q.q}</span><span class="a"><span>Senin cevabın: <s>${a.picked}</s></span><span>Doğru cevap: <span class="ok">${a.q.o[a.q.a]}</span></span></span><span class="e">${a.q.e}</span></div>`).join("")}</div></div>`:""}`;
+  if(wrong.length) $("#retry").addEventListener("click",()=>startQuiz(wrong.map(a=>{const {opts,...q}=a.q;return q;})));
+  $("#again").addEventListener("click",renderSetup);
+  $("#tostudy").addEventListener("click",()=>show("konular"));
+}
+document.addEventListener("keydown",e=>{
+  if($("#view-test").hidden || !document.getElementById("opts")) return;
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  if(e.target.closest && e.target.closest("input,textarea")) return;
+  const k = e.key.toUpperCase();
+  const map = {A:0,B:1,C:2,D:3,"1":0,"2":1,"3":2,"4":3};
+  if(k in map && quizState.answers.length<=quizState.i){ e.preventDefault(); answer(map[k]); }
+  else if(e.key==="Enter" && quizState.answers.length>quizState.i){ e.preventDefault(); next(); }
+});
+
+/* ===================== KARTLAR ===================== */
+let cardScope = "all", cardOrder = CARDS.map((_,i)=>i), allOpen = false;
+const HINT = `${icon("tap")}Tanımı görmek için dokun`;
+function renderCards(){
+  $("#card-filter").innerHTML = [["all","Tümü"],...WEEKS.map(w=>[w.id,"Hafta "+w.id])].map(([v,l])=>`<button class="chip" data-v="${v}" style="${v==="all"?"":wc(v)}" aria-pressed="${String(cardScope)===String(v)}">${v==="all"?"":'<span class="dot" aria-hidden="true"></span>'}${l}</button>`).join("");
+  const list = cardOrder.filter(i=>cardScope==="all"||CARDS[i][0]===cardScope);
+  $("#deck").innerHTML = list.map(i=>{const [w,t,d]=CARDS[i];return `<button class="fc" style="${wc(w)}" aria-expanded="${allOpen}"><span class="w">Hafta ${w}</span><span class="term">${t}</span><span class="def" ${allOpen?"":"hidden"}>${d}</span><span class="hint">${allOpen?"":HINT}</span></button>`;}).join("");
+}
+$("#card-filter").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;cardScope=b.dataset.v==="all"?"all":+b.dataset.v;renderCards();});
+$("#deck").addEventListener("click",e=>{
+  const c = e.target.closest(".fc"); if(!c) return;
+  const open = c.getAttribute("aria-expanded")!=="true";
+  c.setAttribute("aria-expanded",open); c.querySelector(".def").hidden=!open; c.querySelector(".hint").innerHTML=open?"":HINT;
+});
+$("#card-shuffle").addEventListener("click",()=>{cardOrder=shuffle(cardOrder);allOpen=false;renderCards();});
+$("#card-reveal").addEventListener("click",()=>{allOpen=!allOpen;renderCards();});
+
+/* ===================== BAŞLAT ===================== */
+renderStudy(); renderSetup(); renderCards();
+show(location.hash.slice(1) || "konular", true);
+</script>
+
+</html>
