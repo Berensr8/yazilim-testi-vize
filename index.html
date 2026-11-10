@@ -16,7 +16,7 @@
   --primary:#2563EB; --primary-soft:#E3ECFE; --on-primary:#FFFFFF;
   --gold:#A84F06; --gold-soft:#FEF3DC;
   --pass:#15803D; --pass-soft:#DCFCE7; --fail:#B91C1C; --fail-soft:#FEE2E2;
-  --w1:#2563EB; --w2:#7C3AED; --w3:#0D7A70; --w4:#C2410C; --w5:#BE185D; --w6:#4D7C0F; --w7:#A16207;
+  --w1:#2563EB; --w2:#7C3AED; --w3:#0D7A70; --w4:#C2410C; --w5:#BE185D; --w6:#4D7C0F; --w7:#A16207; --w8:#475569;
   --shadow:0 1px 2px rgb(15 23 42 / .05), 0 6px 20px rgb(15 23 42 / .05);
   --f-display:"Lexend","Segoe UI",system-ui,sans-serif;
   --f-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
@@ -29,7 +29,7 @@
   --primary:#7FA9FF; --primary-soft:#1A2850; --on-primary:#0B1120;
   --gold:#F2B654; --gold-soft:#2A2213;
   --pass:#4ADE80; --pass-soft:#10281B; --fail:#F87171; --fail-soft:#331517;
-  --w1:#7FA9FF; --w2:#B197FC; --w3:#3CCFC0; --w4:#FB9A5B; --w5:#F472B6; --w6:#A3E635; --w7:#FACC15;
+  --w1:#7FA9FF; --w2:#B197FC; --w3:#3CCFC0; --w4:#FB9A5B; --w5:#F472B6; --w6:#A3E635; --w7:#FACC15; --w8:#CBD5E1;
   --shadow:0 1px 2px rgb(0 0 0 / .35);
   color-scheme:dark;
 }}
@@ -38,7 +38,7 @@
   --primary:#7FA9FF; --primary-soft:#1A2850; --on-primary:#0B1120;
   --gold:#F2B654; --gold-soft:#2A2213;
   --pass:#4ADE80; --pass-soft:#10281B; --fail:#F87171; --fail-soft:#331517;
-  --w1:#7FA9FF; --w2:#B197FC; --w3:#3CCFC0; --w4:#FB9A5B; --w5:#F472B6; --w6:#A3E635; --w7:#FACC15;
+  --w1:#7FA9FF; --w2:#B197FC; --w3:#3CCFC0; --w4:#FB9A5B; --w5:#F472B6; --w6:#A3E635; --w7:#FACC15; --w8:#CBD5E1;
   --shadow:0 1px 2px rgb(0 0 0 / .35);
   color-scheme:dark;
 }
@@ -101,7 +101,7 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;backgroun
 .stats span{font-size:.82rem;color:var(--muted)}
 
 /* ---------- week overview ---------- */
-.weekgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding-bottom:12px}
+.weekgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding-bottom:12px}
 .wcard.all{background:var(--primary-soft);border-color:transparent}
 .wcard.all .acts{grid-template-columns:1fr}
 .wcard.all .acts button{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
@@ -275,6 +275,7 @@ figure.cfg .ah{fill:var(--muted)}
 @media (max-width:640px){
   body{font-size:16px}
   .weekgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wcard.all{grid-column:1/-1}
   .pair,.chain{grid-template-columns:1fr}
   .brand small{display:none}
   .tabs{width:100%}
@@ -760,6 +761,74 @@ f(3, 4);                    <span class="c">// çağrılabilecekler: {topla, car
  { no:"7.6", t:"Avantajlar ve sınırlar", body:`
   <div class="pair"><div><b class="plus">Avantajları</b><span>Analizin tanımı ile çözüm algoritması ayrıdır, kolay değiştirilir. Aynı çözücü birçok analizde kullanılır. Sonuç (sabit nokta) matematiksel olarak tanımlıdır.</span></div><div><b class="minus">Sınırları</b><span>Büyük programlarda kısıt sayısı çok artar; kapsama kısıtları kübik zamana çıkabilir. Hassasiyet seçimine göre yanlış alarm verir; Rice teoremi burada da geçerlidir.</span></div></div>`,
   hook:"Temiz ve genel bir yöntem, ama büyük kodda pahalı." }
+]},
+{ id:8, label:"Ek · ISTQB", short:"Ek", title:"Test Tasarım Teknikleri ve Test Süreci", sum:"Eşdeğerlik, sınır değer, karar tablosu, durum geçişi, kapsam hesabı, regresyon, test case, hata yaşam döngüsü, risk.", src:"Notlarda yok · ISTQB", note:"Bu bölüm hocanın notlarında yok; ISTQB temel seviye müfredatından eklendi. Vizede çıkma ihtimali düşük ama 2. haftadaki kara/beyaz kutu tekniklerini daha iyi anlamanı sağlar. Hoca değinirse buradan tekrar et.", topics:[
+ { no:"E.1", t:"Eşdeğerlik bölümleme (Equivalence partitioning)", body:`
+  <p>Girdi alanı, programın <b>aynı şekilde davranması beklenen</b> sınıflara bölünür. Bir sınıftaki bir değer hata buluyorsa aynı sınıftaki diğerleri de bulur; bu yüzden her sınıftan <b>bir temsilci</b> denemek yeterlidir. Hem geçerli hem geçersiz sınıflar test edilir.</p>
+  <div class="tbl"><table>
+   <tr><th>Sınıf</th><th>Aralık (yaş alanı 18–65 kabul ediyor)</th><th>Temsilci</th></tr>
+   <tr><td>Geçersiz (küçük)</td><td>&lt; 18</td><td>10</td></tr>
+   <tr><td>Geçerli</td><td>18 – 65</td><td>30</td></tr>
+   <tr><td>Geçersiz (büyük)</td><td>&gt; 65</td><td>70</td></tr>
+  </table></div>
+  <p>Üç sınıf → en az üç test. Binlerce olası yaş yerine üç test yeterli olur.</p>`,
+  hook:"Aynı davranan girdileri bir torbaya koy, her torbadan bir tane çek." },
+ { no:"E.2", t:"Sınır değer analizi (Boundary value analysis)", body:`
+  <p>Hatalar en çok sınırlarda çıkar (<code>&lt;</code> yerine <code>&lt;=</code> yazmak gibi). Bu teknik her sınıfın <b>minimum ve maksimum değerini ve bunların komşularını</b> dener. Eşdeğerlik bölümlemenin tamamlayıcısıdır.</p>
+  <ul><li><b>2 değerli sınır:</b> Sınır ve hemen dışı. 18–65 için: 17, 18, 65, 66.</li><li><b>3 değerli sınır:</b> Sınırın altı, kendisi, üstü. 18–65 için: 17, 18, 19, 64, 65, 66.</li></ul>`,
+  hook:"Sınırın kendisi ve iki yanındaki komşular: 17-18-19 … 64-65-66." },
+ { no:"E.3", t:"Karar tablosu testi (Decision table)", body:`
+  <p>Sonuç <b>birden fazla koşulun birleşimine</b> bağlıysa kullanılır. Koşullar ve sonuçlar bir tabloya yazılır; her sütun (kural) bir test senaryosudur. n tane evet/hayır koşulu varsa en fazla 2ⁿ kural olur.</p>
+  <div class="tbl"><table>
+   <tr><th>Kural</th><th>K1</th><th>K2</th><th>K3</th><th>K4</th></tr>
+   <tr><td>Üye mi?</td><td>E</td><td>E</td><td>H</td><td>H</td></tr>
+   <tr><td>Sepet &gt; 1000 TL?</td><td>E</td><td>H</td><td>E</td><td>H</td></tr>
+   <tr><td>Sonuç: indirim</td><td>%20</td><td>%10</td><td>%5</td><td>Yok</td></tr>
+  </table></div>`,
+  hook:"Koşul–sonuç kombinasyonları: her sütun bir test. 2 koşul → 4 kural." },
+ { no:"E.4", t:"Durum geçiş testi (State transition)", body:`
+  <p>Sistemin davranışı <b>hangi durumda olduğuna</b> bağlıysa kullanılır. Durumlar, olaylar (event) ve geçişler bir durum diyagramıyla gösterilir. Testler her geçerli geçişi en az bir kez çalıştırır ve <b>geçersiz geçişleri</b> de dener. 4. haftadaki model tabanlı testin (MBT) en bilinen örneğidir.</p>
+<pre class="code">[Kart takıldı] --PIN doğru--&gt; [Menü]
+[Kart takıldı] --PIN yanlış--&gt; [Kart takıldı]   <span class="c">(deneme hakkı -1)</span>
+[Kart takıldı] --3. yanlış PIN--&gt; [Kart bloke]
+[Kart bloke]   --PIN doğru--&gt; ?                 <span class="c">// geçersiz geçiş: denenmeli</span></pre>`,
+  hook:"Durum + olay → yeni durum. Her oku en az bir kez dene, olmaması gereken oku da dene." },
+ { no:"E.5", t:"İfade ve dal kapsamı hesaplama (Statement / Branch coverage)", body:`
+  <div class="formula"><b>İfade kapsamı</b> = çalışan ifade / toplam ifade × 100<br><b>Dal kapsamı</b> = çalışan dal / toplam dal × 100</div>
+<pre class="code">s1: toplam = 0
+s2: if (a &gt; 10)
+s3:     toplam = a * 2
+s4: print(toplam)</pre>
+  <ul><li><b>Test a = 15:</b> s1, s2, s3, s4 çalışır → ifade kapsamı 4/4 = <b>%100</b>. Ama if’in sadece “doğru” dalı çalıştı → dal kapsamı 1/2 = <b>%50</b>.</li><li><b>a = 5 testi eklenirse:</b> “yanlış” dal da çalışır → dal kapsamı <b>%100</b>.</li></ul>
+  <p>%100 dal kapsamı %100 ifade kapsamını garanti eder; tersi doğru değildir. Dal kapsamı daha güçlü ölçüttür.</p>`,
+  hook:"İfade = her satır bir kez. Dal = her if’in hem doğru hem yanlış tarafı. Dal %100 ise ifade de %100." },
+ { no:"E.6", t:"Regresyon testi ve tekrar (onay) testi", body:`
+  <div class="pair"><div><b>Tekrar testi (re-test / confirmation)</b><span>Düzeltildiği söylenen hatanın <b>gerçekten düzeldiğini</b> doğrulamak için hatayı bulan test aynen tekrar koşulur.</span></div><div><b>Regresyon testi</b><span>Bir değişikliğin (hata düzeltme, yeni özellik) daha önce çalışan <b>başka yerleri bozmadığını</b> kontrol eder. Sürekli tekrarlandığı için otomasyona en uygun testtir.</span></div></div>`,
+  hook:"Tekrar testi: tamir ettiğin yer düzeldi mi? Regresyon: tamir ederken başka yeri kırdın mı?" },
+ { no:"E.7", t:"Test senaryosu (test case) hazırlama", body:`
+  <p>Bir test senaryosu, testi kimin koşarsa koşsun aynı şekilde tekrarlanabilmesi için şu alanları içerir:</p>
+  <div class="tbl"><table>
+   <tr><th>Alan</th><th>Örnek: giriş ekranı</th></tr>
+   <tr><td>Test ID ve amaç</td><td>TC-01 · Geçerli bilgilerle giriş</td></tr>
+   <tr><td>Ön koşul</td><td>Kullanıcı kayıtlı, giriş sayfası açık</td></tr>
+   <tr><td>Adımlar</td><td>1. E-posta yaz 2. Şifre yaz 3. Giriş’e bas</td></tr>
+   <tr><td>Test verisi</td><td>ali@ornek.com / Abc123!</td></tr>
+   <tr><td>Beklenen sonuç</td><td>Ana sayfa açılır, “Hoş geldin Ali” yazar</td></tr>
+   <tr><td>Gerçekleşen sonuç</td><td>Test koşulunca doldurulur</td></tr>
+   <tr><td>Durum</td><td>Geçti / Kaldı</td></tr>
+  </table></div>
+  <p>Beklenen ile gerçekleşen sonuç farklıysa test “kaldı” sayılır ve hata kaydı açılır.</p>`,
+  hook:"Ön koşul → adımlar → veri → BEKLENEN vs GERÇEKLEŞEN. Fark varsa hata kaydı." },
+ { no:"E.8", t:"Hata yaşam döngüsü, severity ve priority", body:`
+  <ol class="steps"><li>Yeni (New)</li><li>Atandı (Assigned)</li><li>Düzeltiliyor (Open)</li><li>Düzeltildi (Fixed)</li><li>Tekrar test (Retest)</li><li>Kapatıldı (Closed)</li></ol>
+  <p>Tekrar testte hata devam ediyorsa kayıt <b>Yeniden açıldı (Reopened)</b> olur ve geliştiriciye döner. Bir kayıt <b>Reddedildi</b> (hata değil), <b>Kopya</b> (aynısı zaten var) veya <b>Ertelendi</b> (sonraki sürüme) olarak da kapanabilir.</p>
+  <div class="pair"><div><b>Severity (ciddiyet)</b><span>Hatanın sisteme <b>teknik etkisi</b> ne kadar büyük? Genelde testçi belirler.</span></div><div><b>Priority (öncelik)</b><span>Hata <b>ne kadar acil</b> düzeltilmeli? İş tarafı veya proje yöneticisi belirler.</span></div></div>
+  <ul><li>Ana sayfada şirket adının yanlış yazılması: düşük ciddiyet, <b>yüksek öncelik</b>.</li><li>Yılda bir kullanılan raporda çökme: <b>yüksek ciddiyet</b>, düşük öncelik.</li></ul>`,
+  hook:"Severity = ne kadar kötü? Priority = ne kadar acil? İkisi farklı şeyler." },
+ { no:"E.9", t:"Risk temelli test (Risk-based testing)", body:`
+  <p>Kapsamlı test imkansız olduğu için (prensip 2) test eforu <b>riske göre</b> dağıtılır. Risk, bir hatanın <b>çıkma olasılığı × çıkarsa yaratacağı etki</b> ile ölçülür. Yüksek riskli alanlar önce ve daha derin test edilir, düşük riskliler daha az.</p>
+  <div class="pair"><div><b>Yüksek risk: ödeme modülü</b><span>Karmaşık ve sık değişiyor (olasılık yüksek), hata para kaybettirir (etki yüksek). Önce ve ayrıntılı test.</span></div><div><b>Düşük risk: “Hakkımızda” sayfası</b><span>Basit ve nadiren değişiyor, hatanın etkisi küçük. Hızlı bir kontrol yeter.</span></div></div>`,
+  hook:"Risk = olasılık × etki. Önce en çok canını yakacak yeri test et." }
 ]}
 ];
 
@@ -905,7 +974,24 @@ const QS = [
 {w:7,q:"<code>f = kosul ? topla : carp; f(3,4);</code> için CFA’ya göre çağrılabilecek fonksiyonlar hangileridir?",o:["{topla, carp}","{topla}","{carp}","{f}"],a:0,e:"Koşul analiz anında bilinmediği için ikisi de mümkündür."},
 {w:7,q:"0-CFA nedir?",o:["Bağlama duyarsız kontrol akış analizi","Sıfır hatalı bir test aracı","Bir fuzzing türü","Akışa duyarlı işaretçi analizi"],a:0,e:"En temel CFA türüdür."},
 {w:7,q:"Kısıt tabanlı test üretiminde çözücünün ürettiği şey nedir?",o:["Belirli bir yolu çalıştıran somut test girdisi","Programın çağrı grafı","Tip hatası listesi","Points-to kümeleri"],a:0,e:"Sembolik çalıştırma + SMT bağlantısı."},
-{w:7,q:"5. haftadaki GEN/KILL denklemleri ve iş listesi algoritması kısıtlamaya dayalı analizle nasıl ilişkilidir?",o:["Onlar da bir kısıt sistemi ve sabit nokta çözümüdür","Hiçbir ilişkisi yoktur","Onlar dinamik analizdir","Onlar sadece test üretimi içindir"],a:0,e:"Veri akışı denklemleri de çözülmesi gereken kısıtlardır."}
+{w:7,q:"5. haftadaki GEN/KILL denklemleri ve iş listesi algoritması kısıtlamaya dayalı analizle nasıl ilişkilidir?",o:["Onlar da bir kısıt sistemi ve sabit nokta çözümüdür","Hiçbir ilişkisi yoktur","Onlar dinamik analizdir","Onlar sadece test üretimi içindir"],a:0,e:"Veri akışı denklemleri de çözülmesi gereken kısıtlardır."},
+// Ek · ISTQB
+{w:8,q:"Yaş alanı 18–65 arasını kabul ediyor. Eşdeğerlik bölümlemeye göre en az kaç test gerekir?",o:["3","1","2","48"],a:0,e:"Geçersiz küçük (&lt;18), geçerli (18–65), geçersiz büyük (&gt;65): her sınıftan bir temsilci."},
+{w:8,q:"Eşdeğerlik bölümlemenin temel varsayımı nedir?",o:["Aynı sınıftaki değerler programda aynı davranışa yol açar","Her değer ayrı ayrı test edilmelidir","Sadece geçerli girdiler test edilir","Sınırlarda hata çıkmaz"],a:0,e:"Bu yüzden her sınıftan bir temsilci yeterlidir."},
+{w:8,q:"18–65 aralığı için 2 değerli sınır değer analizinde hangi değerler denenir?",o:["17, 18, 65, 66","18, 65","30, 50","0, 100"],a:0,e:"Sınırın kendisi ve hemen dışı."},
+{w:8,q:"Sonucun birden fazla koşulun kombinasyonuna bağlı olduğu durumlarda hangi teknik kullanılır?",o:["Karar tablosu testi","Sınır değer analizi","Durum geçiş testi","Regresyon testi"],a:0,e:"Her sütun (kural) bir test senaryosudur."},
+{w:8,q:"3 tane evet/hayır koşulu olan bir karar tablosunda en fazla kaç kural olur?",o:["8","3","6","9"],a:0,e:"2³ = 8."},
+{w:8,q:"ATM’nin “kart takıldı → PIN doğru → menü” gibi davranışlarını test etmeye en uygun teknik hangisidir?",o:["Durum geçiş testi","Eşdeğerlik bölümleme","Karar tablosu","İfade kapsamı"],a:0,e:"Durumlar, olaylar ve geçişler test edilir; geçersiz geçişler de denenir."},
+{w:8,q:"<code>if (a &gt; 10) toplam = a*2;</code> içeren kod yalnızca a = 15 ile test edilirse dal kapsamı nedir?",o:["%50","%100","%25","%0"],a:0,e:"Sadece “doğru” dal çalıştı: 1/2."},
+{w:8,q:"İfade kapsamı ile dal kapsamı arasındaki ilişki için hangisi doğrudur?",o:["%100 dal kapsamı %100 ifade kapsamını garanti eder, tersi garanti etmez","%100 ifade kapsamı %100 dal kapsamını garanti eder","İkisi her zaman eşittir","Aralarında ilişki yoktur"],a:0,e:"Dal kapsamı daha güçlü ölçüttür."},
+{w:8,q:"Düzeltildiği söylenen hatanın gerçekten düzeldiğini aynı testi koşarak doğrulamaya ne denir?",o:["Tekrar (onay) testi","Regresyon testi","Duman testi","Kabul testi"],a:0,e:"Re-testing / confirmation testing."},
+{w:8,q:"Bir değişikliğin daha önce çalışan başka yerleri bozmadığını kontrol eden test hangisidir?",o:["Regresyon testi","Tekrar testi","Birim testi","Kullanılabilirlik testi"],a:0,e:"Sürekli tekrarlandığı için otomasyona en uygun testtir."},
+{w:8,q:"Bir test senaryosunun “kaldı” sayılması için ne olmalıdır?",o:["Beklenen sonuç ile gerçekleşen sonuç farklı olmalı","Ön koşul yazılmamış olmalı","Test verisi uzun olmalı","Test otomatik olmalı"],a:0,e:"Fark varsa hata kaydı açılır."},
+{w:8,q:"Tekrar testinde hata hâlâ devam ediyorsa hata kaydı hangi duruma geçer?",o:["Yeniden açıldı (Reopened)","Kapatıldı (Closed)","Reddedildi (Rejected)","Ertelendi (Deferred)"],a:0,e:"Kayıt tekrar geliştiriciye döner."},
+{w:8,q:"Ana sayfada şirket adının yanlış yazılması genellikle nasıl sınıflandırılır?",o:["Düşük ciddiyet, yüksek öncelik","Yüksek ciddiyet, düşük öncelik","Yüksek ciddiyet, yüksek öncelik","Düşük ciddiyet, düşük öncelik"],a:0,e:"Teknik etkisi küçük ama herkes görüyor, hemen düzeltilmeli."},
+{w:8,q:"Severity ile priority arasındaki fark nedir?",o:["Severity hatanın teknik etkisi, priority düzeltmenin aciliyetidir","İkisi aynı şeydir","Severity aciliyet, priority teknik etkidir","Priority sadece güvenlik hatalarında kullanılır"],a:0,e:"Severity genelde testçi, priority iş tarafı tarafından belirlenir."},
+{w:8,q:"Risk temelli testte risk nasıl ölçülür?",o:["Hata çıkma olasılığı × etkisi","Kod satırı sayısı","Test sayısı × süre","Geliştirici sayısı"],a:0,e:"Yüksek riskli alanlar önce ve daha derin test edilir."},
+{w:8,q:"Risk temelli testin dayandığı test prensibi hangisidir?",o:["Kapsamlı test imkansızdır","Pestisit paradoksu","Hatasızlık yanılgısı","Test bağlama bağlıdır"],a:0,e:"Her şey test edilemediği için efor riske göre dağıtılır."}
 ];
 
 /* ===================== KARTLAR ===================== */
@@ -971,7 +1057,17 @@ const CARDS = [
 [7,"Unification","Eşitlik kısıtlarını çözen birleştirme algoritması."],
 [7,"Kapsama kısıtı","A ⊆ B; kısıt grafında sabit noktaya kadar yayılır."],
 [7,"Kontrol akış analizi (0-CFA)","Her çağrı noktasında çağrılabilecek fonksiyonları bulur; çağrı grafı."],
-[7,"Kısıt tabanlı test","Yol kısıtını çözücüye ver, test girdisini al."]
+[7,"Kısıt tabanlı test","Yol kısıtını çözücüye ver, test girdisini al."],
+[8,"Eşdeğerlik bölümleme","Girdileri aynı davranan sınıflara böl, her sınıftan bir temsilci dene."],
+[8,"Sınır değer analizi","Min, max ve komşuları: 17-18-19 … 64-65-66."],
+[8,"Karar tablosu","Koşul kombinasyonları; her sütun bir test. n koşul → 2ⁿ kural."],
+[8,"Durum geçiş testi","Durum + olay → yeni durum; geçersiz geçişler de denenir."],
+[8,"Dal kapsamı","Çalışan dal / toplam dal. %100 dal → %100 ifade."],
+[8,"Tekrar testi / Regresyon","Düzeldi mi? / Başka yeri bozdu mu?"],
+[8,"Test case alanları","ID, ön koşul, adımlar, veri, beklenen, gerçekleşen, durum."],
+[8,"Hata yaşam döngüsü","New → Assigned → Open → Fixed → Retest → Closed (ya da Reopened)."],
+[8,"Severity / Priority","Ne kadar kötü? / Ne kadar acil?"],
+[8,"Risk temelli test","Risk = olasılık × etki; önce en riskli yer."]
 ];
 
 /* ===================== YARDIMCILAR ===================== */
@@ -983,6 +1079,7 @@ const store = {
 const shuffle = a => { a = a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
 const icon = (id, cls="i") => `<svg class="${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
 const wc = id => `--wc:var(--w${id})`;
+const wl = id => (WEEKS.find(w=>w.id===id)||{}).label || "Hafta "+id;
 CARDS.sort((a,b)=>a[0]-b[0]);
 const learned = new Set(store.get("yt-learned", []));
 const totalTopics = WEEKS.reduce((n,w)=>n+w.topics.length,0);
@@ -1010,11 +1107,11 @@ function renderStudy(){
   $("#st-cards").textContent = CARDS.length;
 
   $("#weekgrid").innerHTML = WEEKS.map(w=>`<article class="wcard" style="${wc(w.id)}">
-    <span class="num">0${w.id}</span>
+    <span class="num">${w.short||"0"+w.id}</span>
     <h3>${w.title}</h3>
     <div class="meta"><span>${w.topics.length} başlık</span><span>${QS.filter(q=>q.w===w.id).length} soru</span></div>
     <div class="mini" aria-hidden="true"><i id="mini-${w.id}"></i></div>
-    ${w.note?'<span class="src">Notlarda yok · genel kaynak</span>':""}
+    ${w.note?`<span class="src">${w.src||"Notlarda yok · genel kaynak"}</span>`:""}
     <div class="acts"><button data-read="${w.id}">Oku</button><button data-quiz="${w.id}">Test et</button></div>
   </article>`).join("") + `<article class="wcard all" style="--wc:var(--primary)">
     <span class="num">${icon("check-sq")}</span>
@@ -1033,7 +1130,7 @@ function renderStudy(){
   });
 
   $("#weeks").innerHTML = WEEKS.map(w=>`<section class="week" id="w${w.id}" style="${wc(w.id)}">
-    <div class="week-head"><div class="t"><span class="eyebrow">Hafta ${w.id}</span><h2>${w.title}</h2><p>${w.sum}</p></div>
+    <div class="week-head"><div class="t"><span class="eyebrow">${wl(w.id)}</span><h2>${w.title}</h2><p>${w.sum}</p></div>
       <button class="btn primary" data-quiz="${w.id}" style="background:var(--wc);border-color:var(--wc)">${icon("play")}Bu haftayı test et</button></div>
     ${w.note?`<p class="wnote">${icon("info")}<span>${w.note}</span></p>`:""}
     ${w.topics.map(t=>{ const id="learn-"+t.no.replace(".","-"); return `<article class="topic">
@@ -1073,7 +1170,7 @@ const quizState = { scope:"all", count:20, list:[], i:0, answers:[] };
 const LET = ["A","B","C","D"];
 function renderSetup(){
   const best = store.get("yt-best", {});
-  const scopes = [["all","Tümü",QS.length], ...WEEKS.map(w=>[w.id,"Hafta "+w.id,QS.filter(q=>q.w===w.id).length])];
+  const scopes = [["all","Tümü",QS.length], ...WEEKS.map(w=>[w.id,wl(w.id),QS.filter(q=>q.w===w.id).length])];
   const counts = [[10,"10 soru"],[20,"20 soru"],[30,"30 soru"],["all","Hepsi"]];
   const pad = s => s + "&nbsp;".repeat(Math.max(0, 9 - s.length));
   $("#quiz").innerHTML = `<div class="card setup">
@@ -1103,7 +1200,7 @@ function renderQ(){
   $("#quiz").innerHTML = `<div class="card">
     <div class="qhead"><span>Soru ${s.i+1} / ${n}</span><span class="sc"><span class="p">${icon("check")}${p}</span><span class="f">${icon("x")}${f}</span></span></div>
     <div class="qprog" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${s.i}"><i style="width:${s.i/n*100}%"></i></div>
-    <div style="margin-top:18px"><span class="qwk" style="${wc(q.w)}">Hafta ${q.w} · ${wk.title}</span></div>
+    <div style="margin-top:18px"><span class="qwk" style="${wc(q.w)}">${wl(q.w)} · ${wk.title}</span></div>
     <div class="qtext" id="qtext">${q.q}</div>
     <div class="opts" id="opts" role="group" aria-labelledby="qtext">${q.opts.map((o,i)=>`<button class="opt" data-i="${i}"><span class="L">${LET[i]}</span><span>${o.t}</span><span class="st"></span></button>`).join("")}</div>
     <div id="fb" aria-live="polite"></div>
@@ -1152,7 +1249,7 @@ function renderResult(){
     <div class="score">${ringSvg(pct,color)}<p class="msg"><strong>${title}</strong>${msg}</p></div>
     <div class="runner">
       <span class="m">$ yazilim-testi --vize</span><br>
-      ${byWeek.map(b=>`${b.p===b.t?'<span class="p">PASS</span>':'<span class="f">FAIL</span>'}&nbsp; Hafta ${b.w}&nbsp; <span class="m">${b.p}/${b.t}</span>`).join("<br>")}<br><br>
+      ${byWeek.map(b=>`${b.p===b.t?'<span class="p">PASS</span>':'<span class="f">FAIL</span>'}&nbsp; ${wl(b.w)}&nbsp; <span class="m">${b.p}/${b.t}</span>`).join("<br>")}<br><br>
       Tests: <span class="p">${pass} passed</span>, <span class="f">${fail} failed</span>, ${done} total
     </div>
     <div class="row" style="margin-top:18px">
@@ -1161,7 +1258,7 @@ function renderResult(){
       <button class="btn ghost" id="tostudy">${icon("book")}Konulara dön</button>
     </div>
   </div>
-  ${wrong.length?`<div><h3 style="font-size:1.15rem;margin-bottom:12px">Yanlış yaptığın sorular</h3><div class="miss">${wrong.map(a=>`<div class="it"><span class="qwk" style="${wc(a.q.w)}">Hafta ${a.q.w}</span><span class="q">${a.q.q}</span><span class="a"><span>Senin cevabın: <s>${a.picked}</s></span><span>Doğru cevap: <span class="ok">${a.q.o[a.q.a]}</span></span></span><span class="e">${a.q.e}</span></div>`).join("")}</div></div>`:""}`;
+  ${wrong.length?`<div><h3 style="font-size:1.15rem;margin-bottom:12px">Yanlış yaptığın sorular</h3><div class="miss">${wrong.map(a=>`<div class="it"><span class="qwk" style="${wc(a.q.w)}">${wl(a.q.w)}</span><span class="q">${a.q.q}</span><span class="a"><span>Senin cevabın: <s>${a.picked}</s></span><span>Doğru cevap: <span class="ok">${a.q.o[a.q.a]}</span></span></span><span class="e">${a.q.e}</span></div>`).join("")}</div></div>`:""}`;
   if(wrong.length) $("#retry").addEventListener("click",()=>startQuiz(wrong.map(a=>{const {opts,...q}=a.q;return q;})));
   $("#again").addEventListener("click",renderSetup);
   $("#tostudy").addEventListener("click",()=>show("konular"));
@@ -1180,9 +1277,9 @@ document.addEventListener("keydown",e=>{
 let cardScope = "all", cardOrder = CARDS.map((_,i)=>i), allOpen = false;
 const HINT = `${icon("tap")}Tanımı görmek için dokun`;
 function renderCards(){
-  $("#card-filter").innerHTML = [["all","Tümü"],...WEEKS.map(w=>[w.id,"Hafta "+w.id])].map(([v,l])=>`<button class="chip" data-v="${v}" style="${v==="all"?"":wc(v)}" aria-pressed="${String(cardScope)===String(v)}">${v==="all"?"":'<span class="dot" aria-hidden="true"></span>'}${l}</button>`).join("");
+  $("#card-filter").innerHTML = [["all","Tümü"],...WEEKS.map(w=>[w.id,wl(w.id)])].map(([v,l])=>`<button class="chip" data-v="${v}" style="${v==="all"?"":wc(v)}" aria-pressed="${String(cardScope)===String(v)}">${v==="all"?"":'<span class="dot" aria-hidden="true"></span>'}${l}</button>`).join("");
   const list = cardOrder.filter(i=>cardScope==="all"||CARDS[i][0]===cardScope);
-  $("#deck").innerHTML = list.map(i=>{const [w,t,d]=CARDS[i];return `<button class="fc" style="${wc(w)}" aria-expanded="${allOpen}"><span class="w">Hafta ${w}</span><span class="term">${t}</span><span class="def" ${allOpen?"":"hidden"}>${d}</span><span class="hint">${allOpen?"":HINT}</span></button>`;}).join("");
+  $("#deck").innerHTML = list.map(i=>{const [w,t,d]=CARDS[i];return `<button class="fc" style="${wc(w)}" aria-expanded="${allOpen}"><span class="w">${wl(w)}</span><span class="term">${t}</span><span class="def" ${allOpen?"":"hidden"}>${d}</span><span class="hint">${allOpen?"":HINT}</span></button>`;}).join("");
 }
 $("#card-filter").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;cardScope=b.dataset.v==="all"?"all":+b.dataset.v;renderCards();});
 $("#deck").addEventListener("click",e=>{
