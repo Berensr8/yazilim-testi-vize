@@ -5,7 +5,7 @@
 <title>Yazılım Testi Vize</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Yazılım testi dersi vize çalışması: 5 haftanın konu özetleri, deneme sınavı ve kavram kartları.">
+<meta name="description" content="Yazılım testi dersi vize çalışması: 7 haftanın konu özetleri, deneme sınavı ve kavram kartları.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -16,7 +16,7 @@
   --primary:#2563EB; --primary-soft:#E3ECFE; --on-primary:#FFFFFF;
   --gold:#A84F06; --gold-soft:#FEF3DC;
   --pass:#15803D; --pass-soft:#DCFCE7; --fail:#B91C1C; --fail-soft:#FEE2E2;
-  --w1:#2563EB; --w2:#7C3AED; --w3:#0D7A70; --w4:#C2410C; --w5:#BE185D;
+  --w1:#2563EB; --w2:#7C3AED; --w3:#0D7A70; --w4:#C2410C; --w5:#BE185D; --w6:#4D7C0F; --w7:#A16207;
   --shadow:0 1px 2px rgb(15 23 42 / .05), 0 6px 20px rgb(15 23 42 / .05);
   --f-display:"Lexend","Segoe UI",system-ui,sans-serif;
   --f-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
@@ -29,7 +29,7 @@
   --primary:#7FA9FF; --primary-soft:#1A2850; --on-primary:#0B1120;
   --gold:#F2B654; --gold-soft:#2A2213;
   --pass:#4ADE80; --pass-soft:#10281B; --fail:#F87171; --fail-soft:#331517;
-  --w1:#7FA9FF; --w2:#B197FC; --w3:#3CCFC0; --w4:#FB9A5B; --w5:#F472B6;
+  --w1:#7FA9FF; --w2:#B197FC; --w3:#3CCFC0; --w4:#FB9A5B; --w5:#F472B6; --w6:#A3E635; --w7:#FACC15;
   --shadow:0 1px 2px rgb(0 0 0 / .35);
   color-scheme:dark;
 }}
@@ -38,7 +38,7 @@
   --primary:#7FA9FF; --primary-soft:#1A2850; --on-primary:#0B1120;
   --gold:#F2B654; --gold-soft:#2A2213;
   --pass:#4ADE80; --pass-soft:#10281B; --fail:#F87171; --fail-soft:#331517;
-  --w1:#7FA9FF; --w2:#B197FC; --w3:#3CCFC0; --w4:#FB9A5B; --w5:#F472B6;
+  --w1:#7FA9FF; --w2:#B197FC; --w3:#3CCFC0; --w4:#FB9A5B; --w5:#F472B6; --w6:#A3E635; --w7:#FACC15;
   --shadow:0 1px 2px rgb(0 0 0 / .35);
   color-scheme:dark;
 }
@@ -101,7 +101,14 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;backgroun
 .stats span{font-size:.82rem;color:var(--muted)}
 
 /* ---------- week overview ---------- */
-.weekgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding-bottom:12px}
+.weekgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding-bottom:12px}
+.wcard.all{background:var(--primary-soft);border-color:transparent}
+.wcard.all .acts{grid-template-columns:1fr}
+.wcard.all .acts button{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.wcard.all .acts button:hover{filter:brightness(1.08);color:var(--on-primary)}
+.wcard .src{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border:1px dashed var(--line);border-radius:999px;padding:1px 8px;align-self:flex-start}
+.wnote{display:flex;gap:10px;align-items:flex-start;background:var(--sunk);border-radius:var(--r-m);padding:12px 14px;font-size:.93rem;color:var(--muted);margin-top:14px;max-width:780px}
+.wnote svg.i{color:var(--wc);margin-top:2px}
 .wcard{--wc:var(--w1);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
 .wcard .num{font-family:var(--f-display);font-size:1.9rem;font-weight:700;color:var(--wc);line-height:1;font-variant-numeric:tabular-nums}
 .wcard h3{font-size:1rem;line-height:1.3;flex:1}
@@ -257,7 +264,6 @@ figure.cfg .ah{fill:var(--muted)}
 .fc .hint svg.i{width:14px;height:14px}
 .fc[aria-expanded="true"]{background:color-mix(in srgb,var(--wc) 9%,var(--surface));border-color:var(--wc)}
 
-@media (max-width:1080px){ .weekgrid{grid-template-columns:repeat(3,minmax(0,1fr))} }
 @media (max-width:900px){
   .hero{grid-template-columns:minmax(0,1fr)}
   .study{grid-template-columns:minmax(0,1fr);gap:12px}
@@ -292,7 +298,8 @@ figure.cfg .ah{fill:var(--muted)}
   <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></symbol>
   <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="i-redo" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></symbol>
-  <symbol id="i-tap" viewBox="0 0 24 24"><path d="M9 11V5a2 2 0 0 1 4 0v6"/><path d="M13 9a2 2 0 0 1 4 0v3a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.7L3 14a2 2 0 0 1 3.3-2.2L9 15"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-tap"viewBox="0 0 24 24"><path d="M9 11V5a2 2 0 0 1 4 0v6"/><path d="M13 9a2 2 0 0 1 4 0v3a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.7L3 14a2 2 0 0 1 3.3-2.2L9 15"/></symbol>
 </svg>
 
 <a class="skip" href="#main">İçeriğe geç</a>
@@ -300,7 +307,7 @@ figure.cfg .ah{fill:var(--muted)}
   <div class="wrap">
     <div class="brand">
       <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
-      <div><h1>Yazılım Testi</h1><small>VİZE · HAFTA 1–5</small></div>
+      <div><h1>Yazılım Testi</h1><small>VİZE · HAFTA 1–7</small></div>
     </div>
     <nav class="tabs" role="tablist" aria-label="Bölümler">
       <button role="tab" id="tab-konular" data-view="konular" aria-selected="true"><svg class="i"><use href="#i-book"/></svg>Konular</button>
@@ -314,7 +321,7 @@ figure.cfg .ah{fill:var(--muted)}
   <section id="view-konular" class="wrap">
     <div class="hero">
       <div class="hero-text">
-        <span class="eyebrow">Vize hazırlık · 5 hafta</span>
+        <span class="eyebrow">Vize hazırlık · 7 hafta</span>
         <h2>Bütün konular kısa ve net, <em>sonunda test.</em></h2>
         <p>Her başlık hocanın anlattığı gibi 2–3 cümle. Okuduğun başlığı “Öğrendim” diye işaretle, sonra o haftanın testini çöz. Sarı kutulardaki cümleler sınavda aklına gelecek kısa kancalar.</p>
         <div class="row">
@@ -385,7 +392,7 @@ const WEEKS = [
   <p>Kusurlu satır hiç çalışmazsa başarısızlık oluşmaz; kusur kodda sessizce bekler.</p>`,
   hook:"Error kafada, Fault kodda, Failure ekranda. İnsan hata yapar → kod kusur taşır → sistem başarısız olur." },
  { no:"1.3", t:"Doğrulama ve Geçerli Kılma (V&V)", body:`
-  <div class="pair"><div><b>Verification · Doğrulama</b><span>“Ürünü doğru mu inşa ediyoruz?” Ürün tasarıma ve spesifikasyona uygun mu?</span></div><div><b>Validation · Geçerli kılma</b><span>“Doğru ürünü mü inşa ediyoruz?” Ürün kullanıcının gerçek ihtiyacını karşılıyor mu?</span></div></div>`,
+  <div class="pair"><div><b>Verification · Doğrulama</b><span>“Ürünü doğru mu inşa ediyoruz?” Ürün teknik gereksinimlere ve tasarım kriterlerine uygun geliştiriliyor mu? Örnek: kod incelemeleri, analizler, statik testler.</span></div><div><b>Validation · Geçerli kılma (geçerleme)</b><span>“Doğru ürünü mü inşa ediyoruz?” Ürün son kullanıcının veya müşterinin gerçek ihtiyacını ve beklentisini karşılıyor mu? Örnek: dinamik testler, kabul testleri.</span></div></div>`,
   hook:"Verification: plana uydum mu? Validation: müşteri bunu mu istiyordu?" },
  { no:"1.4", t:"Statik analiz", body:`
   <p>Kodun <b>çalıştırılmadan</b> incelenmesidir. Bir kitabın imla hatalarını okuyarak bulmaya benzer: metne bakarsın ama hikayeyi canlandırmazsın.</p>
@@ -448,8 +455,8 @@ const WEEKS = [
   <p>Küçükten büyüğe dört seviye: tuğla → duvar → bina → anahtar teslim.</p>
   <div class="pair">
    <div><b>A. Birim (Unit) testi</b><span>Bağımsız test edilebilen en küçük parça (fonksiyon, metot) test edilir. Kodu yazan geliştirici yapar, beyaz kutu kullanır. <b>İzolasyon şartı:</b> Fonksiyon veritabanına bağlıysa bu bağımlılık sahte nesnelerle (mock/stub) yalıtılır.</span></div>
-   <div><b>B. Entegrasyon testi</b><span>Birimler tek başına çalışır ama birbiriyle konuşunca işler karışabilir. Bileşenler arası veri akışı ve arayüzler test edilir.</span></div>
-   <div><b>C. Sistem testi</b><span>Yazılım, donanım, ağ ve veritabanı tamamen entegre halde, bütün olarak test edilir. Kara kutu yaklaşımı.</span></div>
+   <div><b>B. Entegrasyon testi</b><span>Birimler tek başına çalışır ama birbiriyle konuşunca işler karışabilir. Ayrı ayrı test edilmiş birimler bir araya getirilir; aralarındaki veri alışverişi, iletişim ve arayüzler test edilir.</span></div>
+   <div><b>C. Sistem testi</b><span>Yazılım, donanım, ağ ve veritabanı tamamen entegre halde, bütün olarak test edilir. Hem fonksiyonel hem fonksiyonel olmayan (performans, güvenlik) gereksinimlere bakılır. Kara kutu yaklaşımı.</span></div>
    <div><b>D. Kabul testi</b><span>Kullanıma sunulmadan önceki son durak. Amaç kullanıcının asıl iş ihtiyaçlarına uygunluğu görmektir: UAT (kullanıcı kabul testi), Alfa ve Beta.</span></div>
   </div>
   <h4>Entegrasyon türleri</h4>
@@ -479,7 +486,29 @@ const WEEKS = [
  { no:"2.6", t:"Yazılım Test Yaşam Döngüsü (STLC)", body:`
   <ol class="steps"><li>Gereksinim analizi</li><li>Test planlama</li><li>Test senaryosu tasarımı ve geliştirme</li><li>Test ortamının kurulumu</li><li>Test yürütme</li><li>Test kapanışı</li></ol>
   <ul><li><b>Gereksinim analizi:</b> Neyin test edileceği anlaşılır.</li><li><b>Planlama:</b> Strateji, kapsam, kaynak, takvim belirlenir.</li><li><b>Senaryo tasarımı:</b> Test case’ler ve test verileri yazılır.</li><li><b>Ortam kurulumu:</b> Donanım, yazılım ve veri hazırlanır.</li><li><b>Yürütme:</b> Testler koşulur, hatalar raporlanır.</li><li><b>Kapanış:</b> Sonuç raporu yazılır, dersler çıkarılır.</li></ul>`,
-  hook:"Anla → Planla → Yaz → Kur → Koş → Kapat." }
+  hook:"Anla → Planla → Yaz → Kur → Koş → Kapat." },
+ { no:"2.7", t:"Fonksiyonel ve fonksiyonel olmayan testler", body:`
+  <div class="pair"><div><b>Fonksiyonel testler</b><span>Sistemin <b>ne yaptığını</b> test eder: verilen girdiye gereksinimde yazan doğru çıktıyı veriyor mu? Örnek: “Doğru şifreyle giriş yapılabiliyor mu?”</span></div><div><b>Fonksiyonel olmayan testler</b><span>Sistemin işini <b>nasıl yaptığını</b> test eder: hızlı mı, güvenli mi, kolay kullanılıyor mu?</span></div></div>
+  <ul>
+   <li><b>Performans testi:</b> Belirli bir yük ve stres altında tepki süresini, hızı ve kararlılığı ölçer. Beklenen yükte yapılırsa <b>yük testi</b>, sınırların ötesine zorlanırsa <b>stres testi</b> olur.</li>
+   <li><b>Güvenlik testi:</b> Yetkisiz erişimleri, veri sızıntılarını ve güvenlik açıklarını (SQL injection, XSS) arar.</li>
+   <li><b>Kullanılabilirlik testi (usability):</b> Uygulamanın son kullanıcı için ne kadar kolay, sezgisel ve anlaşılır olduğunu ölçer.</li>
+  </ul>`,
+  hook:"Fonksiyonel = NE yapıyor? Fonksiyonel olmayan = NASIL yapıyor? (hız, güvenlik, kolaylık)" },
+ { no:"2.8", t:"Test güdümlü geliştirme (TDD)", body:`
+  <p>Çevik (Agile) süreçlerde sık kullanılan bir pratiktir: <b>önce test, sonra kod</b>. Shift-left yaklaşımının en uç halidir.</p>
+  <ol class="steps"><li>Önce test senaryosu yazılır</li><li>Test başarısız olur (Red)</li><li>Testi geçecek en az kod yazılır</li><li>Test geçer (Green)</li><li>Kod temizlenir (Refactor)</li></ol>
+  <p>Kod henüz yazılmadığı için test ilk çalıştırmada kırmızı yanar. Sadece testi geçirecek kadar kod yazılır, test yeşile döner, sonra kod davranışı bozulmadan düzenlenir. Döngü her yeni özellik için tekrarlanır.</p>`,
+  hook:"Kırmızı → Yeşil → Temizle (Red → Green → Refactor). Testi koddan önce yaz." },
+ { no:"2.9", t:"Yazılım kalite ölçütleri", body:`
+  <p>Test, yazılımın kalite ölçütlerini ne kadar karşıladığını ortaya koyar. Temel dış kalite ölçütleri:</p>
+  <ul>
+   <li><b>Doğruluk (Correctness):</b> Yazılımın hata içermemesi ve gereksinim dokümanına tam uyması.</li>
+   <li><b>Güvenilirlik (Reliability):</b> Sistemin her koşulda kesintisiz ve istenen şekilde çalışabilme düzeyi.</li>
+   <li><b>Etkinlik (Efficiency):</b> Bellek ve işlemci gibi donanım kaynaklarını en az ve en verimli şekilde kullanması.</li>
+  </ul>
+  <p>Kullanılabilirlik, bakım yapılabilirlik ve taşınabilirlik de sık sayılır (ISO/IEC 25010). Hocanın vurgusunu unutma: test kaliteyi ölçer ve görünür kılar, kaliteyi bulunan hataların düzeltilmesi artırır.</p>`,
+  hook:"Doğru mu çalışıyor? Hep çalışıyor mu? Az kaynakla mı çalışıyor? → Doğruluk, Güvenilirlik, Etkinlik." }
 ]},
 { id:3, title:"Rastgele Test ve Bulanıklaştırma", sum:"Rastgele test adımları, sistematik testle karşılaştırma, maymun testi ve fuzzing.", topics:[
  { no:"3.1", t:"Rastgele test (Random testing)", body:`
@@ -655,6 +684,82 @@ c = a + b;          <span class="c">// B4</span></pre>
   <div class="pair"><div><b>C / C++ (yönetilmeyen dil)</b><span>Başlatılmamış yerel değişken bellekte kalan rastgele çöp değeri taşır. Tanımsız davranış, öngörülemeyen hata ve güvenlik açığı doğar. Derleyici en fazla uyarı verir.</span></div>
   <div><b>Java ve C# (yönetilen dil)</b><span>Derleyici kendisi veri akışı analizi yapar; başlatılmamış yerel değişkenin okunmasına izin vermez, derleme hatası verir. Sınıf alanları varsayılan değer (0, null) alır.</span></div></div>`,
   hook:"C/C++ çöp değerle çalışmaya devam eder; Java/C# derlemeyi baştan reddeder." }
+]},
+{ id:6, title:"İşaretçi Analizi", sum:"Aliasing, points-to kümeleri, dört temel işaretçi ifadesi, Andersen ve Steensgaard, hassasiyet.", note:"Bu hafta için defter notu yok. Konu dersin akışına (veri akışı → işaretçi analizi) göre genel kaynaklardan derlendi. Derste anlatılınca notlarla karşılaştır.", topics:[
+ { no:"6.1", t:"Neden işaretçi analizi? Takma ad (aliasing) sorunu", body:`
+  <p>C/C++ gibi dillerde iki farklı işaretçi aynı bellek adresini gösterebilir; buna <b>takma ad (aliasing)</b> denir. Veri akışı analizi <code>*p = 5</code> satırının hangi değişkeni değiştirdiğini bilmezse yanlış sonuç çıkarır. İşaretçi analizi, her işaretçinin çalışma anında <b>hangi bellek konumlarını gösterebileceğini</b> kodu çalıştırmadan tahmin eder.</p>
+<pre class="code">int x = 1;
+int *p = &amp;x;   <span class="c">// p, x'i gösteriyor</span>
+*p = 5;        <span class="c">// aslında x = 5 oldu</span>
+print(x);      <span class="c">// analiz p'yi bilmezse x'i hâlâ 1 sanır</span></pre>
+  <h4>Nerede kullanılır?</h4>
+  <ul><li>Derleyici optimizasyonları (sabit yayılımı, gereksiz bellek okumalarını kaldırma)</li><li>Null işaretçi kullanımı (null dereference) tespiti</li><li>Serbest bırakılmış belleğin kullanımı (use-after-free), çift free gibi bellek güvenliği hataları</li><li>Veri akışı ve leke analizinin doğru çalışması</li></ul>`,
+  hook:"Aliasing = aynı eve iki farklı anahtar. Biri kapıyı boyarsa diğeri de boyalı görür." },
+ { no:"6.2", t:"Points-to kümesi ve takma ad türleri", body:`
+  <ul>
+   <li><b>Points-to kümesi:</b> <code>pt(p)</code>, p işaretçisinin gösterebileceği konumların kümesidir. Örnek: <code>pt(p) = {x, y}</code>.</li>
+   <li><b>Soyut bellek konumu:</b> Çalışma anında sınırsız sayıda nesne oluşabilir. Analiz her <code>malloc</code>/<code>new</code> satırını tek bir soyut nesne sayar (allocation site), böylece kümeler sonlu kalır.</li>
+  </ul>
+  <div class="pair"><div><b>May-alias (olabilir)</b><span>p ve q <b>bazı</b> çalışmalarda aynı yeri gösterebilir: pt(p) ∩ pt(q) boş değil.</span></div><div><b>Must-alias (kesin)</b><span>p ve q <b>her</b> çalışmada kesinlikle aynı yeri gösterir.</span></div></div>`,
+  hook:"pt(p) = p'nin gösterebileceği yerlerin listesi. May = belki aynı, Must = kesin aynı." },
+ { no:"6.3", t:"Dört temel işaretçi ifadesi ve kuralları", body:`
+  <p>Her işaretçi işlemi, points-to kümeleri arasında bir kurala (kısıta) dönüşür:</p>
+  <div class="tbl"><table>
+   <tr><th>İfade</th><th>Adı</th><th>Kural</th></tr>
+   <tr><td><code>p = &amp;x</code></td><td>Adres alma</td><td>x ∈ pt(p)</td></tr>
+   <tr><td><code>p = q</code></td><td>Kopyalama</td><td>pt(q) ⊆ pt(p)</td></tr>
+   <tr><td><code>p = *q</code></td><td>Yükleme (load)</td><td>q'nun gösterdiği her r için pt(r) ⊆ pt(p)</td></tr>
+   <tr><td><code>*p = q</code></td><td>Saklama (store)</td><td>p'nin gösterdiği her r için pt(q) ⊆ pt(r)</td></tr>
+  </table></div>
+<pre class="code">p = &amp;x;   <span class="c">// pt(p) = {x}</span>
+q = &amp;y;   <span class="c">// pt(q) = {y}</span>
+p = q;    <span class="c">// pt(p) = {x, y}   (akışa duyarsız analizde)</span>
+r = &amp;p;   <span class="c">// pt(r) = {p}</span>
+*r = &amp;z;  <span class="c">// store: pt(p) = {x, y, z}</span></pre>`,
+  hook:"&x = adresini ekle. p = q = kopyala. *q'dan okursa load, *p'ye yazarsa store." },
+ { no:"6.4", t:"Andersen ve Steensgaard analizleri", body:`
+  <div class="pair"><div><b>Andersen (kapsama tabanlı)</b><span>Atamaları <b>alt küme (⊆)</b> kısıtı olarak modeller: p = q ise pt(q) ⊆ pt(p). Daha hassastır ama yavaştır; en kötü durumda kübik, O(n³).</span></div><div><b>Steensgaard (birleştirme tabanlı)</b><span>Atamaları <b>eşitlik</b> olarak modeller: p = q ise ikisinin kümesi birleştirilir. Neredeyse doğrusal zamanda çok hızlıdır ama daha kaba sonuç verir, yanlış alarm artar.</span></div></div>
+  <p>Önceki örnekte <code>p = q</code> için Andersen yalnızca pt(p)'yi büyütür. Steensgaard ise p ile q'yu tek kümede birleştirir; q da x'i gösteriyormuş gibi davranır.</p>`,
+  hook:"Andersen = alt küme (⊆), hassas ama yavaş. Steensgaard = birleştir (=), hızlı ama kaba." },
+ { no:"6.5", t:"Hassasiyet boyutları", body:`
+  <ul>
+   <li><b>Akışa duyarlı (flow-sensitive):</b> Komutların sırasını dikkate alır, her program noktası için ayrı sonuç tutar. Akışa duyarsız analiz sırayı yok sayar, bütün program için tek sonuç verir.</li>
+   <li><b>Bağlama duyarlı (context-sensitive):</b> Bir fonksiyonun farklı yerlerden yapılan çağrılarını ayrı ayrı analiz eder. Duyarsız analiz bütün çağrıları karıştırır.</li>
+   <li><b>Alana duyarlı (field-sensitive):</b> Bir struct veya nesnenin alanlarını (<code>s.a</code>, <code>s.b</code>) ayrı konum sayar.</li>
+  </ul>
+  <p>Her ek hassasiyet daha az yanlış alarm ama daha çok hesaplama demektir. Bu, 1. haftadaki kesinlik-tamlık ikileminin işaretçi analizindeki karşılığıdır: Rice teoremi yüzünden kusursuz sonuç yoktur, hız ile hassasiyet arasında seçim yapılır.</p>`,
+  hook:"Akış: sıra önemli mi? Bağlam: kim çağırdı önemli mi? Alan: struct'ın parçaları ayrı mı? Hassasiyet arttıkça hız düşer." }
+]},
+{ id:7, title:"Kısıtlamaya Dayalı Analiz", sum:"Kısıt üretimi ve çözümü, eşitlik ve kapsama kısıtları, tip analizi, kontrol akış analizi, SMT ile bağlantı.", note:"Bu hafta için defter notu yok. Konu genel kaynaklardan derlendi. Derste anlatılınca notlarla karşılaştır.", topics:[
+ { no:"7.1", t:"Kısıtlamaya dayalı analiz nedir?", body:`
+  <p>Analiz iki ayrı aşamaya bölünür. Önce programın her parçası okunup <b>kısıtlar (constraints)</b>, yani denklemler üretilir. Sonra bu kısıtlar bir <b>çözücüyle</b> çözülür; çözüm analizin sonucudur.</p>
+  <ol class="steps"><li>Kısıt üretimi</li><li>Kısıt çözümü</li><li>Sonuç (en küçük çözüm)</li></ol>
+  <p>Avantajı, analizin <b>ne</b> hesapladığı (kısıtlar) ile <b>nasıl</b> hesaplandığının (çözücü) ayrılmasıdır. Aynı çözücü tip analizi, işaretçi analizi ve kontrol akış analizi için kullanılabilir. 5. haftadaki GEN/KILL denklemleri ve iş listesi algoritması da aslında bir kısıt sistemini sabit noktaya kadar çözmektir.</p>`,
+  hook:"Önce denklemleri yaz, sonra çöz. Analiz = kısıt üret + kısıt çöz." },
+ { no:"7.2", t:"Kısıt türleri: eşitlik ve kapsama", body:`
+  <div class="pair"><div><b>Eşitlik kısıtları (=)</b><span>“Bu iki şey aynı olmalı.” Birleştirme (unification) algoritmasıyla çözülür. Tip çıkarımı ve Steensgaard işaretçi analizi bu türdendir.</span></div><div><b>Kapsama kısıtları (⊆)</b><span>“Bu küme şu kümenin içinde olmalı.” Kısıt grafı kurulur, değerler oklar boyunca hiçbir şey değişmeyene kadar (sabit nokta) yayılır. Andersen analizi ve kontrol akış analizi bu türdendir.</span></div></div>`,
+  hook:"= ise birleştir (hızlı, kaba). ⊆ ise grafta yay (hassas, yavaş)." },
+ { no:"7.3", t:"Örnek: kısıtlarla tip analizi", body:`
+  <p>Her değişken ve ifade için bilinmeyen bir tip yazılır ve <code>[[x]]</code> diye gösterilir. Her satır bir kısıt üretir:</p>
+<pre class="code">x = 5;          <span class="c">// [[x]] = int</span>
+y = x + 1;      <span class="c">// [[x]] = int, [[y]] = int</span>
+if (z) { ... }  <span class="c">// [[z]] = bool</span>
+w = y &amp;&amp; z;     <span class="c">// [[y]] = bool  ← ÇELİŞKİ: int = bool</span></pre>
+  <p>Kısıtlar birleştirmeyle çözülür. Çözüm varsa program tip açısından güvenlidir. Çelişki çıkarsa (int = bool) tip hatası, kod hiç çalıştırılmadan bulunmuş olur.</p>`,
+  hook:"Her satır bir denklem. Denklemler çelişirse hata var." },
+ { no:"7.4", t:"Kontrol akış analizi (CFA)", body:`
+  <p>Fonksiyon işaretçileri, geri çağırmalar (callback) ve sanal metot çağrılarında <b>hangi fonksiyonun çağrılacağı</b> koda bakınca belli değildir. Kontrol akış analizi her çağrı noktasında çağrılabilecek fonksiyonların kümesini kapsama kısıtlarıyla hesaplar ve programın <b>çağrı grafını</b> çıkarır.</p>
+<pre class="code">f = kosul ? topla : carp;   <span class="c">// {topla, carp} ⊆ [[f]]</span>
+f(3, 4);                    <span class="c">// çağrılabilecekler: {topla, carp}</span></pre>
+  <p>En bilinen hali bağlama duyarsız <b>0-CFA</b>’dır. Çağrı grafı olmadan fonksiyonlar arası veri akışı ve işaretçi analizi yapılamaz.</p>`,
+  hook:"f() dendiğinde hangi f? CFA bunun listesini çıkarır." },
+ { no:"7.5", t:"Kısıtlar ve test: SMT ile bağlantı", body:`
+  <p>Kısıt fikri 4. haftadaki otomatik test üretiminde de vardı. Sembolik çalıştırma her yol için bir <b>yol kısıtı</b> toplar, SMT çözücü bu kısıtı sağlayan somut girdiyi bulur. <b>Kısıt tabanlı test üretimi</b> budur: “bu dala girmek için x &gt; 10 ve y == x*2 olmalı” kısıtını çözücüye verirsin, o da test girdisini üretir.</p>
+  <div class="pair"><div><b>Kısıt tabanlı analiz</b><span>Kısıtlar programın <b>bütün</b> davranışını özetler. Çözüm bir analiz sonucudur: tipler, points-to kümeleri, çağrı grafı.</span></div><div><b>Kısıt tabanlı test</b><span>Kısıt <b>tek bir yolu</b> tarif eder. Çözüm o yolu çalıştıran somut test girdisidir.</span></div></div>`,
+  hook:"Analizde çözüm = programın özeti. Testte çözüm = test girdisi." },
+ { no:"7.6", t:"Avantajlar ve sınırlar", body:`
+  <div class="pair"><div><b class="plus">Avantajları</b><span>Analizin tanımı ile çözüm algoritması ayrıdır, kolay değiştirilir. Aynı çözücü birçok analizde kullanılır. Sonuç (sabit nokta) matematiksel olarak tanımlıdır.</span></div><div><b class="minus">Sınırları</b><span>Büyük programlarda kısıt sayısı çok artar; kapsama kısıtları kübik zamana çıkabilir. Hassasiyet seçimine göre yanlış alarm verir; Rice teoremi burada da geçerlidir.</span></div></div>`,
+  hook:"Temiz ve genel bir yöntem, ama büyük kodda pahalı." }
 ]}
 ];
 
@@ -765,7 +870,42 @@ const QS = [
 {w:5,q:"MISRA C nedir?",o:["Otomotiv gibi güvenlik kritik sistemler için C kodlama standartları","Bir fuzzing aracı","Bir genetik algoritma","Bir C derleyicisi"],a:0,e:"Statik analiz araçları uyumu otomatik denetler."},
 {w:5,q:"Java veya C#’ta başlatılmamış bir yerel değişken okunmaya çalışılırsa ne olur?",o:["Derleme hatası verilir","Rastgele çöp değer okunur","Program sessizce çalışır","Değer otomatik 42 olur"],a:0,e:"Yönetilen diller UR’yi derleme anında yakalar."},
 {w:5,q:"C/C++’ta başlatılmamış yerel değişken okunursa genellikle ne olur?",o:["Bellekte kalan çöp değer okunur, tanımsız davranış oluşur","Derleme hatası verilir","Değişken otomatik 0 olur","Program hemen güvenle durur"],a:0,e:"Yönetilmeyen dil olduğu için öngörülemez sonuçlar doğar."},
-{w:5,q:"Veri akışı analizini rastgele testle karşılaştırınca hangisi doğrudur?",o:["DFA hiç çalışmayan yollardaki hataları da bulabilir ama yanlış pozitif oranı daha yüksektir","DFA yalnızca çalışan yollardaki hataları bulur","Rastgele testin yanlış pozitif oranı DFA’dan yüksektir","DFA kodu milyonlarca kez çalıştırır"],a:0,e:"Statik geniş ama şüpheci, dinamik dar ama kesin."}
+{w:5,q:"Veri akışı analizini rastgele testle karşılaştırınca hangisi doğrudur?",o:["DFA hiç çalışmayan yollardaki hataları da bulabilir ama yanlış pozitif oranı daha yüksektir","DFA yalnızca çalışan yollardaki hataları bulur","Rastgele testin yanlış pozitif oranı DFA’dan yüksektir","DFA kodu milyonlarca kez çalıştırır"],a:0,e:"Statik geniş ama şüpheci, dinamik dar ama kesin."},
+// Hafta 2 ek
+{w:2,q:"Hangisi geçerli kılma (validation) faaliyetine örnektir?",o:["Müşteriyle yapılan kabul testi","Kod incelemesi","Statik analiz","Tasarım dokümanının spesifikasyona uygunluk kontrolü"],a:0,e:"Validation kullanıcının gerçek ihtiyacını sorar; kod incelemesi ve statik analiz verification örnekleridir."},
+{w:2,q:"Sistemin ne yaptığından çok işini nasıl yaptığıyla ilgilenen testler hangileridir?",o:["Fonksiyonel olmayan testler","Fonksiyonel testler","Birim testleri","Regresyon testleri"],a:0,e:"Performans, güvenlik ve kullanılabilirlik fonksiyonel olmayan testlerdir."},
+{w:2,q:"Uygulamanın son kullanıcı için ne kadar kolay, sezgisel ve anlaşılır olduğunu ölçen test hangisidir?",o:["Kullanılabilirlik testi","Performans testi","Güvenlik testi","Stres testi"],a:0,e:"Usability testing."},
+{w:2,q:"TDD’de ilk adım nedir?",o:["Kod yazılmadan önce test senaryosu yazılır","Kod yazılır, sonra test eklenir","Kod temizlenir (refactor)","Kabul testi yapılır"],a:0,e:"Test güdümlü geliştirme: önce test, sonra kod."},
+{w:2,q:"TDD döngüsünün doğru sırası hangisidir?",o:["Red → Green → Refactor","Green → Red → Refactor","Refactor → Red → Green","Red → Refactor → Green"],a:0,e:"Test başarısız (Red), en az kodla geçer (Green), kod temizlenir (Refactor)."},
+{w:2,q:"TDD’de yazılan test ilk çalıştırmada neden başarısız olur?",o:["Testin doğruladığı kod henüz yazılmadığı için","Test yanlış yazıldığı için","Derleyici hatası olduğu için","Ortam kurulmadığı için"],a:0,e:"Red aşaması beklenen bir durumdur."},
+{w:2,q:"Donanım kaynaklarını (bellek, işlemci) en az ve verimli kullanma hangi kalite ölçütüdür?",o:["Etkinlik (Efficiency)","Doğruluk (Correctness)","Güvenilirlik (Reliability)","Taşınabilirlik"],a:0,e:"Etkinlik kaynak kullanımıyla ilgilidir."},
+{w:2,q:"Sistemin her koşulda kesintisiz ve istenen şekilde çalışabilme düzeyi hangi kalite ölçütüdür?",o:["Güvenilirlik (Reliability)","Doğruluk (Correctness)","Etkinlik (Efficiency)","Kullanılabilirlik"],a:0,e:"Doğruluk ise gereksinim dokümanına tam uymaktır."},
+// Hafta 6
+{w:6,q:"İşaretçi analizinde aliasing (takma ad) ne demektir?",o:["İki farklı işaretçinin aynı bellek konumunu göstermesi","Bir değişkenin iki kez tanımlanması","Bir fonksiyonun iki adı olması","Belleğin serbest bırakılması"],a:0,e:"*p ve *q aynı yeri değiştirebilir; analiz bunu bilmezse yanılır."},
+{w:6,q:"pt(p) neyi ifade eder?",o:["p işaretçisinin gösterebileceği bellek konumlarının kümesi","p’nin değerinin kaç kez okunduğu","p’nin bellekteki boyutu","p’yi gösteren işaretçiler"],a:0,e:"Points-to kümesi."},
+{w:6,q:"<code>p = &amp;x</code> ifadesi hangi kuralı üretir?",o:["x ∈ pt(p)","pt(x) ⊆ pt(p)","pt(p) ⊆ pt(x)","pt(p) = ∅"],a:0,e:"Adres alma: x, p’nin gösterebileceği yerlere eklenir."},
+{w:6,q:"Andersen analizinde <code>p = q</code> ataması hangi kısıtı üretir?",o:["pt(q) ⊆ pt(p)","pt(p) ⊆ pt(q)","pt(p) = pt(q)","p ∈ pt(q)"],a:0,e:"q’nun gösterebileceği her yeri p de gösterebilir."},
+{w:6,q:"<code>*p = q</code> ifadesine ne ad verilir?",o:["Saklama (store)","Yükleme (load)","Adres alma","Kopyalama"],a:0,e:"p’nin gösterdiği yere yazılır. p = *q ise yüklemedir."},
+{w:6,q:"<code>p = *q</code> ifadesine ne ad verilir?",o:["Yükleme (load)","Saklama (store)","Adres alma","Birleştirme"],a:0,e:"q’nun gösterdiği yerden okunur."},
+{w:6,q:"<code>p = &amp;x; q = &amp;y; p = q;</code> için akışa duyarsız Andersen analizinde pt(p) nedir?",o:["{x, y}","{x}","{y}","{}"],a:0,e:"Sıra dikkate alınmaz; p hem x’i hem y’yi gösterebilir."},
+{w:6,q:"Alt küme kısıtlarıyla çalışan, hassas ama en kötü durumda kübik zamanlı işaretçi analizi hangisidir?",o:["Andersen","Steensgaard","0-CFA","Leke analizi"],a:0,e:"Steensgaard ise birleştirme tabanlı ve neredeyse doğrusaldır."},
+{w:6,q:"Steensgaard analizi için hangisi doğrudur?",o:["Atamaları eşitlik olarak modeller; çok hızlı ama daha kabadır","Andersen’den daha hassastır","Kodu çalıştırarak analiz eder","Sadece Java için çalışır"],a:0,e:"p = q ise iki küme birleştirilir."},
+{w:6,q:"Komutların sırasını dikkate alıp her program noktası için ayrı sonuç tutan analiz hangisidir?",o:["Akışa duyarlı (flow-sensitive)","Bağlama duyarlı (context-sensitive)","Alana duyarlı (field-sensitive)","Akışa duyarsız"],a:0,e:"Akışa duyarsız analiz bütün program için tek sonuç verir."},
+{w:6,q:"Bir fonksiyonun farklı yerlerden yapılan çağrılarını ayrı ayrı analiz eden yaklaşım hangisidir?",o:["Bağlama duyarlı (context-sensitive)","Akışa duyarlı","Alana duyarlı","Birleştirme tabanlı"],a:0,e:"Duyarsız analiz bütün çağrıları karıştırır."},
+{w:6,q:"Her <code>malloc</code>/<code>new</code> satırının tek bir soyut nesne sayılmasının amacı nedir?",o:["Points-to kümelerinin sonlu kalmasını sağlamak","Programı hızlandırmak","Bellek sızıntısını önlemek","Derleme hatası vermek"],a:0,e:"Çalışma anında sınırsız nesne oluşabilir; analiz sonlu bir soyutlama ister."},
+{w:6,q:"“p ve q bazı çalışmalarda aynı yeri gösterebilir” hangi kavramdır?",o:["May-alias","Must-alias","Null dereference","Use-after-free"],a:0,e:"Must-alias her çalışmada kesin aynı yeri göstermektir."},
+// Hafta 7
+{w:7,q:"Kısıtlamaya dayalı analizin iki temel aşaması hangisidir?",o:["Kısıt üretimi ve kısıt çözümü","Derleme ve çalıştırma","Modelleme ve kahin","Mutasyon ve çaprazlama"],a:0,e:"Önce denklemler yazılır, sonra çözücüyle çözülür."},
+{w:7,q:"Kısıtlamaya dayalı analizin temel avantajı nedir?",o:["Analizin tanımı ile çözüm algoritmasının birbirinden ayrılması","Hiç yanlış alarm vermemesi","Kodu çalıştırması","Rice teoremini aşması"],a:0,e:"Aynı çözücü farklı analizlerde kullanılabilir."},
+{w:7,q:"Eşitlik kısıtları hangi algoritmayla çözülür?",o:["Birleştirme (unification)","Genetik algoritma","Big Bang","Fuzzing"],a:0,e:"Tip çıkarımı ve Steensgaard bu yolla çözülür."},
+{w:7,q:"Kapsama (⊆) kısıtları genellikle nasıl çözülür?",o:["Kısıt grafında değerler sabit noktaya kadar yayılır","Rastgele girdilerle","Kod çalıştırılarak","Birleştirme ile tek adımda"],a:0,e:"İş listesi algoritmasıyla aynı mantık."},
+{w:7,q:"Hangisi kapsama (⊆) kısıtlarıyla çalışan bir analizdir?",o:["Andersen işaretçi analizi","Steensgaard işaretçi analizi","Tip çıkarımı","Sözdizimsel analiz"],a:0,e:"Steensgaard ve tip çıkarımı eşitlik kısıtı kullanır."},
+{w:7,q:"Tip kısıtlarından hem <code>[[y]] = int</code> hem <code>[[y]] = bool</code> çıkarsa ne anlaşılır?",o:["Programda tip hatası vardır","Program doğrudur","y iki tipe birden sahip olabilir","Analiz sonsuza kadar çalışır"],a:0,e:"Kısıtlar çelişiyor: hata kod çalıştırılmadan bulunur."},
+{w:7,q:"Kontrol akış analizinin (CFA) amacı nedir?",o:["Her çağrı noktasında hangi fonksiyonların çağrılabileceğini bulup çağrı grafını çıkarmak","Bellek sızıntısını bulmak","Performansı ölçmek","Test girdisi üretmek"],a:0,e:"Fonksiyon işaretçileri ve sanal çağrılar için gereklidir."},
+{w:7,q:"<code>f = kosul ? topla : carp; f(3,4);</code> için CFA’ya göre çağrılabilecek fonksiyonlar hangileridir?",o:["{topla, carp}","{topla}","{carp}","{f}"],a:0,e:"Koşul analiz anında bilinmediği için ikisi de mümkündür."},
+{w:7,q:"0-CFA nedir?",o:["Bağlama duyarsız kontrol akış analizi","Sıfır hatalı bir test aracı","Bir fuzzing türü","Akışa duyarlı işaretçi analizi"],a:0,e:"En temel CFA türüdür."},
+{w:7,q:"Kısıt tabanlı test üretiminde çözücünün ürettiği şey nedir?",o:["Belirli bir yolu çalıştıran somut test girdisi","Programın çağrı grafı","Tip hatası listesi","Points-to kümeleri"],a:0,e:"Sembolik çalıştırma + SMT bağlantısı."},
+{w:7,q:"5. haftadaki GEN/KILL denklemleri ve iş listesi algoritması kısıtlamaya dayalı analizle nasıl ilişkilidir?",o:["Onlar da bir kısıt sistemi ve sabit nokta çözümüdür","Hiçbir ilişkisi yoktur","Onlar dinamik analizdir","Onlar sadece test üretimi içindir"],a:0,e:"Veri akışı denklemleri de çözülmesi gereken kısıtlardır."}
 ];
 
 /* ===================== KARTLAR ===================== */
@@ -817,7 +957,21 @@ const CARDS = [
 [5,"Mevcut ifadeler","İleri, ∩. İfade bütün yollarda hesaplanmış mı?"],
 [5,"Çok meşgul ifadeler","Geri, ∩. İfade her çıkış yolunda hesaplanacak mı?"],
 [5,"Sabit nokta","İş listesi algoritmasında hiçbir küme değişmeyince ulaşılan durum."],
-[5,"Leke analizi","Kirli girdinin temizlenmeden tehlikeli noktaya ulaşmasını izler."]
+[5,"Leke analizi","Kirli girdinin temizlenmeden tehlikeli noktaya ulaşmasını izler."],
+[2,"Fonksiyonel olmayan test","Sistemin işini NASIL yaptığı: performans, güvenlik, kullanılabilirlik."],
+[2,"TDD","Önce test yaz → Red → en az kod → Green → Refactor."],
+[2,"Kalite ölçütleri","Doğruluk, güvenilirlik, etkinlik."],
+[6,"Aliasing","İki işaretçinin aynı bellek konumunu göstermesi."],
+[6,"pt(p)","p’nin gösterebileceği konumların kümesi (points-to)."],
+[6,"Load / Store","p = *q yükleme; *p = q saklama."],
+[6,"Andersen","Alt küme (⊆) kısıtları; hassas ama kübik."],
+[6,"Steensgaard","Birleştirme (=); neredeyse doğrusal ama kaba."],
+[6,"Akış / bağlam / alan duyarlılığı","Sıra, çağıran yer ve struct alanları ayrı ayrı izleniyor mu?"],
+[7,"Kısıtlamaya dayalı analiz","Önce kısıt üret, sonra çözücüyle çöz."],
+[7,"Unification","Eşitlik kısıtlarını çözen birleştirme algoritması."],
+[7,"Kapsama kısıtı","A ⊆ B; kısıt grafında sabit noktaya kadar yayılır."],
+[7,"Kontrol akış analizi (0-CFA)","Her çağrı noktasında çağrılabilecek fonksiyonları bulur; çağrı grafı."],
+[7,"Kısıt tabanlı test","Yol kısıtını çözücüye ver, test girdisini al."]
 ];
 
 /* ===================== YARDIMCILAR ===================== */
@@ -829,6 +983,7 @@ const store = {
 const shuffle = a => { a = a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
 const icon = (id, cls="i") => `<svg class="${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
 const wc = id => `--wc:var(--w${id})`;
+CARDS.sort((a,b)=>a[0]-b[0]);
 const learned = new Set(store.get("yt-learned", []));
 const totalTopics = WEEKS.reduce((n,w)=>n+w.topics.length,0);
 const RING = 263.9;
@@ -846,7 +1001,7 @@ document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",
 document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.go)));
 window.addEventListener("hashchange",()=>show(location.hash.slice(1)));
 const goWeek = id => document.getElementById("w"+id).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"});
-function quizWeek(id){ quizState.scope = id; quizState.count = "all"; startQuiz(); show("test"); }
+function quizWeek(id){ quizState.scope = id; quizState.count = id==="all" ? 30 : "all"; startQuiz(); show("test"); }
 
 /* ===================== KONULAR ===================== */
 function renderStudy(){
@@ -859,8 +1014,14 @@ function renderStudy(){
     <h3>${w.title}</h3>
     <div class="meta"><span>${w.topics.length} başlık</span><span>${QS.filter(q=>q.w===w.id).length} soru</span></div>
     <div class="mini" aria-hidden="true"><i id="mini-${w.id}"></i></div>
+    ${w.note?'<span class="src">Notlarda yok · genel kaynak</span>':""}
     <div class="acts"><button data-read="${w.id}">Oku</button><button data-quiz="${w.id}">Test et</button></div>
-  </article>`).join("");
+  </article>`).join("") + `<article class="wcard all" style="--wc:var(--primary)">
+    <span class="num">${icon("check-sq")}</span>
+    <h3>Genel deneme</h3>
+    <div class="meta"><span>Bütün haftalardan</span><span>30 soru</span></div>
+    <div class="acts"><button data-quiz="all">Sınava başla</button></div>
+  </article>`;
 
   const rail = $("#rail");
   WEEKS.forEach(w=>{
@@ -874,6 +1035,7 @@ function renderStudy(){
   $("#weeks").innerHTML = WEEKS.map(w=>`<section class="week" id="w${w.id}" style="${wc(w.id)}">
     <div class="week-head"><div class="t"><span class="eyebrow">Hafta ${w.id}</span><h2>${w.title}</h2><p>${w.sum}</p></div>
       <button class="btn primary" data-quiz="${w.id}" style="background:var(--wc);border-color:var(--wc)">${icon("play")}Bu haftayı test et</button></div>
+    ${w.note?`<p class="wnote">${icon("info")}<span>${w.note}</span></p>`:""}
     ${w.topics.map(t=>{ const id="learn-"+t.no.replace(".","-"); return `<article class="topic">
       <div class="topic-h"><span class="no">${t.no}</span><h3>${t.t}</h3></div>
       ${t.body}
@@ -889,7 +1051,7 @@ function renderStudy(){
     store.set("yt-learned",[...learned]); updateProgress();
   });
   vk.addEventListener("click",e=>{
-    const q = e.target.closest("[data-quiz]"); if(q) return quizWeek(+q.dataset.quiz);
+    const q = e.target.closest("[data-quiz]"); if(q) return quizWeek(q.dataset.quiz==="all" ? "all" : +q.dataset.quiz);
     const r = e.target.closest("[data-read]"); if(r) goWeek(+r.dataset.read);
   });
   updateProgress();
