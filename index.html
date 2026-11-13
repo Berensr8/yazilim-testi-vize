@@ -263,6 +263,23 @@ figure.cfg .ah{fill:var(--muted)}
 .fc .hint{display:flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:.7rem;color:var(--muted);margin-top:auto}
 .fc .hint svg.i{width:14px;height:14px}
 .fc[aria-expanded="true"]{background:color-mix(in srgb,var(--wc) 9%,var(--surface));border-color:var(--wc)}
+/* ---------- kopya kagidi ---------- */
+.cheat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.cheat-card{--wc:var(--primary);background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--wc);border-radius:var(--r-l);padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow)}
+.cheat-card .ch-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cheat-card h3{font-size:1.12rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.cheat-card .badge{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--wc);background:color-mix(in srgb,var(--wc) 12%,transparent);padding:3px 9px;border-radius:999px;flex:none}
+.cheat-card ul{margin:0;padding-left:1.15em;display:flex;flex-direction:column;gap:6px;font-size:.94rem}
+.cheat-card li::marker{color:var(--wc)}
+.cheat-card code{font-family:var(--f-mono);font-size:.83em;background:var(--sunk);padding:1px 6px;border-radius:5px}
+.cheat-card .mini-tbl{width:100%;border-collapse:collapse;font-size:.87rem;border:1px solid var(--line);border-radius:var(--r-s);overflow:hidden}
+.cheat-card .mini-tbl th,.cheat-card .mini-tbl td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.cheat-card .mini-tbl tr:last-child td{border-bottom:0}
+.cheat-card .mini-tbl th{background:var(--sunk);font-family:var(--f-mono);font-size:.68rem;text-transform:uppercase;color:var(--muted)}
+.cheat-card .fbox{font-family:var(--f-mono);font-size:.9rem;background:color-mix(in srgb,var(--wc) 11%,var(--surface));padding:10px 12px;border-radius:var(--r-s);font-weight:600}
+.cheat-card .tip{font-size:.88rem;background:var(--gold-soft);color:var(--ink);padding:8px 12px;border-radius:var(--r-s);border-left:3px solid var(--gold)}
+.cheat-card.wide{grid-column:1/-1}
+@media print{header.top,.no-print{display:none !important}body{background:#fff;color:#000;font-size:13px}.panel{padding-block:0 !important}.cheat-grid{grid-template-columns:repeat(2,1fr);gap:10px}.cheat-card{break-inside:avoid;box-shadow:none;padding:12px}}
 
 @media (max-width:900px){
   .hero{grid-template-columns:minmax(0,1fr)}
@@ -301,6 +318,8 @@ figure.cfg .ah{fill:var(--muted)}
   <symbol id="i-redo" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></symbol>
   <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
   <symbol id="i-tap"viewBox="0 0 24 24"><path d="M9 11V5a2 2 0 0 1 4 0v6"/><path d="M13 9a2 2 0 0 1 4 0v3a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.7L3 14a2 2 0 0 1 3.3-2.2L9 15"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+  <symbol id="i-printer" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
 </svg>
 
 <a class="skip" href="#main">İçeriğe geç</a>
@@ -314,6 +333,7 @@ figure.cfg .ah{fill:var(--muted)}
       <button role="tab" id="tab-konular" data-view="konular" aria-selected="true"><svg class="i"><use href="#i-book"/></svg>Konular</button>
       <button role="tab" id="tab-test" data-view="test" aria-selected="false"><svg class="i"><use href="#i-check-sq"/></svg>Test</button>
       <button role="tab" id="tab-kartlar" data-view="kartlar" aria-selected="false"><svg class="i"><use href="#i-layers"/></svg>Kartlar</button>
+      <button role="tab" id="tab-kopya" data-view="kopya" aria-selected="false"><svg class="i"><use href="#i-zap"/></svg>Kopya Kağıdı</button>
     </nav>
   </div>
 </header>
@@ -328,6 +348,7 @@ figure.cfg .ah{fill:var(--muted)}
         <div class="row">
           <button class="btn primary" data-go="test"><svg class="i"><use href="#i-play"/></svg>Deneme sınavı</button>
           <button class="btn" data-go="kartlar"><svg class="i"><use href="#i-layers"/></svg>Kavram kartları</button>
+          <button class="btn" data-go="kopya"><svg class="i"><use href="#i-zap"/></svg>Kopya kağıdı</button>
         </div>
       </div>
       <aside class="prog-card" aria-label="İlerleme">
@@ -367,6 +388,22 @@ figure.cfg .ah{fill:var(--muted)}
         </div>
       </div>
       <div class="deck" id="deck"></div>
+    </div>
+  </section>
+
+  <section id="view-kopya" class="wrap" hidden>
+    <div class="panel" style="max-width:1160px">
+      <div class="row" style="align-items:flex-end;justify-content:space-between;gap:16px">
+        <div class="panel-h">
+          <h2>Kopya Kağıdı · Sınav Öncesi Son Bakış</h2>
+          <p>Sınavda en çok karıştırılan ikililer, ezber şifreleri, formüller ve kritik tablolar tek sayfada.</p>
+        </div>
+        <button class="btn no-print" onclick="window.print()"><svg class="i"><use href="#i-printer"/></svg>Yazdır / PDF</button>
+      </div>
+      <div class="row no-print" style="align-items:center;justify-content:space-between">
+        <div class="chips" id="cheat-filter"></div>
+      </div>
+      <div class="cheat-grid" id="cheat-grid"></div>
     </div>
   </section>
 </main>
@@ -1218,7 +1255,7 @@ const RING = 263.9;
 const ringSvg = (pct, color="var(--pass)") => `<div class="ring"><svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="42"/><circle class="val" cx="50" cy="50" r="42" stroke-dasharray="${RING}" stroke-dashoffset="${RING*(1-pct/100)}" style="stroke:${color}"/></svg><b>%${pct}</b></div>`;
 
 /* ===================== GÖRÜNÜMLER ===================== */
-const VIEWS = ["konular","test","kartlar"];
+const VIEWS = ["konular","test","kartlar","kopya"];
 function show(v, keepScroll){
   if(!VIEWS.includes(v)) v = "konular";
   VIEWS.forEach(x=>{ $("#view-"+x).hidden = x!==v; $("#tab-"+x).setAttribute("aria-selected", x===v); });
@@ -1422,7 +1459,169 @@ $("#card-shuffle").addEventListener("click",()=>{cardOrder=shuffle(cardOrder);al
 $("#card-reveal").addEventListener("click",()=>{allOpen=!allOpen;renderCards();});
 
 /* ===================== BAŞLAT ===================== */
-renderStudy(); renderSetup(); renderCards();
+/* ===================== KOPYA KAĞIDI ===================== */
+const CHEATS = [
+  {w:1, tag:"Hafta 1 · Kritik Zincir", title:"Error → Fault → Failure & Felaketler", body:`
+    <ul>
+      <li><b>1. Error (Hata):</b> İnsanda (geliştirici/tasarımcı kafasında yapılan yanlış karar).</li>
+      <li><b>2. Fault (Kusur / Bug):</b> Kodda (hatanın koda/dokümana yansımış fiziksel izi).</li>
+      <li><b>3. Failure (Başarısızlık):</b> Ekranda/Çalışırken (kusurlu satır çalışınca sistemin çökmesi).</li>
+      <li><b>Therac-25 (1985):</b> Tıbbi cihaz → ~100 kat aşırı radyasyon dozu (can kaybı).</li>
+      <li><b>Ariane 5 (1996):</b> Uzay roketi → <b>64-bit</b> kayan noktalı sayının <b>16-bit</b> tamsayıya dönüştürülürken taşması (40. sn'de patlama).</li>
+      <li><b>Shift-Left:</b> Testi en sona (şelale) bırakmak yerine zaman çizelgesinde <b>en başa (sola)</b> çekmek. Erken bulunan hata ucuza çözülür.</li>
+    </ul>
+    <div class="tip"><b>Unutma:</b> Kusurlu satır (Fault) hiç çalıştırılmazsa asla Failure oluşmaz!</div>
+  `},
+  {w:1, tag:"Hafta 1 · İkilemler", title:"V&V · Statik vs Dinamik · Soundness vs Completeness", body:`
+    <table class="mini-tbl">
+      <tr><th>Kavram</th><th>Soru / Özellik</th><th>Anahtar Kelime</th></tr>
+      <tr><td><b>Verification</b> (Doğrulama)</td><td>"Ürünü <b>doğru mu</b> inşa ediyoruz?"</td><td>Plana/spesifikasyona uygunluk, statik test, kod inceleme</td></tr>
+      <tr><td><b>Validation</b> (Geçerleme)</td><td>"<b>Doğru ürünü mü</b> inşa ediyoruz?"</td><td>Müşteri/kullanıcı beklentisi, dinamik test, kabul testi</td></tr>
+      <tr><td><b>Statik Analiz</b></td><td>Kodu <b>çalıştırmadan</b> okur (%100 kapsam)</td><td>AST, CFG (ölü kod), DFA, İşaretçi · <b>Çok yanlış alarm (FP)</b></td></tr>
+      <tr><td><b>Dinamik Analiz</b></td><td>Kodu <b>çalıştırarak</b> inceler (Dar kapsam)</td><td>Bellek sızıntısı, profilleme · <b>Yanlış alarm ~0, kesin</b></td></tr>
+      <tr><td><b>Kesinlik (Soundness)</b></td><td>Hiçbir gerçek hatayı <b>kaçırmamak</b></td><td>Üst yaklaşım, yanlış alarm verir (Statik analiz yakın)</td></tr>
+      <tr><td><b>Tamlık (Completeness)</b></td><td>Raporlanan her şey <b>%100 gerçek hata</b></td><td>Alt yaklaşım, bazı hataları kaçırır (Dinamik analiz yakın)</td></tr>
+    </table>
+    <div class="tip"><b>Turing Durma Problemi:</b> Durur mu bilemezsin. <b>Rice Teoremi:</b> Anlamsal (davranışsal, ör. "sıfıra böler mi?") hiçbir özelliğe genel olarak karar verilemez → Kusursuz analiz aracı imkansızdır!</div>
+  `},
+  {w:2, tag:"Hafta 2 · 7 Prensip & Seviyeler", title:"Testin 7 Prensibi · Stub vs Driver · TDD", body:`
+    <div class="fbox">Şifre: "Varlık Kapsamı Erken Kümelenir, Pestisit Bağlamı Yanıltır"</div>
+    <ul>
+      <li><b>1. Varlığını gösterir:</b> Hata var der ama <b>yokluğunu kanıtlayamaz</b>.</li>
+      <li><b>2. Kapsamlı (exhaustive) test imkansız:</b> Her girdi denenemez → Risk temelli seçim.</li>
+      <li><b>3. Erken test (Shift-Left)</b> · <b>4. Kümelenme (Pareto 80/20):</b> Hataların %80'i modüllerin %20'sinde.</li>
+      <li><b>5. Pestisit paradoksu:</b> Hep aynı testler koşulursa yeni hata bulamaz (bağışıklık).</li>
+      <li><b>6. Bağlama bağlıdır</b> (Banka ≠ Oyun) · <b>7. Hatasızlık yanılgısı:</b> 0 hata bile müşteri istemiyorsa çöptür.</li>
+      <li><b>Top-Down Entegrasyon:</b> Üstten başlar, eksik alt modül yerine <b>Stub</b> konur.</li>
+      <li><b>Bottom-Up Entegrasyon:</b> Alttan başlar, çağıran üst modül yerine <b>Driver (Sürücü)</b> konur.</li>
+      <li><b>TDD Döngüsü:</b> Önce testi yaz → <b>Red</b> (başarısız) → En az kod → <b>Green</b> (geçer) → <b>Refactor</b> (temizle).</li>
+    </ul>
+  `},
+  {w:2, tag:"Hafta 2 · Kutu & Kalite", title:"Kara / Beyaz / Gri Kutu & STLC & Kalite", body:`
+    <table class="mini-tbl">
+      <tr><th>Yaklaşım</th><th>Neyi Bilir? / Kim Yapar?</th><th>Teknikler</th></tr>
+      <tr><td><b>Kara Kutu</b></td><td>İç kodu bilmez (Girdi→Çıktı) · Testçi / Kullanıcı</td><td>Eşdeğerlik bölümleme, Sınır değer</td></tr>
+      <tr><td><b>Beyaz Kutu</b></td><td>Kodu ve mimariyi tam bilir · Geliştirici</td><td>İfade (statement) ve Dal (branch) kapsamı</td></tr>
+      <tr><td><b>Gri Kutu</b></td><td>Kodu bilmez, <b>DB şeması ve mimariyi</b> bilir · Güvenlik/Teknik testçi</td><td>Matris testi, API/DB doğrulama</td></tr>
+    </table>
+    <ul>
+      <li><b>STLC Sırası (6 Adım):</b> Gereksinim Analizi → Planlama → Senaryo Tasarımı → Ortam Kurulumu → Yürütme → Kapanış.</li>
+      <li><b>Fonksiyonel:</b> NE yapıyor? · <b>Fonksiyonel Olmayan:</b> NASIL yapıyor? (Performans/Yük/Stres, Güvenlik, Kullanılabilirlik).</li>
+      <li><b>3 Kalite Ölçütü:</b> <b>Doğruluk</b> (gereksinime uyum), <b>Güvenilirlik</b> (kesintisiz çalışma), <b>Etkinlik</b> (az RAM/CPU). <i>Test kaliteyi artırmaz, ölçer (termometre)!</i></li>
+    </ul>
+  `},
+  {w:3, tag:"Hafta 3 · Rastgele & Fuzzing", title:"Rastgele Test · Maymun · Fuzzing", body:`
+    <div class="fbox">Rastgele Test Sırası: Modelleme → Dağılım Seçimi → Veri Üretimi → Koşturma → Kahin (Oracle)</div>
+    <ul>
+      <li><b>Amacı:</b> İnsan yanlılığını (hep aynı girdileri deneme) kırmak ve tasarım maliyetini düşürmek.</li>
+      <li><b>En Büyük Sorunu:</b> <b>Test Kahini (Oracle) Problemi!</b> (Binlerce rastgele çıktının doğru olup olmadığını kim bilecek?)</li>
+      <li><b>Dağılım:</b> <b>Düzgün (Uniform)</b> = her değer eşit olasılıklı · <b>Sınır Odaklı</b> = 0, -1, max, boş string gibi uçlara torpil.</li>
+      <li><b>Maymun Testi:</b> <b>Aptal (Dumb)</b> = sistemi hiç bilmez rastgele basar · <b>Akıllı (Smart)</b> = ekran/buton haritasını hafif bilir.</li>
+      <li><b>Fuzzing (Bulanıklaştırma):</b> Rastgele testin <b>siber güvenlik</b> versiyonu (bozuk girdiyle çökme/bellek taşması arar).</li>
+      <li><b>Mutasyon Tabanlı Fuzzing:</b> Geçerli bir dosyayı (ör. PDF) alıp baytlarını rastgele bozar (kolay, format bilgisi istemez).</li>
+      <li><b>Üretim Tabanlı Fuzzing:</b> Formatı/grameri sıfırdan modeller (zahmetli ama derine iner).</li>
+    </ul>
+  `},
+  {w:4, tag:"Hafta 4 · Otomatik Test Üretimi", title:"Sembolik · Concolic · SBST · Araçlar Tablosu", body:`
+    <ul>
+      <li><b>Elle Testin 3 Derdi:</b> 1) Kod kapsamı yetersizliği (<code>if(x==123456)</code>), 2) Bakım maliyeti (regresyon), 3) Oracle darboğazı.</li>
+      <li><b>Sembolik Çalıştırma:</b> Sayı yerine sembol (<code>x = α</code>) verir, dallarda yol koşulu toplar, <b>SMT çözücü (Z3)</b> ile girdi bulur. <b>Sorunu: Yol Patlaması</b> (n tane if → 2ⁿ yol).</li>
+      <li><b>Concolic (Concrete + Symbolic):</b> Somut çalıştır → Koşul topla → <b>Son koşulu tersle</b> → SMT ile çöz → Tekrarla.</li>
+      <li><b>SBST & Genetik Algoritma:</b> <b>Fitness (uygunluk)</b> fonksiyonu hedefe yakınlığı ölçer (<code>x==100</code> için 98, 5'ten iyidir). Sıra: <b>Başlangıç Popülasyonu → Değerlendirme → Çaprazlama → Mutasyon → Evrim</b>.</li>
+      <li><b>MBT (Model Tabanlı):</b> Durum makinesinden otomatik test üretir; beklenen çıktıyı da bildiği için <b>kahin problemini hafifletir</b>.</li>
+    </ul>
+    <table class="mini-tbl">
+      <tr><th>Araç</th><th>Dil</th><th>Teknik (Sınavda Banko!)</th></tr>
+      <tr><td><b>EvoSuite</b></td><td>Java</td><td><b>Genetik Algoritma (SBST)</b> → Otomatik JUnit üretir</td></tr>
+      <tr><td><b>KLEE</b></td><td>C / C++ (LLVM)</td><td><b>Sembolik / Dinamik Sembolik</b> çalıştırma (DART, CUTE ile aynı aile)</td></tr>
+      <tr><td><b>Pex</b> (IntelliTest)</td><td>.NET / C#</td><td>Microsoft'un <b>Dinamik Sembolik (Concolic)</b> aracı</td></tr>
+      <tr><td><b>PyExZ3</b> · <b>Atheris</b></td><td>Python</td><td><b>PyExZ3:</b> Z3 ile Concolic · <b>Atheris:</b> Google'ın Python <b>Fuzzer</b>'ı</td></tr>
+    </table>
+  `},
+  {w:5, tag:"Hafta 5 · Veri Akışı Analizi (DFA)", title:"Temel Blok · Anomaliler (UR/DU/DD) · GEN/KILL", body:`
+    <div class="fbox">Evrensel Transfer Fonksiyonu: OUT[B] = GEN[B] ∪ ( IN[B] − KILL[B] )</div>
+    <ul>
+      <li><b>Temel Blok (Basic Block):</b> Tek giriş (ilk satır), tek çıkış (son satır), arada <b>dallanma yok</b>! (Çalışma garantisi + Bölünemezlik).</li>
+      <li><b>Normal Yaşam Döngüsü:</b> <b>U</b> (Undefined: tanımsız) → <b>D</b> (Defined: değer atandı) → <b>R</b> (Referenced: okundu). Sağlıklı geçiş: <b>D → R</b>.</li>
+      <li><b>UR Anomalisi:</b> Atanmadan okuma (<code>int x; y = x+1;</code>) → <b>KRİTİK HATA!</b> (C/C++ çöp değer okur, Java/C# derleme hatası verir).</li>
+      <li><b>DU Anomalisi:</b> Atandı ama hiç okunmadan bitti → <b>Ölü kod / İsraf</b>.</li>
+      <li><b>DD Anomalisi:</b> Okunmadan üstüne tekrar yazıldı (<code>x=5; x=10;</code>) → <b>Mantıksal kusur şüphesi</b>.</li>
+      <li><b>GEN[B]:</b> Blokta doğan yeni atamalar · <b>KILL[B]:</b> Blokta ezilen eski atamalar.</li>
+      <li><b>İş Listesi (Worklist):</b> Kümeler değişmeyene kadar döner → <b>Sabit Nokta (Fixed Point)</b>. Durmasını <b>Kafes (Lattice) Monotonluk İlkesi</b> garanti eder.</li>
+      <li><b>Leke Analizi (Taint):</b> Source (kirli girdi) → Sanitize edilmeden → Sink (tehlikeli yer: SQL/exec) ulaştı mı? · <b>MISRA C:</b> Otomotiv C standardı.</li>
+    </ul>
+  `},
+  {w:5, tag:"Hafta 5 · 4 Klasik DFA Problemi", title:"Yön (İleri/Geri) ve Meet (∪ / ∩) Tablosu", body:`
+    <table class="mini-tbl">
+      <tr><th>Analiz Adı</th><th>Yön</th><th>Meet</th><th>Sorduğu Soru & Kullanım Alanı</th></tr>
+      <tr><td><b>Ulaşan Tanımlar</b><br>(Reaching Definitions)</td><td><b>İleri</b></td><td><b>∪</b> (Birleşim)</td><td>Hangi atamalar ezilmeden buraya ulaşıyor?<br>→ <i>Sabit yayılımı (constant propagation)</i></td></tr>
+      <tr><td><b>Canlı Değişkenler</b><br>(Live Variables)</td><td><b>Geri</b></td><td><b>∪</b> (Birleşim)</td><td>Değişkenin değeri ileride okunacak mı?<br>→ <i>Register ataması, ölü kod eleme</i></td></tr>
+      <tr><td><b>Mevcut İfadeler</b><br>(Available Expressions)</td><td><b>İleri</b></td><td><b>∩</b> (Kesişim)</td><td><code>x*y</code> buraya gelen <b>bütün yollarda</b> hesaplandı mı?<br>→ <i>Ortak alt ifade (tekrar hesaplamayı önleme)</i></td></tr>
+      <tr><td><b>Çok Meşgul İfadeler</b><br>(Very Busy Expressions)</td><td><b>Geri</b></td><td><b>∩</b> (Kesişim)</td><td>Buradan çıkan <b>bütün yollarda</b> mutlaka hesaplanacak mı?<br>→ <i>Code hoisting (ifadeyi öne alma)</i></td></tr>
+    </table>
+    <div class="tip"><b>Ezber Kancası:</b> "Herhangi bir yol yeter" (May) diyorsa <b>∪ (Birleşim)</b>, "Bütün yollarda şart" (Must) diyorsa <b>∩ (Kesişim)</b>! Ulaşan & Mevcut = İleri; Canlı & Meşgul = Geri.</div>
+  `},
+  {w:6, tag:"Hafta 6 · İşaretçi Analizi 1", title:"May vs Must · 4 Deyim · Duyarlılık Boyutları", body:`
+    <table class="mini-tbl">
+      <tr><th>Özellik</th><th>May Analizi (Olabilir)</th><th>Must Analizi (Kesin)</th></tr>
+      <tr><td><b>Mantık & Küme</b></td><td>Herhangi bir yol · <b>Birleşim (∪)</b> · Üst yaklaşım</td><td>Bütün yollar · <b>Kesişim (∩)</b> · Alt yaklaşım</td></tr>
+      <tr><td><b>if(k) p=&a; else p=&b;</b></td><td><code>pt(p) = {a, b}</code> (Kümeler büyür, yanlış alarm)</td><td><code>pt(p) = { }</code> (Boş küme, bazı durumları kaçırır)</td></tr>
+      <tr><td><b>Kullanım</b></td><td>May alias, ulaşan tanımlar, güvenlik zafiyeti</td><td>Must alias, canlı değişken, ölü kod, <b>güçlü güncelleme</b></td></tr>
+    </table>
+    <ul>
+      <li><b>May Alias Şartı:</b> <code>pt(p) ∩ pt(q) ≠ ∅</code> (Gösterdikleri kümelerin ortak elemanı varsa aynı yeri gösterebilirler).</li>
+      <li><b>4 Temel Deyim:</b> <code>p = &a</code> (Adres alma) · <code>p = q</code> (Kopyalama) · <code>p = *q</code> (<b>Yükleme/Load</b> - karmaşık) · <code>*p = q</code> (<b>Saklama/Store</b> - karmaşık).</li>
+      <li><b>Akış Duyarlılığı:</b> <code>p=&a; q=p; p=&b;</code> kodunda <b>Akış Duyarsız</b> sırayı bilmez: <code>pt(q)={a,b}</code>. <b>Akış Duyarlı</b> sırayı bilir: <code>pt(q)={a}, pt(p)={b}</code>.</li>
+      <li><b>Alan (Struct):</b> <b>Duyarsız</b> = struct tek kutu · <b>Duyarlı</b> = her nesnenin her alanı ayrı (<code>s1.f</code>) · <b>Alan Tabanlı</b> = nesneyi atar, sadece alan adına (<code>f</code>) bakar.</li>
+    </ul>
+  `},
+  {w:6, tag:"Hafta 6 · İşaretçi Analizi 2", title:"Andersen vs Steensgaard · Güçlü/Zayıf Güncelleme", body:`
+    <table class="mini-tbl">
+      <tr><th>Kriter</th><th>Andersen Analizi</th><th>Steensgaard Analizi</th></tr>
+      <tr><td><b>Kısıt Türü</b></td><td><b>Alt küme / Kapsama (⊆)</b> · Tek yönlü akış</td><td><b>Eşitlik (=)</b> · Çift yönlü birleştirme (Union-Find)</td></tr>
+      <tr><td><b>p=&a; q=&b; p=q;</b></td><td><code>pts(p) = {a, b}</code>, <code>pts(q) = {b}</code></td><td><code>pts(p) = pts(q) = {a, b}</code> (İkisini birleştirir!)</td></tr>
+      <tr><td><b>Hız & Hassasiyet</b></td><td><b>Daha hassas</b> ama yavaş — Kübik <b>O(n³)</b></td><td><b>Daha kaba</b> ama çok hızlı — Neredeyse doğrusal</td></tr>
+    </table>
+    <ul>
+      <li><b>Yığın (Heap) Soyutlaması:</b> Döngüde 1000 kez çalışan <code>malloc/new</code> satırı <b>tek bir soyut nesne (allocation site)</b> sayılır.</li>
+      <li><b>Güçlü Güncelleme (Strong Update):</b> <code>*p = &c</code> yaparken p <b>kesin tek bir somut konumu (Must)</b> gösteriyorsa eski değer silinip üstüne yazılır.</li>
+      <li><b>Zayıf Güncelleme (Weak Update):</b> p birden fazla yeri gösterebiliyorsa veya hedef bir <b>özet heap nesnesiyse</b> eski bilgi silinmez, yenisi eklenir (<code>∪</code>).</li>
+      <li><b>k-CFA vs Nesne Duyarlılığı:</b> <b>k-CFA</b> çağıran satıra bakar; <b>Nesne duyarlılığı</b> metodun hangi nesne (<code>this</code>) üzerinde çağrıldığına bakar (Java List/Map için ideal).</li>
+    </ul>
+  `},
+  {w:7, tag:"Hafta 7 · Kısıt Analizi", title:"Kısıtlamaya Dayalı Analiz & 0-CFA", body:`
+    <ul>
+      <li><b>2 Aşama:</b> <b>1) Kısıt Üretimi</b> (koddan denklem çıkarma) → <b>2) Kısıt Çözümü</b> (en küçük çözümü bulma).</li>
+      <li><b>En Büyük Avantajı:</b> Analizin <b>NE</b> hesapladığı (tanımı) ile <b>NASIL</b> hesaplandığının (çözücü algoritması) birbirinden ayrılması!</li>
+      <li><b>Eşitlik Kısıtları (=):</b> <b>Birleştirme (Unification)</b> ile çözülür → <i>Örnek: Tip çıkarımı (Type inference) ve Steensgaard analizi.</i></li>
+      <li><b>Kapsama Kısıtları (⊆):</b> <b>Kısıt grafında</b> sabit noktaya (fixed point) kadar yayarak çözülür → <i>Örnek: Andersen analizi, DFA ve 0-CFA.</i></li>
+      <li><b>Tip Analizi Çelişkisi:</b> Bir satırdan <code>[[y]] = int</code>, başka satırdan <code>[[y]] = bool</code> çıkarsa <b>çelişki</b> vardır → Tip hatası kod çalışmadan yakalanır.</li>
+      <li><b>Kontrol Akış Analizi (CFA / 0-CFA):</b> Fonksiyon işaretçisi veya sanal metot çağrısında (<code>f(3,4)</code>) <b>hangi fonksiyonların çağrılabileceğini</b> bulup <b>Çağrı Grafını (Call Graph)</b> çıkarır.</li>
+      <li><b>Analiz vs Test Kısıtı:</b> Analizde kısıt <b>bütün programı</b> özetler; Sembolik/SMT testinde kısıt <b>tek bir yolu</b> tarif eder ve çözümü <b>test girdisidir</b>.</li>
+    </ul>
+  `},
+  {w:8, tag:"Ek · ISTQB Özeti", title:"Sınır Değer · Kapsam Hesabı · Severity vs Priority", body:`
+    <ul>
+      <li><b>Eşdeğerlik Bölümleme (18–65 yaş):</b> 3 sınıf vardır → Geçersiz küçük (<code>&lt;18</code>), Geçerli (<code>18–65</code>), Geçersiz büyük (<code>&gt;65</code>) → <b>En az 3 test!</b></li>
+      <li><b>Sınır Değer Analizi (18–65 yaş):</b> <b>2 değerli:</b> <code>17, 18, 65, 66</code> · <b>3 değerli:</b> <code>17, 18, 19, 64, 65, 66</code>.</li>
+      <li><b>Karar Tablosu:</b> n tane Evet/Hayır koşulu varsa <b>2ⁿ kural (sütun)</b> vardır (3 koşul → 8 test).</li>
+      <li><b>İfade vs Dal Kapsamı:</b> <b>%100 Dal (Branch) kapsamı → %100 İfade (Statement) kapsamını GARANTİ EDER</b> (tersi doğru değildir! Tek bir <code>if</code>: doğru dalı %100 ifade verir ama dal %50 kalır).</li>
+      <li><b>Tekrar Testi (Re-test) vs Regresyon:</b> <b>Tekrar testi</b> = "Düzeltilen hata gerçekten düzeldi mi?" · <b>Regresyon</b> = "Düzeltirken çalışan başka yeri bozduk mu?" (Otomasyona en uygun).</li>
+      <li><b>Severity (Ciddiyet) vs Priority (Öncelik):</b> <b>Severity</b> = Teknik etki (Testçi belirler) · <b>Priority</b> = Ne kadar acil? (İş birimi belirler). <i>Örnek: Ana sayfada firma adının yanlış yazılması → <b>Düşük Severity, Yüksek Priority!</b></i></li>
+      <li><b>Risk Formülü:</b> <code>Risk = Hata Çıkma Olasılığı × Çıkarsa Yaratacağı Etki</code>.</li>
+    </ul>
+  `}
+];
+let cheatScope = "all";
+function renderCheat(){
+  $("#cheat-filter").innerHTML = [["all","Tümü"],...WEEKS.map(w=>[w.id,wl(w.id)])].map(([v,l])=>`<button class="chip" data-v="${v}" style="${v==="all"?"":wc(v)}" aria-pressed="${String(cheatScope)===String(v)}">${v==="all"?"":'<span class="dot" aria-hidden="true"></span>'}${l}</button>`).join("");
+  const list = CHEATS.filter(c=>cheatScope==="all"||c.w===cheatScope);
+  $("#cheat-grid").innerHTML = list.map(c=>`<article class="cheat-card" style="${wc(c.w)}"><div class="ch-head"><h3>${c.title}</h3><span class="badge">${c.tag}</span></div>${c.body}</article>`).join("");
+}
+$("#cheat-filter").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;cheatScope=b.dataset.v==="all"?"all":+b.dataset.v;renderCheat();});
+
+/* ===================== BAŞLAT ===================== */
+renderStudy(); renderSetup(); renderCards(); renderCheat();
 show(location.hash.slice(1) || "konular", true);
 </script>
 
