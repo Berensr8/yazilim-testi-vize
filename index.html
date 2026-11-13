@@ -686,50 +686,158 @@ c = a + b;          <span class="c">// B4</span></pre>
   <div><b>Java ve C# (yönetilen dil)</b><span>Derleyici kendisi veri akışı analizi yapar; başlatılmamış yerel değişkenin okunmasına izin vermez, derleme hatası verir. Sınıf alanları varsayılan değer (0, null) alır.</span></div></div>`,
   hook:"C/C++ çöp değerle çalışmaya devam eder; Java/C# derlemeyi baştan reddeder." }
 ]},
-{ id:6, title:"İşaretçi Analizi", sum:"Aliasing, points-to kümeleri, dört temel işaretçi ifadesi, Andersen ve Steensgaard, hassasiyet.", note:"Bu hafta için defter notu yok. Konu dersin akışına (veri akışı → işaretçi analizi) göre genel kaynaklardan derlendi. Derste anlatılınca notlarla karşılaştır.", topics:[
- { no:"6.1", t:"Neden işaretçi analizi? Takma ad (aliasing) sorunu", body:`
-  <p>C/C++ gibi dillerde iki farklı işaretçi aynı bellek adresini gösterebilir; buna <b>takma ad (aliasing)</b> denir. Veri akışı analizi <code>*p = 5</code> satırının hangi değişkeni değiştirdiğini bilmezse yanlış sonuç çıkarır. İşaretçi analizi, her işaretçinin çalışma anında <b>hangi bellek konumlarını gösterebileceğini</b> kodu çalıştırmadan tahmin eder.</p>
+{ id:6, title:"İşaretçi Analizi", sum:"May/Must analizi, dört temel deyim, hassasiyet boyutları, Andersen, Steensgaard, güçlü/zayıf güncelleme, uygulamalar.", src:"Başlıklar notlardan", note:"Başlıklar ve sıralama hocanın 6. hafta notundan alındı. Notta başlıkların içi boş olduğu için açıklamalar ve örnekler genel kaynaklardan dolduruldu.", topics:[
+ { no:"6.1", t:"Neden işaretçi analizine ihtiyaç duyarız?", body:`
+  <p>C/C++ gibi dillerde iki farklı işaretçi aynı bellek adresini gösterebilir; buna <b>takma ad (aliasing)</b> denir. Analiz <code>*p = 5</code> satırının hangi değişkeni değiştirdiğini bilmezse yanlış sonuç çıkarır. İşaretçi analizi, her işaretçinin <b>hangi bellek konumlarını gösterebileceğini</b> kodu çalıştırmadan tahmin eder.</p>
 <pre class="code">int x = 1;
 int *p = &amp;x;   <span class="c">// p, x'i gösteriyor</span>
 *p = 5;        <span class="c">// aslında x = 5 oldu</span>
 print(x);      <span class="c">// analiz p'yi bilmezse x'i hâlâ 1 sanır</span></pre>
-  <h4>Nerede kullanılır?</h4>
-  <ul><li>Derleyici optimizasyonları (sabit yayılımı, gereksiz bellek okumalarını kaldırma)</li><li>Null işaretçi kullanımı (null dereference) tespiti</li><li>Serbest bırakılmış belleğin kullanımı (use-after-free), çift free gibi bellek güvenliği hataları</li><li>Veri akışı ve leke analizinin doğru çalışması</li></ul>`,
-  hook:"Aliasing = aynı eve iki farklı anahtar. Biri kapıyı boyarsa diğeri de boyalı görür." },
- { no:"6.2", t:"Points-to kümesi ve takma ad türleri", body:`
+  <h4>Test ve doğrulama açısından önemi</h4>
   <ul>
-   <li><b>Points-to kümesi:</b> <code>pt(p)</code>, p işaretçisinin gösterebileceği konumların kümesidir. Örnek: <code>pt(p) = {x, y}</code>.</li>
-   <li><b>Soyut bellek konumu:</b> Çalışma anında sınırsız sayıda nesne oluşabilir. Analiz her <code>malloc</code>/<code>new</code> satırını tek bir soyut nesne sayar (allocation site), böylece kümeler sonlu kalır.</li>
-  </ul>
-  <div class="pair"><div><b>May-alias (olabilir)</b><span>p ve q <b>bazı</b> çalışmalarda aynı yeri gösterebilir: pt(p) ∩ pt(q) boş değil.</span></div><div><b>Must-alias (kesin)</b><span>p ve q <b>her</b> çalışmada kesinlikle aynı yeri gösterir.</span></div></div>`,
-  hook:"pt(p) = p'nin gösterebileceği yerlerin listesi. May = belki aynı, Must = kesin aynı." },
- { no:"6.3", t:"Dört temel işaretçi ifadesi ve kuralları", body:`
-  <p>Her işaretçi işlemi, points-to kümeleri arasında bir kurala (kısıta) dönüşür:</p>
+   <li><b>Hata tespiti:</b> Null işaretçi kullanımı, serbest bırakılmış belleğe erişim (use-after-free), çift free gibi hatalar bulunur.</li>
+   <li><b>Çağrı grafiği oluşturma:</b> Fonksiyon işaretçisi ve sanal metot çağrılarında hangi fonksiyonun çağrılacağı bulunur.</li>
+   <li><b>Test önceliklendirme ve etki analizi:</b> Bir değişikliğin takma adlar üzerinden hangi kodu etkilediği bulunur, o kodun testleri önce koşulur.</li>
+   <li><b>Doğrulama:</b> Statik doğrulayıcılar ve veri akışı analizi, işaretçi bilgisi olmadan güvenilir sonuç veremez.</li>
+  </ul>`,
+  hook:"Aliasing = aynı eve iki farklı anahtar. Önemi 4 kelime: Hata, Çağrı grafı, Etki/öncelik, Doğrulama." },
+ { no:"6.2", t:"Temel kavramlar", body:`
+  <ul>
+   <li><b>İşaretçi:</b> Değer yerine bir bellek adresini tutan değişken.</li>
+   <li><b>Bellek konumu:</b> Analizin “yer” dediği şey: bir değişken, bir yığın (heap) nesnesi ya da bir struct alanı.</li>
+   <li><b>Adres alma:</b> <code>&amp;a</code> ifadesi a’nın konumunu verir; <code>p = &amp;a</code> ile p artık a’yı gösterir.</li>
+   <li><b>Points-to kümesi:</b> <code>pt(p)</code>, p’nin gösterebileceği konumların kümesidir. Örnek: <code>pt(p) = {a, b}</code>.</li>
+  </ul>`,
+  hook:"İşaretçi → adres tutar. Konum → gösterilen yer. &a → a’nın adresi. pt(p) → p’nin gösterebileceği yerler." },
+ { no:"6.3", t:"May ve Must analizi", body:`
   <div class="tbl"><table>
-   <tr><th>İfade</th><th>Adı</th><th>Kural</th></tr>
-   <tr><td><code>p = &amp;x</code></td><td>Adres alma</td><td>x ∈ pt(p)</td></tr>
-   <tr><td><code>p = q</code></td><td>Kopyalama</td><td>pt(q) ⊆ pt(p)</td></tr>
-   <tr><td><code>p = *q</code></td><td>Yükleme (load)</td><td>q'nun gösterdiği her r için pt(r) ⊆ pt(p)</td></tr>
-   <tr><td><code>*p = q</code></td><td>Saklama (store)</td><td>p'nin gösterdiği her r için pt(q) ⊆ pt(r)</td></tr>
+   <tr><th></th><th>May analizi (olabilir)</th><th>Must analizi (kesin, tüm yollarda geçerli)</th></tr>
+   <tr><td>Temel soru</td><td>Bazı yollarda ne olabilir? p hangi konumları <b>gösterebilir</b>?</td><td>Bütün yollarda kesin ne olur? p hangi konumu <b>kesinlikle</b> gösterir?</td></tr>
+   <tr><td>Küme mantığı</td><td>Birleşim (∪): herhangi bir yoldan gelen bilgi eklenir</td><td>Kesişim (∩): sadece bütün yollarda ortak olan kalır</td></tr>
+   <tr><td>Amaç</td><td>Hiçbir olasılığı kaçırmamak (güvenli, üst yaklaşım)</td><td>Sadece kesin olanı söylemek (alt yaklaşım)</td></tr>
+   <tr><td>Yan etkisi</td><td>Kümeler büyür, yanlış alarm artar</td><td>Bazı gerçek durumları kaçırır, küme küçük ya da boş kalabilir</td></tr>
+   <tr><td>Tipik kullanım</td><td>May alias analizi, ulaşan tanımlar, güvenlik zafiyet analizi</td><td>Must alias analizi, canlı değişken analizi, kullanılmayan kod eleme</td></tr>
   </table></div>
-<pre class="code">p = &amp;x;   <span class="c">// pt(p) = {x}</span>
-q = &amp;y;   <span class="c">// pt(q) = {y}</span>
-p = q;    <span class="c">// pt(p) = {x, y}   (akışa duyarsız analizde)</span>
-r = &amp;p;   <span class="c">// pt(r) = {p}</span>
-*r = &amp;z;  <span class="c">// store: pt(p) = {x, y, z}</span></pre>`,
-  hook:"&x = adresini ekle. p = q = kopyala. *q'dan okursa load, *p'ye yazarsa store." },
- { no:"6.4", t:"Andersen ve Steensgaard analizleri", body:`
-  <div class="pair"><div><b>Andersen (kapsama tabanlı)</b><span>Atamaları <b>alt küme (⊆)</b> kısıtı olarak modeller: p = q ise pt(q) ⊆ pt(p). Daha hassastır ama yavaştır; en kötü durumda kübik, O(n³).</span></div><div><b>Steensgaard (birleştirme tabanlı)</b><span>Atamaları <b>eşitlik</b> olarak modeller: p = q ise ikisinin kümesi birleştirilir. Neredeyse doğrusal zamanda çok hızlıdır ama daha kaba sonuç verir, yanlış alarm artar.</span></div></div>
-  <p>Önceki örnekte <code>p = q</code> için Andersen yalnızca pt(p)'yi büyütür. Steensgaard ise p ile q'yu tek kümede birleştirir; q da x'i gösteriyormuş gibi davranır.</p>`,
-  hook:"Andersen = alt küme (⊆), hassas ama yavaş. Steensgaard = birleştir (=), hızlı ama kaba." },
- { no:"6.5", t:"Hassasiyet boyutları", body:`
+<pre class="code">if (kosul) p = &amp;a;
+else       p = &amp;b;
+<span class="c">// May: pt(p) = {a} ∪ {b} = {a, b}</span>
+<span class="c">// Must: pt(p) = {a} ∩ {b} = { }   (iki yolda ortak konum yok)</span></pre>`,
+  hook:"May = “olabilir”, birleşim ∪, fazlasını söyler. Must = “kesin”, kesişim ∩, azını ama doğrusunu söyler." },
+ { no:"6.4", t:"Dört analiz türü: May/Must Points-To ve May/Must Alias", body:`
+  <div class="tbl"><table>
+   <tr><th>Analiz</th><th>Sorduğu soru</th><th>Yaklaşım yönü</th><th>Tipik kullanımı</th></tr>
+   <tr><td>May Points-To</td><td>p hangi konumları gösterebilir?</td><td>Üst yaklaşım (fazlasını içerir)</td><td>Hata tespiti, çağrı grafiği, güvenlik analizi</td></tr>
+   <tr><td>Must Points-To</td><td>p hangi konumu kesinlikle gösterir?</td><td>Alt yaklaşım (kesin olanı içerir)</td><td>Güçlü güncelleme, optimizasyon</td></tr>
+   <tr><td>May Alias</td><td>p ve q aynı yeri gösterebilir mi? pt(p) ∩ pt(q) ≠ ∅</td><td>Üst yaklaşım</td><td>Veri akışında ihtiyatlı davranma, güvenlik</td></tr>
+   <tr><td>Must Alias</td><td>p ve q her zaman aynı yeri mi gösterir?</td><td>Alt yaklaşım</td><td>Derleyici optimizasyonu, gereksiz okumayı eleme</td></tr>
+  </table></div>
+  <p>May alias kontrolü bir <b>kesişim</b> sorusudur: iki işaretçinin points-to kümelerinin ortak elemanı varsa aynı yeri gösterebilirler.</p>`,
+  hook:"Points-To: tek işaretçi nereyi gösteriyor? Alias: iki işaretçi aynı yeri mi gösteriyor? Kümeler kesişiyorsa may alias." },
+ { no:"6.5", t:"Soyut bellek konumları ve yığın soyutlaması", body:`
+  <p>Program çalışırken <code>malloc</code>/<code>new</code> ile sınırsız sayıda nesne oluşabilir; analiz bunların hepsini ayrı ayrı izleyemez. Bu yüzden <b>soyut bellek konumu</b> kullanılır: kaynak koddaki <b>her oluşturma satırı (allocation site) tek bir soyut nesne</b> sayılır.</p>
+<pre class="code">for (i = 0; i &lt; 1000; i++)
+    p = malloc(8);      <span class="c">// 1000 gerçek nesne → tek soyut nesne: obj@satır2</span></pre>
+  <p>Böylece kümeler sonlu kalır ve analiz biter. Bedeli: aynı satırda oluşan bütün nesneler birbirine karışır, bu yüzden bu özet nesnelere yazarken <b>zayıf güncelleme</b> yapılmak zorunda kalınır.</p>`,
+  hook:"Bin nesne, tek satır → tek soyut nesne. Kümeler sonlu kalır ama nesneler karışır." },
+ { no:"6.6", t:"Analizin gördüğü dört temel deyim", body:`
+  <p>Analiz her işaretçi işlemini bu dört kalıptan birine indirger:</p>
+  <div class="tbl"><table>
+   <tr><th>Deyim</th><th>Adı</th><th>Anlamı</th></tr>
+   <tr><td><code>p = &amp;a</code></td><td>Adres alma</td><td>p, a’nın konumunu gösterir.</td></tr>
+   <tr><td><code>p = q</code></td><td>Kopyalama</td><td>p, q’nun gösterdiği her şeyi gösterebilir.</td></tr>
+   <tr><td><code>p = *q</code></td><td>Yükleme (load)</td><td>p, q’nun gösterdiği konumların gösterdiği her şeyi gösterebilir.</td></tr>
+   <tr><td><code>*p = q</code></td><td>Saklama (store)</td><td>p’nin gösterdiği her konum, q’nun gösterdiği her şeyi gösterebilir.</td></tr>
+  </table></div>`,
+  hook:"& = adresini al. = = kopyala. Sağda * varsa yükleme (oku), solda * varsa saklama (yaz)." },
+ { no:"6.7", t:"Hassasiyet boyutu 1: Akış duyarlılığı", body:`
+  <div class="pair"><div><b>Akış duyarsız</b><span>Komutların sırasını yok sayar; bütün program için tek bir sonuç verir. Hızlıdır ama kabadır.</span></div><div><b>Akış duyarlı</b><span>Sırayı dikkate alır; her program noktası için ayrı sonuç tutar. Hassastır ama pahalıdır.</span></div></div>
+<pre class="code">p = &amp;a;   <span class="c">// nokta 1</span>
+q = p;    <span class="c">// nokta 2</span>
+p = &amp;b;   <span class="c">// nokta 3</span></pre>
+  <div class="tbl"><table>
+   <tr><th></th><th>Akış duyarsız sonuç</th><th>Akış duyarlı sonuç (nokta 3’ten sonra)</th></tr>
+   <tr><td>pt(p)</td><td>{a, b}</td><td>{b}</td></tr>
+   <tr><td>pt(q)</td><td>{a, b}</td><td>{a}</td></tr>
+  </table></div>
+  <p>Akış duyarsız analiz <code>q = p</code> satırının p’nin sonradan alacağı b değerinden önce çalıştığını bilmez; b’yi de q’ya akıtır. Akış duyarlı analiz nokta 2’de q’ya sadece a geçtiğini görür.</p>`,
+  hook:"Duyarsız: sıra yok, her şey karışır → q {a,b}. Duyarlı: sıra var → q {a}, p {b}." },
+ { no:"6.8", t:"Hassasiyet boyutları 2: Bağlam, alan duyarlılığı ve yığın modelleme", body:`
+  <h4>Bağlam duyarlılığı</h4>
+<pre class="code">int* id(int *x) { return x; }
+p = id(&amp;a);   <span class="c">// çağrı 1</span>
+q = id(&amp;b);   <span class="c">// çağrı 2</span></pre>
+  <p><b>Bağlam duyarsız analiz</b> id’nin bütün çağrılarını karıştırır: pt(x) = {a, b}, dolayısıyla pt(p) = pt(q) = {a, b}. Bağlam duyarlı analiz her çağrıyı ayrı inceler: pt(p) = {a}, pt(q) = {b}.</p>
+  <h4>Alan duyarlılığı</h4>
+<pre class="code">struct S { int *f; int *g; } s1, s2;
+s1.f = &amp;a;  s1.g = &amp;b;  s2.f = &amp;c;</pre>
+  <div class="tbl"><table>
+   <tr><th>Yaklaşım</th><th>Nasıl modeller?</th><th>Sonuç</th></tr>
+   <tr><td>Alan duyarsız</td><td>Struct’ı tek konum sayar, alanları ayırmaz</td><td>pt(s1) = {a, b}</td></tr>
+   <tr><td>Alan duyarlı</td><td>Her nesnenin her alanı ayrı konum</td><td>pt(s1.f) = {a}, pt(s1.g) = {b}, pt(s2.f) = {c}</td></tr>
+   <tr><td>Alan tabanlı</td><td>Sadece alan adına bakar, nesneyi yok sayar</td><td>pt(f) = {a, c}, pt(g) = {b}</td></tr>
+  </table></div>
+  <h4>Yığın modelleme</h4>
+  <p>Heap nesnelerinin nasıl soyutlanacağıdır. En basiti her oluşturma satırına tek nesne demektir (6.5). Daha hassas modeller aynı satırda oluşan nesneleri çağrı bağlamına göre ayırır (heap cloning).</p>`,
+  hook:"Bağlam: kim çağırdı? Alan: struct’ın parçaları ayrı mı? Yığın: heap nesneleri nasıl gruplanıyor? Hassasiyet arttıkça hız düşer." },
+ { no:"6.9", t:"Andersen analizi: kısıt üretim kuralları", body:`
+  <p>Andersen analizi her deyimi bir <b>alt küme (⊆) kısıtına</b> çevirir ve bu kısıtları çözer. Akış ve bağlam duyarsızdır; kapsama tabanlı (inclusion-based) analizin klasik örneğidir.</p>
+  <div class="tbl"><table>
+   <tr><th>Deyim</th><th>Üretilen kısıt</th><th>Okunuşu</th></tr>
+   <tr><td><code>p = &amp;a</code></td><td>{a} ⊆ pts(p)</td><td>a, p’nin kümesine girer</td></tr>
+   <tr><td><code>p = q</code></td><td>pts(q) ⊆ pts(p)</td><td>q’nun gösterdiği her şey p’ye akar</td></tr>
+   <tr><td><code>p = *q</code></td><td>her o ∈ pts(q) için pts(o) ⊆ pts(p)</td><td>Karmaşık kısıt (yükleme)</td></tr>
+   <tr><td><code>*p = q</code></td><td>her o ∈ pts(p) için pts(q) ⊆ pts(o)</td><td>Karmaşık kısıt (saklama)</td></tr>
+  </table></div>
+  <p>Yükleme ve saklama “karmaşık” sayılır, çünkü hangi kısıtın üretileceği pts(q) veya pts(p) kümesinin içeriğine bağlıdır; bu içerik ancak çözüm sırasında ortaya çıkar.</p>`,
+  hook:"Adres alma ve kopyalama basit kısıt. Yükleme ve saklama karmaşık kısıt: içeriği çözerken öğrenirsin." },
+ { no:"6.10", t:"Kısıt grafı ve çözüm algoritması", body:`
+  <p>Andersen kısıtları bir graf üzerinde çözülür: her değişken bir düğüm, her <code>pts(q) ⊆ pts(p)</code> kısıtı q’dan p’ye bir kenardır.</p>
+  <ol>
+   <li>Adres alma kısıtlarından başlangıç kümeleri doldurulur.</li>
+   <li>Kopyalama kısıtları kenar olarak eklenir.</li>
+   <li>İş listesindeki düğümün kümesi kenarlar boyunca komşulara yayılır.</li>
+   <li>Kümeler büyüdükçe karmaşık kısıtlar (yükleme, saklama) <b>yeni kenarlar</b> ekler.</li>
+   <li>Hiçbir küme değişmeyince durulur: <b>sabit nokta</b>.</li>
+  </ol>
+<pre class="code">p = &amp;a;   <span class="c">// {a} ⊆ pts(p)</span>
+q = p;    <span class="c">// kenar p → q</span>
+r = &amp;q;   <span class="c">// {q} ⊆ pts(r)</span>
+s = *r;   <span class="c">// pts(r) = {q} olduğu için yeni kenar q → s</span>
+<span class="c">// Sonuç: pts(p) = {a}, pts(q) = {a}, pts(r) = {q}, pts(s) = {a}</span></pre>
+  <p>En kötü durumda kübik zaman, O(n³), alır. Mantık 5. haftadaki iş listesi algoritmasının aynısıdır.</p>`,
+  hook:"Düğüm = değişken, kenar = ⊆. Yay, yeni kenar ekle, değişiklik bitince dur." },
+ { no:"6.11", t:"Steensgaard analizi", body:`
+  <p>Atamaları alt küme yerine <b>eşitlik</b> olarak modeller: <code>p = q</code> görünce p ve q’nun gösterdiği kümeleri <b>tek kümede birleştirir</b> (union-find). Her değişken en fazla bir birleşik konum kümesini gösterir.</p>
+  <div class="pair"><div><b>Avantajı</b><span>Neredeyse doğrusal zamanda çalışır; milyonlarca satırlık koda ölçeklenir.</span></div><div><b>Dezavantajı</b><span>Birleştirme bilgiyi iki yöne akıttığı için Andersen’den kabadır, daha çok yanlış alarm verir.</span></div></div>
+<pre class="code">p = &amp;a;  q = &amp;b;  p = q;
+<span class="c">// Andersen:    pts(p) = {a, b},  pts(q) = {b}</span>
+<span class="c">// Steensgaard: pts(p) = pts(q) = {a, b}   (birleştirildi)</span></pre>`,
+  hook:"Andersen = alt küme (⊆), hassas ama kübik. Steensgaard = birleştir (=), neredeyse doğrusal ama kaba." },
+ { no:"6.12", t:"Akış duyarlı analiz ve güçlü / zayıf güncelleme", body:`
+  <p>Akış duyarlı analizde <code>*p = &amp;c</code> gibi bir saklama işleminde eski bilginin silinip silinemeyeceği önemlidir.</p>
+  <div class="pair"><div><b>Güçlü güncelleme (strong update)</b><span>p <b>kesin olarak tek bir somut konumu</b> gösteriyorsa (must, ör. pt(p) = {x}) x’in eski değeri silinir: pt(x) = {c}.</span></div><div><b>Zayıf güncelleme (weak update)</b><span>p birden fazla konumu gösterebiliyorsa (pt(p) = {x, y}) ya da konum bir özet heap nesnesiyse eski bilgi korunur, yenisi eklenir: pt(x) = pt(x) ∪ {c}.</span></div></div>
+  <p>Güçlü güncelleme hassasiyeti çok artırır; bunu mümkün kılan şey <b>must</b> bilgisidir. Akış duyarsız analizde bütün güncellemeler zayıftır.</p>`,
+  hook:"Kesin tek yer → üzerine yaz (güçlü). Birkaç yer olabilir → ekle, silme (zayıf)." },
+ { no:"6.13", t:"Bağlam ve nesne duyarlılığı", body:`
   <ul>
-   <li><b>Akışa duyarlı (flow-sensitive):</b> Komutların sırasını dikkate alır, her program noktası için ayrı sonuç tutar. Akışa duyarsız analiz sırayı yok sayar, bütün program için tek sonuç verir.</li>
-   <li><b>Bağlama duyarlı (context-sensitive):</b> Bir fonksiyonun farklı yerlerden yapılan çağrılarını ayrı ayrı analiz eder. Duyarsız analiz bütün çağrıları karıştırır.</li>
-   <li><b>Alana duyarlı (field-sensitive):</b> Bir struct veya nesnenin alanlarını (<code>s.a</code>, <code>s.b</code>) ayrı konum sayar.</li>
+   <li><b>Çağrı noktası duyarlılığı (k-CFA):</b> Fonksiyon, onu çağıran son k çağrı noktasına göre ayrı analiz edilir. k büyüdükçe hassasiyet ve maliyet artar.</li>
+   <li><b>Nesne duyarlılığı (object sensitivity):</b> Java gibi nesne yönelimli dillerde metot, <b>hangi nesne üzerinde</b> (alıcı, <code>this</code>) çağrıldığına göre ayrı analiz edilir. Liste, harita gibi kap (container) sınıflarında çok etkilidir.</li>
   </ul>
-  <p>Her ek hassasiyet daha az yanlış alarm ama daha çok hesaplama demektir. Bu, 1. haftadaki kesinlik-tamlık ikileminin işaretçi analizindeki karşılığıdır: Rice teoremi yüzünden kusursuz sonuç yoktur, hız ile hassasiyet arasında seçim yapılır.</p>`,
-  hook:"Akış: sıra önemli mi? Bağlam: kim çağırdı önemli mi? Alan: struct'ın parçaları ayrı mı? Hassasiyet arttıkça hız düşer." }
+<pre class="code">List l1 = new List();  l1.add(new A());
+List l2 = new List();  l2.add(new B());
+x = l1.get();
+<span class="c">// nesne duyarsız: pt(x) = {A, B}   (iki listenin içeriği karışır)</span>
+<span class="c">// nesne duyarlı:  pt(x) = {A}</span></pre>`,
+  hook:"Çağrı noktası: nereden çağrıldı? Nesne: hangi nesnenin metodu çağrıldı?" },
+ { no:"6.14", t:"Test ve doğrulamada uygulamalar", body:`
+  <ul>
+   <li><b>Bellek hatalarını bulma:</b> Null işaretçi kullanımı, use-after-free, çift free ve bellek sızıntısı tespiti.</li>
+   <li><b>Güvenlik:</b> Leke analizi, kirli verinin takma adlar üzerinden de izlenebilmesi için points-to bilgisine ihtiyaç duyar.</li>
+   <li><b>Çağrı grafiği:</b> Fonksiyon işaretçisi ve sanal çağrıların çözülmesiyle fonksiyonlar arası analiz ve test kapsamı hesaplanır.</li>
+   <li><b>Etki analizi ve regresyon test seçimi:</b> Değişen değişkene takma ad olan kodlar bulunur; sadece etkilenen testler seçilir ya da önce koşulur.</li>
+   <li><b>Doğrulama ve optimizasyon:</b> Statik doğrulayıcılar ve derleyiciler güvenli dönüşüm yapabilmek için must/may alias bilgisini kullanır.</li>
+  </ul>`,
+  hook:"Hata bul, kirli veriyi izle, çağrı grafını çıkar, etkilenen testleri seç, güvenle doğrula." }
 ]},
 { id:7, title:"Kısıtlamaya Dayalı Analiz", sum:"Kısıt üretimi ve çözümü, eşitlik ve kapsama kısıtları, tip analizi, kontrol akış analizi, SMT ile bağlantı.", note:"Bu hafta için defter notu yok. Konu genel kaynaklardan derlendi. Derste anlatılınca notlarla karşılaştır.", topics:[
  { no:"7.1", t:"Kısıtlamaya dayalı analiz nedir?", body:`
@@ -951,18 +1059,34 @@ const QS = [
 {w:2,q:"Sistemin her koşulda kesintisiz ve istenen şekilde çalışabilme düzeyi hangi kalite ölçütüdür?",o:["Güvenilirlik (Reliability)","Doğruluk (Correctness)","Etkinlik (Efficiency)","Kullanılabilirlik"],a:0,e:"Doğruluk ise gereksinim dokümanına tam uymaktır."},
 // Hafta 6
 {w:6,q:"İşaretçi analizinde aliasing (takma ad) ne demektir?",o:["İki farklı işaretçinin aynı bellek konumunu göstermesi","Bir değişkenin iki kez tanımlanması","Bir fonksiyonun iki adı olması","Belleğin serbest bırakılması"],a:0,e:"*p ve *q aynı yeri değiştirebilir; analiz bunu bilmezse yanılır."},
+{w:6,q:"Hangisi işaretçi analizinin test ve doğrulama açısından önemlerinden biri DEĞİLDİR?",o:["Kullanıcı arayüzünün renklerini belirlemek","Hata tespiti","Çağrı grafiği oluşturma","Test önceliklendirme ve etki analizi"],a:0,e:"Notlardaki dört madde: hata tespiti, çağrı grafiği, test önceliklendirme/etki analizi, doğrulama."},
 {w:6,q:"pt(p) neyi ifade eder?",o:["p işaretçisinin gösterebileceği bellek konumlarının kümesi","p’nin değerinin kaç kez okunduğu","p’nin bellekteki boyutu","p’yi gösteren işaretçiler"],a:0,e:"Points-to kümesi."},
-{w:6,q:"<code>p = &amp;x</code> ifadesi hangi kuralı üretir?",o:["x ∈ pt(p)","pt(x) ⊆ pt(p)","pt(p) ⊆ pt(x)","pt(p) = ∅"],a:0,e:"Adres alma: x, p’nin gösterebileceği yerlere eklenir."},
-{w:6,q:"Andersen analizinde <code>p = q</code> ataması hangi kısıtı üretir?",o:["pt(q) ⊆ pt(p)","pt(p) ⊆ pt(q)","pt(p) = pt(q)","p ∈ pt(q)"],a:0,e:"q’nun gösterebileceği her yeri p de gösterebilir."},
-{w:6,q:"<code>*p = q</code> ifadesine ne ad verilir?",o:["Saklama (store)","Yükleme (load)","Adres alma","Kopyalama"],a:0,e:"p’nin gösterdiği yere yazılır. p = *q ise yüklemedir."},
-{w:6,q:"<code>p = *q</code> ifadesine ne ad verilir?",o:["Yükleme (load)","Saklama (store)","Adres alma","Birleştirme"],a:0,e:"q’nun gösterdiği yerden okunur."},
-{w:6,q:"<code>p = &amp;x; q = &amp;y; p = q;</code> için akışa duyarsız Andersen analizinde pt(p) nedir?",o:["{x, y}","{x}","{y}","{}"],a:0,e:"Sıra dikkate alınmaz; p hem x’i hem y’yi gösterebilir."},
-{w:6,q:"Alt küme kısıtlarıyla çalışan, hassas ama en kötü durumda kübik zamanlı işaretçi analizi hangisidir?",o:["Andersen","Steensgaard","0-CFA","Leke analizi"],a:0,e:"Steensgaard ise birleştirme tabanlı ve neredeyse doğrusaldır."},
-{w:6,q:"Steensgaard analizi için hangisi doğrudur?",o:["Atamaları eşitlik olarak modeller; çok hızlı ama daha kabadır","Andersen’den daha hassastır","Kodu çalıştırarak analiz eder","Sadece Java için çalışır"],a:0,e:"p = q ise iki küme birleştirilir."},
-{w:6,q:"Komutların sırasını dikkate alıp her program noktası için ayrı sonuç tutan analiz hangisidir?",o:["Akışa duyarlı (flow-sensitive)","Bağlama duyarlı (context-sensitive)","Alana duyarlı (field-sensitive)","Akışa duyarsız"],a:0,e:"Akışa duyarsız analiz bütün program için tek sonuç verir."},
-{w:6,q:"Bir fonksiyonun farklı yerlerden yapılan çağrılarını ayrı ayrı analiz eden yaklaşım hangisidir?",o:["Bağlama duyarlı (context-sensitive)","Akışa duyarlı","Alana duyarlı","Birleştirme tabanlı"],a:0,e:"Duyarsız analiz bütün çağrıları karıştırır."},
-{w:6,q:"Her <code>malloc</code>/<code>new</code> satırının tek bir soyut nesne sayılmasının amacı nedir?",o:["Points-to kümelerinin sonlu kalmasını sağlamak","Programı hızlandırmak","Bellek sızıntısını önlemek","Derleme hatası vermek"],a:0,e:"Çalışma anında sınırsız nesne oluşabilir; analiz sonlu bir soyutlama ister."},
-{w:6,q:"“p ve q bazı çalışmalarda aynı yeri gösterebilir” hangi kavramdır?",o:["May-alias","Must-alias","Null dereference","Use-after-free"],a:0,e:"Must-alias her çalışmada kesin aynı yeri göstermektir."},
+{w:6,q:"May analizinde farklı yollardan gelen bilgi hangi küme işlemiyle birleştirilir?",o:["Birleşim (∪)","Kesişim (∩)","Fark (−)","Tümleyen"],a:0,e:"May = herhangi bir yolda olabilir; bütün olasılıklar eklenir."},
+{w:6,q:"Must analizinde farklı yollardan gelen bilgi hangi küme işlemiyle birleştirilir?",o:["Kesişim (∩)","Birleşim (∪)","Fark (−)","Kartezyen çarpım"],a:0,e:"Must = bütün yollarda kesin; sadece ortak olan kalır."},
+{w:6,q:"<code>if(k) p=&amp;a; else p=&amp;b;</code> sonrasında Must analizine göre pt(p) nedir?",o:["{ } (boş)","{a, b}","{a}","{b}"],a:0,e:"{a} ∩ {b} = boş küme. May analizi ise {a, b} der."},
+{w:6,q:"<code>if(k) p=&amp;a; else p=&amp;b;</code> sonrasında May analizine göre pt(p) nedir?",o:["{a, b}","{ } (boş)","{a}","{b}"],a:0,e:"{a} ∪ {b}."},
+{w:6,q:"May analizinin yan etkisi nedir?",o:["Kümeler büyür, yanlış alarm artar","Gerçek hataları kaçırır","Program yavaş çalışır","Kod derlenmez"],a:0,e:"Üst yaklaşımdır: fazlasını söyler ama hiçbir olasılığı kaçırmaz."},
+{w:6,q:"Must analizinin yan etkisi nedir?",o:["Bazı gerçek durumları kaçırır, küme küçük ya da boş kalabilir","Çok fazla yanlış alarm üretir","Sonsuz döngüye girer","Sadece C’de çalışır"],a:0,e:"Alt yaklaşımdır: azını ama kesin olanı söyler."},
+{w:6,q:"Hocanın notlarına göre hangisi May analizinin tipik kullanım alanıdır?",o:["Güvenlik zafiyet analizi","Must alias analizi","Kullanılmayan kod eleme","Güçlü güncelleme"],a:0,e:"May: may alias, ulaşan tanımlar, güvenlik zafiyet analizi."},
+{w:6,q:"Hocanın notlarına göre hangisi Must analizinin tipik kullanım alanıdır?",o:["Kullanılmayan kod eleme","Ulaşan tanımlar","Güvenlik zafiyet analizi","May alias analizi"],a:0,e:"Must: must alias, canlı değişken analizi, kullanılmayan kod eleme."},
+{w:6,q:"p ve q için may alias sonucu hangi koşulda çıkar?",o:["pt(p) ∩ pt(q) ≠ ∅","pt(p) ∪ pt(q) = ∅","pt(p) = ∅","p ve q aynı satırda tanımlanmışsa"],a:0,e:"Ortak konum varsa aynı yeri gösterebilirler: bir kesişim sorusu."},
+{w:6,q:"“p ve q her zaman aynı yeri mi gösterir?” sorusunu soran analiz hangisidir?",o:["Must Alias","May Alias","May Points-To","Must Points-To"],a:0,e:"Must alias alt yaklaşımdır; derleyici optimizasyonunda kullanılır."},
+{w:6,q:"Yığın soyutlamasında genellikle ne yapılır?",o:["Her oluşturma satırı (malloc/new) tek bir soyut nesne sayılır","Her gerçek nesne ayrı izlenir","Heap tamamen yok sayılır","Sadece ilk nesne izlenir"],a:0,e:"Böylece kümeler sonlu kalır; bedeli nesnelerin karışmasıdır."},
+{w:6,q:"<code>p = *q</code> deyiminin anlamı nedir?",o:["p, q’nun gösterdiği konumların gösterdiği her şeyi gösterebilir","p, q’nun gösterdiği her şeyi gösterebilir","p, q’nun konumunu gösterir","q’nun gösterdiği konum p’yi gösterir"],a:0,e:"Yükleme (load)."},
+{w:6,q:"<code>*p = q</code> deyiminin adı nedir?",o:["Saklama (store)","Yükleme (load)","Adres alma","Kopyalama"],a:0,e:"p’nin gösterdiği her konum, q’nun gösterdiği her şeyi gösterebilir."},
+{w:6,q:"<code>p=&amp;a; q=p; p=&amp;b;</code> için akış duyarsız analizde pt(q) nedir?",o:["{a, b}","{a}","{b}","{ }"],a:0,e:"Sıra yok sayıldığı için p’nin bütün değerleri q’ya akar."},
+{w:6,q:"<code>p=&amp;a; q=p; p=&amp;b;</code> için akış duyarlı analizde son satırdan sonra pt(q) nedir?",o:["{a}","{a, b}","{b}","{ }"],a:0,e:"q = p satırı çalıştığında p sadece a’yı gösteriyordu."},
+{w:6,q:"<code>id(x){return x;}</code> fonksiyonu <code>p=id(&amp;a); q=id(&amp;b);</code> şeklinde çağrılıyor. Bağlam duyarsız analizde pt(p) nedir?",o:["{a, b}","{a}","{b}","{ }"],a:0,e:"Bütün çağrılar karışır. Bağlam duyarlı analiz {a} der."},
+{w:6,q:"Nesneyi yok sayıp sadece alan adına bakan yaklaşım hangisidir?",o:["Alan tabanlı","Alan duyarlı","Alan duyarsız","Akış duyarlı"],a:0,e:"Bütün nesnelerin f alanı tek konum sayılır."},
+{w:6,q:"Andersen analizinde <code>p = q</code> hangi kısıtı üretir?",o:["pts(q) ⊆ pts(p)","pts(p) ⊆ pts(q)","pts(p) = pts(q)","{q} ⊆ pts(p)"],a:0,e:"q’nun gösterdiği her şey p’ye akar."},
+{w:6,q:"Andersen analizinde “karmaşık kısıt” sayılan deyimler hangileridir?",o:["Yükleme ve saklama","Adres alma ve kopyalama","Sadece adres alma","Sadece kopyalama"],a:0,e:"Hangi kısıtın üretileceği çözüm sırasında ortaya çıkan küme içeriğine bağlıdır."},
+{w:6,q:"Andersen kısıt grafında çözüm sırasında ne olur?",o:["Kümeler kenarlar boyunca yayılır, karmaşık kısıtlar yeni kenar ekler, değişiklik bitince durulur","Graf bir kez gezilir ve biter","Kenarlar silinerek ilerlenir","Rastgele düğümler seçilir"],a:0,e:"İş listesi ile sabit noktaya kadar yayma."},
+{w:6,q:"Steensgaard analizi için hangisi doğrudur?",o:["Atamaları eşitlik olarak modeller; neredeyse doğrusal ama daha kabadır","Andersen’den daha hassastır","Kübik zamanda çalışır","Akış duyarlıdır"],a:0,e:"p = q görünce iki küme birleştirilir (union-find)."},
+{w:6,q:"<code>p=&amp;a; q=&amp;b; p=q;</code> için Steensgaard analizinde pts(q) nedir?",o:["{a, b}","{b}","{a}","{ }"],a:0,e:"Birleştirme iki yöne akar. Andersen ise pts(q) = {b} der."},
+{w:6,q:"Güçlü güncelleme (strong update) ne zaman yapılabilir?",o:["İşaretçi kesin olarak tek bir somut konumu gösteriyorsa","İşaretçi birden fazla konumu gösterebiliyorsa","Konum bir özet heap nesnesiyse","Analiz akış duyarsızsa"],a:0,e:"Must bilgisi olduğunda eski değer silinip yenisi yazılabilir."},
+{w:6,q:"pt(p) = {x, y} iken <code>*p = &amp;c</code> çalışırsa ne yapılır?",o:["Zayıf güncelleme: pt(x) ve pt(y)’ye c eklenir, eski bilgi silinmez","Güçlü güncelleme: pt(x) = {c}","Hiçbir şey yapılmaz","pt(p) = {c} olur"],a:0,e:"Hangisinin değiştiği kesin değil; eski bilgi korunmalı."},
+{w:6,q:"Nesne duyarlılığı (object sensitivity) neyi ayırt eder?",o:["Metodun hangi alıcı nesne (this) üzerinde çağrıldığını","Struct alanlarını","Komut sırasını","Çağrı noktası satırlarını"],a:0,e:"Java’daki kap sınıflarında çok etkilidir."},
+{w:6,q:"İşaretçi analizi regresyon testinde nasıl kullanılır?",o:["Değişikliğin takma adlar üzerinden etkilediği kodu bulup ilgili testleri seçer ya da öne alır","Testleri rastgele sıralar","Bütün testleri siler","Sadece kullanıcı arayüzünü test eder"],a:0,e:"Etki analizi ve test önceliklendirme."},
 // Hafta 7
 {w:7,q:"Kısıtlamaya dayalı analizin iki temel aşaması hangisidir?",o:["Kısıt üretimi ve kısıt çözümü","Derleme ve çalıştırma","Modelleme ve kahin","Mutasyon ve çaprazlama"],a:0,e:"Önce denklemler yazılır, sonra çözücüyle çözülür."},
 {w:7,q:"Kısıtlamaya dayalı analizin temel avantajı nedir?",o:["Analizin tanımı ile çözüm algoritmasının birbirinden ayrılması","Hiç yanlış alarm vermemesi","Kodu çalıştırması","Rice teoremini aşması"],a:0,e:"Aynı çözücü farklı analizlerde kullanılabilir."},
@@ -1049,10 +1173,17 @@ const CARDS = [
 [2,"Kalite ölçütleri","Doğruluk, güvenilirlik, etkinlik."],
 [6,"Aliasing","İki işaretçinin aynı bellek konumunu göstermesi."],
 [6,"pt(p)","p’nin gösterebileceği konumların kümesi (points-to)."],
-[6,"Load / Store","p = *q yükleme; *p = q saklama."],
-[6,"Andersen","Alt küme (⊆) kısıtları; hassas ama kübik."],
-[6,"Steensgaard","Birleştirme (=); neredeyse doğrusal ama kaba."],
-[6,"Akış / bağlam / alan duyarlılığı","Sıra, çağıran yer ve struct alanları ayrı ayrı izleniyor mu?"],
+[6,"May analizi","“Olabilir”: birleşim ∪, üst yaklaşım. Kümeler büyür, yanlış alarm artar."],
+[6,"Must analizi","“Kesin, tüm yollarda”: kesişim ∩, alt yaklaşım. Bazı durumları kaçırır."],
+[6,"May alias","pt(p) ∩ pt(q) ≠ ∅ ise p ve q aynı yeri gösterebilir."],
+[6,"Yığın soyutlaması","Her malloc/new satırı tek soyut nesne."],
+[6,"4 temel deyim","p=&a adres alma · p=q kopyalama · p=*q yükleme · *p=q saklama."],
+[6,"Akış duyarlılığı","p=&a; q=p; p=&b → duyarsız q {a,b}, duyarlı q {a}."],
+[6,"Alan duyarsız / duyarlı / tabanlı","Struct tek konum / her nesnenin her alanı ayrı / sadece alan adı."],
+[6,"Andersen","Alt küme (⊆) kısıtları; yükleme ve saklama karmaşık kısıt; kübik."],
+[6,"Steensgaard","Birleştirme (=, union-find); neredeyse doğrusal ama kaba."],
+[6,"Güçlü / zayıf güncelleme","Kesin tek konum → üzerine yaz. Birkaç konum → ekle, silme."],
+[6,"Nesne duyarlılığı","Metodu alıcı nesneye (this) göre ayrı analiz eder."],
 [7,"Kısıtlamaya dayalı analiz","Önce kısıt üret, sonra çözücüyle çöz."],
 [7,"Unification","Eşitlik kısıtlarını çözen birleştirme algoritması."],
 [7,"Kapsama kısıtı","A ⊆ B; kısıt grafında sabit noktaya kadar yayılır."],
