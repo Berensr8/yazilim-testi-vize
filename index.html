@@ -212,6 +212,10 @@ figure.cfg .ah{fill:var(--muted)}
 .qwk::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--wc)}
 .qtext{font-family:var(--f-display);font-size:1.28rem;font-weight:600;line-height:1.4;margin:10px 0 18px;letter-spacing:-.01em}
 .qtext code{font-family:var(--f-mono);font-size:.82em;background:var(--sunk);padding:1px 6px;border-radius:5px;font-weight:400}
+.qmeta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:18px}
+.qtype{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.04em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 10px}
+.qtext pre,.miss .q pre{font-family:var(--f-mono);font-size:.84rem;font-weight:400;line-height:1.55;background:var(--sunk);padding:12px 14px;border-radius:var(--r-m);margin:10px 0 0;overflow-x:auto;white-space:pre;letter-spacing:0}
+.qtext .onc,.miss .q .onc{list-style:none;font-family:var(--f-body);font-size:1rem;font-weight:500;line-height:1.5;background:var(--sunk);padding:12px 16px;border-radius:var(--r-m);margin:10px 0 0;display:flex;flex-direction:column;gap:4px;letter-spacing:0}
 .opts{display:flex;flex-direction:column;gap:10px}
 .opt{display:grid;grid-template-columns:30px 1fr 22px;gap:12px;align-items:center;text-align:left;min-height:52px;border:1.5px solid var(--line);background:var(--surface);border-radius:var(--r-m);padding:10px 14px;cursor:pointer;font-size:1rem;line-height:1.45;transition:border-color .2s var(--ease),background .2s var(--ease)}
 .opt:hover:not(:disabled){border-color:var(--primary);background:var(--primary-soft)}
@@ -1115,7 +1119,133 @@ const QS = [
 {w:8,q:"Ana sayfada şirket adının yanlış yazılması genellikle nasıl sınıflandırılır?",o:["Düşük ciddiyet, yüksek öncelik","Yüksek ciddiyet, düşük öncelik","Yüksek ciddiyet, yüksek öncelik","Düşük ciddiyet, düşük öncelik"],a:0,e:"Teknik etkisi küçük ama herkes görüyor, hemen düzeltilmeli."},
 {w:8,q:"Severity ile priority arasındaki fark nedir?",o:["Severity hatanın teknik etkisi, priority düzeltmenin aciliyetidir","İkisi aynı şeydir","Severity aciliyet, priority teknik etkidir","Priority sadece güvenlik hatalarında kullanılır"],a:0,e:"Severity genelde testçi, priority iş tarafı tarafından belirlenir."},
 {w:8,q:"Risk temelli testte risk nasıl ölçülür?",o:["Hata çıkma olasılığı × etkisi","Kod satırı sayısı","Test sayısı × süre","Geliştirici sayısı"],a:0,e:"Yüksek riskli alanlar önce ve daha derin test edilir."},
-{w:8,q:"Risk temelli testin dayandığı test prensibi hangisidir?",o:["Kapsamlı test imkansızdır","Pestisit paradoksu","Hatasızlık yanılgısı","Test bağlama bağlıdır"],a:0,e:"Her şey test edilemediği için efor riske göre dağıtılır."}
+{w:8,q:"Risk temelli testin dayandığı test prensibi hangisidir?",o:["Kapsamlı test imkansızdır","Pestisit paradoksu","Hatasızlık yanılgısı","Test bağlama bağlıdır"],a:0,e:"Her şey test edilemediği için efor riske göre dağıtılır."},
+// ===== Ek soru tipleri =====
+// Hafta 1
+{w:1,t:"dy",q:"Kodda bir kusur (fault) varsa, program her çalıştırıldığında mutlaka başarısızlık (failure) oluşur.",o:["Doğru","Yanlış"],a:1,e:"Kusurlu satır hiç çalışmazsa ya da onu tetikleyen girdi gelmezse başarısızlık oluşmaz."},
+{w:1,t:"dy",q:"Statik analiz kodun tamamını taradığı için hiç yanlış alarm (false positive) üretmez.",o:["Doğru","Yanlış"],a:1,e:"Tam tersi: geniş tarar ama yanlış alarmı çoktur."},
+{w:1,t:"dy",q:"Rice teoremine göre, bir programın her girdide doğru sonuç verip vermediğine genel olarak karar veren bir algoritma yazılamaz.",o:["Doğru","Yanlış"],a:0,e:"Bu bir anlamsal özelliktir; Rice teoremi bunlara genel olarak karar verilemeyeceğini söyler."},
+{w:1,t:"dy",q:"Shift-Left yaklaşımında test, şelale modelindeki gibi geliştirmenin sonuna bırakılır.",o:["Doğru","Yanlış"],a:1,e:"Shift-Left testi sola, yani en başa çeker."},
+{w:1,t:"on",q:"Statik analiz ile ilgili aşağıdakilerden hangileri doğrudur?<ol class='onc'><li>I. Kod çalıştırılmadan yapılır.</li><li>II. Hatanın dosya ve satır numarasını verebilir.</li><li>III. Çalışma zamanı ortamına bağlı hataları kolayca bulur.</li></ol>",o:["I ve II","Yalnız I","I ve III","I, II ve III"],a:0,e:"III dinamik analizin işidir; statik analiz çalışma zamanı koşullarını göremez."},
+{w:1,t:"on",q:"Dinamik analiz ile ilgili aşağıdakilerden hangileri doğrudur?<ol class='onc'><li>I. Bulduğu hatalar gerçektir, yanlış alarm çok azdır.</li><li>II. Hiç girilmeyen bir if bloğundaki hatayı da bulur.</li><li>III. Uygulamayı yavaşlatabilir.</li></ol>",o:["I ve III","Yalnız I","I ve II","II ve III"],a:0,e:"II yanlış: dinamik analiz sadece çalıştırılan yolları görür."},
+{w:1,t:"on",q:"Aşağıdakilerden hangileri doğrudur?<ol class='onc'><li>I. Error insan kaynaklıdır.</li><li>II. Fault, hatanın koddaki fiziksel izidir.</li><li>III. Failure derleme sırasında ortaya çıkar.</li></ol>",o:["I ve II","Yalnız II","II ve III","I, II ve III"],a:0,e:"Failure derlemede değil, program çalışırken ortaya çıkar."},
+{w:1,t:"on",q:"Rice teoremi ile ilgili hangileri doğrudur?<ol class='onc'><li>I. Durma probleminin genelleştirilmiş halidir.</li><li>II. Sözdizimsel özelliklere hiç karar verilemeyeceğini söyler.</li><li>III. Anlamsal özelliklere genel olarak karar verilemeyeceğini söyler.</li></ol>",o:["I ve III","Yalnız I","I ve II","I, II ve III"],a:0,e:"“Kod 100 satırdan uzun mu?” gibi sözdizimsel sorular kolayca cevaplanır."},
+{w:1,t:"bos",q:"Kodun çalıştırılmadan incelenmesine ______ analiz, çalıştırılarak incelenmesine ______ analiz denir.",o:["statik / dinamik","dinamik / statik","sembolik / somut","kara kutu / beyaz kutu"],a:0,e:"Statik = okuyarak, dinamik = çalıştırarak."},
+{w:1,t:"bos",q:"Raporlanan her şeyin gerçek hata olmasına ______, var olan hiçbir hatanın kaçırılmamasına ______ denir.",o:["tamlık / kesinlik","kesinlik / tamlık","doğrulama / geçerli kılma","validation / verification"],a:0,e:"Tamlık = yanlış alarm yok; kesinlik = hiçbir hatayı kaçırma."},
+{w:1,t:"es",q:"Felaket – sebep eşleştirmelerinden hangisi doğrudur?",o:["Therac-25 – aşırı radyasyon dozu; Ariane 5 – 64 bitten 16 bite dönüşümde taşma","Therac-25 – bit taşması; Ariane 5 – radyasyon dozu","Therac-25 – bellek sızıntısı; Ariane 5 – ağ gecikmesi","İkisi de donanım arızası"],a:0,e:"Therac = hastane, Ariane = roket."},
+{w:1,t:"es",q:"Statik analiz yöntemi – bulduğu sorun eşleştirmelerinden hangisi YANLIŞTIR?",o:["Sözdizimsel analiz – bellek sızıntısı","Kontrol akış grafiği – ölü kod","Veri akışı analizi – atanmadan kullanılan değişken","İşaretçi analizi – işaretçinin gösterdiği adres"],a:0,e:"Bellek sızıntısı dinamik analizle bulunur; sözdizimsel analiz yazım hatalarını bulur."},
+{w:1,t:"kod",q:"Aşağıdaki kodda statik analiz kontrol akış grafiği ile hangi sorunu bulur?<pre>int f(int x) {\n    return x * 2;\n    print(\"bitti\");\n}</pre>",o:["return’den sonraki satır ulaşılamaz (ölü kod)","Bellek sızıntısı","Sonsuz döngü","Sıfıra bölme"],a:0,e:"CFG’de return’den sonraki düğüme hiçbir ok gelmez."},
+{w:1,t:"sen",q:"Bir uygulama bütün testlerden geçiyor, ama gerçek kullanıcılar ürünün işlerine yaramadığını söylüyor. Hangi faaliyette eksik var?",o:["Geçerli kılma (validation)","Doğrulama (verification)","Statik analiz","Birim testi"],a:0,e:"“Doğru ürünü mü yaptık?” sorusu atlanmış."},
+{w:1,t:"sen",q:"Bir şirket, her hatayı bulan ve hiç yanlış alarm vermeyen bir statik analiz aracı sattığını iddia ediyor. Bu iddia neden gerçekçi değildir?",o:["Durma problemi ve Rice teoremi yüzünden kesinlik ve tamlık birlikte sağlanamaz","Araç çok pahalıdır","Statik analiz yavaştır","Sadece Java’da çalışır"],a:0,e:"Kusursuz analiz aracı matematiksel olarak imkansızdır."},
+{w:1,t:"sen",q:"Bir sunucu birkaç gün çalıştıktan sonra yavaşlayıp çöküyor; RAM kullanımı sürekli artıyor. Hangi analiz kullanılmalıdır?",o:["Bellek sızıntısı tespiti (dinamik)","Kapsama analizi","Sözdizimsel analiz","Kontrol akış grafiği"],a:0,e:"Alınıp geri bırakılmayan bellek zamanla sistemi kilitler."},
+// Hafta 2
+{w:2,t:"dy",q:"Yeterli zaman verilirse her yazılımda kapsamlı (exhaustive) test mümkündür.",o:["Doğru","Yanlış"],a:1,e:"Prensip 2: kapsamlı test imkansızdır."},
+{w:2,t:"dy",q:"Birim testinde, test edilen fonksiyonun veritabanı bağımlılığı mock veya stub ile yalıtılır.",o:["Doğru","Yanlış"],a:0,e:"İzolasyon şartı."},
+{w:2,t:"dy",q:"Kabul testi genellikle kodu yazan geliştiriciler tarafından beyaz kutu yaklaşımıyla yapılır.",o:["Doğru","Yanlış"],a:1,e:"Kabul testini kullanıcı/müşteri yapar; kara kutu yaklaşımıdır."},
+{w:2,t:"dy",q:"TDD’de test koddan önce yazılır ve ilk çalıştırmada başarısız olur.",o:["Doğru","Yanlış"],a:0,e:"Red aşaması."},
+{w:2,t:"dy",q:"Gri kutu testi yapan kişi kaynak kodun tamamını satır satır bilir.",o:["Doğru","Yanlış"],a:1,e:"Gri kutu kod detayını bilmez; veritabanı şemasını ve mimariyi bilir."},
+{w:2,t:"on",q:"Kara kutu testi ile ilgili hangileri doğrudur?<ol class='onc'><li>I. Girdi ve çıktıya odaklanır.</li><li>II. Dal kapsama tekniğini kullanır.</li><li>III. Gereksinim dokümanlarını temel alır.</li></ol>",o:["I ve III","Yalnız I","I ve II","I, II ve III"],a:0,e:"Dal kapsama beyaz kutu tekniğidir."},
+{w:2,t:"on",q:"Entegrasyon testi ile ilgili hangileri doğrudur?<ol class='onc'><li>I. Big Bang’de bütün modüller aynı anda birleştirilir.</li><li>II. Yukarıdan aşağıya yaklaşımda eksik alt modüller yerine stub kullanılır.</li><li>III. Aşağıdan yukarıya yaklaşımda eksik üst modül yerine driver kullanılır.</li></ol>",o:["I, II ve III","Yalnız I","I ve II","II ve III"],a:0,e:"Üçü de doğru."},
+{w:2,t:"on",q:"Test prensipleriyle ilgili hangileri doğrudur?<ol class='onc'><li>I. Test hataların yokluğunu kanıtlar.</li><li>II. Hataların çoğu küçük bir modül grubunda toplanır.</li><li>III. Aynı testleri sürekli tekrarlamak yeni hata bulmayı zorlaştırır.</li></ol>",o:["II ve III","Yalnız II","I ve III","I, II ve III"],a:0,e:"I yanlış: test hataların varlığını gösterir, yokluğunu kanıtlamaz."},
+{w:2,t:"bos",q:"Fonksiyonel olmayan testler, sistemin işini ______ yaptığıyla ilgilenir.",o:["nasıl","ne zaman","kim için","hangi dilde"],a:0,e:"Fonksiyonel = ne yapıyor; fonksiyonel olmayan = nasıl yapıyor."},
+{w:2,t:"bos",q:"Hataların %80’inin modüllerin %20’sinde toplanmasına ______ ilkesi denir.",o:["Pareto","Pestisit","Shift-Left","Rice"],a:0,e:"Hataların kümelenmesi."},
+{w:2,t:"es",q:"STLC aşamalarının doğru sırası hangisidir?",o:["Gereksinim analizi → Planlama → Senaryo tasarımı → Ortam kurulumu → Yürütme → Kapanış","Planlama → Gereksinim analizi → Yürütme → Senaryo tasarımı → Ortam kurulumu → Kapanış","Senaryo tasarımı → Gereksinim analizi → Planlama → Yürütme → Ortam kurulumu → Kapanış","Ortam kurulumu → Planlama → Gereksinim analizi → Senaryo tasarımı → Kapanış → Yürütme"],a:0,e:"Anla → Planla → Yaz → Kur → Koş → Kapat."},
+{w:2,t:"es",q:"Test seviyelerinin küçükten büyüğe sırası hangisidir?",o:["Birim → Entegrasyon → Sistem → Kabul","Entegrasyon → Birim → Kabul → Sistem","Sistem → Birim → Entegrasyon → Kabul","Kabul → Sistem → Entegrasyon → Birim"],a:0,e:"Tuğla → duvar → bina → anahtar teslim."},
+{w:2,t:"es",q:"Yaklaşım – özellik eşleştirmelerinden hangisi YANLIŞTIR?",o:["Beyaz kutu – genellikle son kullanıcılar yapar","Kara kutu – sınır değer analizi","Gri kutu – matris testi","Beyaz kutu – dal kapsama"],a:0,e:"Beyaz kutuyu kodu bilen geliştiriciler yapar."},
+{w:2,t:"es",q:"Kalite ölçütü – anlamı eşleştirmelerinden hangisi doğrudur?",o:["Etkinlik – donanım kaynaklarını az ve verimli kullanma","Doğruluk – her koşulda kesintisiz çalışma","Güvenilirlik – gereksinim dokümanına tam uyma","Etkinlik – kullanıcı için kolay olma"],a:0,e:"Doğruluk = gereksinime uyma; güvenilirlik = kesintisiz çalışma."},
+{w:2,t:"kod",q:"Bir alan 0–120 arası yaş kabul ediyor. Sınır değer analizine en uygun test değerleri hangisidir?",o:["-1, 0, 120, 121","0, 60, 120","50, 51","-100, 500"],a:0,e:"Sınırlar ve hemen dışları."},
+{w:2,t:"sen",q:"Bir e-ticaret sitesi indirim gününde 50.000 eşzamanlı kullanıcı bekliyor. Öncelikli test hangisi olmalıdır?",o:["Performans (yük) testi","Birim testi","Kullanılabilirlik testi","Alfa testi"],a:0,e:"Sistem beklenen yükte hızlı ve kararlı mı?"},
+{w:2,t:"sen",q:"Bir ekip yıllardır aynı 200 test senaryosunu koşuyor ve artık hiç hata bulamıyor, ama kullanıcılar hata bildirmeye devam ediyor. Hangi prensip?",o:["Pestisit paradoksu","Hataların kümelenmesi","Erken test","Test bağlama bağlıdır"],a:0,e:"Testler yenilenmeli."},
+{w:2,t:"sen",q:"Ürün yayından önce seçilmiş gerçek kullanıcılara kendi ortamlarında denetiliyor. Bu hangi testtir?",o:["Beta testi","Alfa testi","Birim testi","Entegrasyon testi"],a:0,e:"Alfa şirket içinde, beta gerçek kullanıcı ortamında."},
+{w:2,t:"sen",q:"Ödeme ve kargo modülleri ayrı ayrı testten geçti, ama birlikte çalışınca sipariş tutarı kargoya yanlış aktarılıyor. Bu hatayı hangi seviye yakalamalıydı?",o:["Entegrasyon testi","Birim testi","Kabul testi","Sözdizimsel analiz"],a:0,e:"Modüller arası veri alışverişi entegrasyon testinin işidir."},
+{w:2,t:"sen",q:"Mobil bankacılık uygulamasında kullanıcılar para transferi butonunu bulmakta zorlanıyor. Hangi test bu sorunu ortaya çıkarır?",o:["Kullanılabilirlik testi","Stres testi","Güvenlik testi","Birim testi"],a:0,e:"Kolay, sezgisel ve anlaşılır mı?"},
+// Hafta 3
+{w:3,t:"dy",q:"Rastgele testte kahin (oracle) problemi, sistematik teste göre daha kolay çözülür.",o:["Doğru","Yanlış"],a:1,e:"Kahin problemi rastgele testin en büyük sorunudur."},
+{w:3,t:"dy",q:"Mutasyon tabanlı fuzzing, girdi formatının grameri bilinmeden de uygulanabilir.",o:["Doğru","Yanlış"],a:0,e:"Var olan örnek girdinin baytları bozulur; format bilgisi gerekmez."},
+{w:3,t:"dy",q:"Aptal maymun testi, uygulamanın ekran yapısını bilerek anlamlı tıklamalar yapar.",o:["Doğru","Yanlış"],a:1,e:"Bu akıllı maymundur; aptal maymun hiçbir şey bilmez."},
+{w:3,t:"on",q:"Rastgele test ile ilgili hangileri doğrudur?<ol class='onc'><li>I. İnsan yanlılığını azaltır.</li><li>II. Tasarım maliyeti düşüktür.</li><li>III. <code>x == 123456</code> gibi dar koşullara kolayca girer.</li></ol>",o:["I ve II","Yalnız I","I ve III","I, II ve III"],a:0,e:"Dar koşullara rastgele girdiyle girme ihtimali çok düşüktür."},
+{w:3,t:"on",q:"Fuzzing ile ilgili hangileri doğrudur?<ol class='onc'><li>I. Rastgele testin siber güvenlik versiyonudur.</li><li>II. Bozuk ve beklenmedik girdiler kullanır.</li><li>III. Sadece geçerli girdilerle çalışır.</li></ol>",o:["I ve II","Yalnız II","II ve III","I, II ve III"],a:0,e:"Fuzzing’in amacı geçersiz girdilerle çökme ve açık bulmaktır."},
+{w:3,t:"bos",q:"Rastgele testte test edilen sisteme ______, sonucun doğru olup olmadığına karar veren mekanizmaya ______ denir.",o:["SUT / kahin (oracle)","kahin / SUT","stub / driver","SMT / fitness"],a:0,e:"System Under Test ve Oracle."},
+{w:3,t:"es",q:"Rastgele test adımlarında “Modelleme”den hemen sonra gelen adım hangisidir?",o:["Dağılım seçimi","Veri üretimi","Kahin","Koşturma ve gözlemleme"],a:0,e:"Modelleme → Dağılım seçimi → Veri üretimi → Koşturma → Kahin."},
+{w:3,t:"es",q:"Hangisi doğru eşleştirmedir?",o:["Sınır odaklı dağılım – uç değerlere daha fazla ağırlık","Düzgün dağılım – sadece sınır değerler","Üretim tabanlı fuzzing – var olan dosyayı bozma","Akıllı maymun – sistem hakkında hiçbir bilgi yok"],a:0,e:"Diğerlerinin hepsi ters eşleştirilmiş."},
+{w:3,t:"sen",q:"Bir PDF okuyucuyu test etmek için gerçek bir PDF dosyası alınıp baytları rastgele değiştiriliyor. Bu hangi tekniktir?",o:["Mutasyon tabanlı fuzzing","Üretim tabanlı fuzzing","Model tabanlı test","Sınır değer analizi"],a:0,e:"Var olanı boz."},
+{w:3,t:"sen",q:"Bir JSON ayrıştırıcısı için, JSON gramerine uygun ama çok derin iç içe yapılar içeren girdiler sıfırdan üretiliyor. Bu hangi tekniktir?",o:["Üretim tabanlı fuzzing","Mutasyon tabanlı fuzzing","Aptal maymun testi","Kabul testi"],a:0,e:"Kuralı bilip sıfırdan üret."},
+{w:3,t:"sen",q:"Bir mobil uygulamaya rastgele binlerce dokunma ve kaydırma gönderilip uygulamanın çöküp çökmediğine bakılıyor. Bu hangi testtir?",o:["Maymun testi","Birim testi","Entegrasyon testi","Sembolik çalıştırma"],a:0,e:"Klavyenin başında maymun varmış gibi."},
+{w:3,t:"sen",q:"Rastgele test 1 milyon girdi üretti; program hiç çökmedi ama çıktıların doğru olup olmadığını kontrol edecek bir yöntem yok. Karşılaşılan sorun nedir?",o:["Test kahini (oracle) problemi","Yol patlaması","Pestisit paradoksu","Big Bang problemi"],a:0,e:"“Doğru sonuç neydi?” sorusu."},
+// Hafta 4
+{w:4,t:"dy",q:"Sembolik çalıştırmada her bağımsız if ifadesi incelenecek yol sayısını yaklaşık ikiye katlar.",o:["Doğru","Yanlış"],a:0,e:"n if → 2ⁿ yol: yol patlaması."},
+{w:4,t:"dy",q:"Concolic çalıştırma programı hiç çalıştırmadan, sadece sembollerle analiz eder.",o:["Doğru","Yanlış"],a:1,e:"Concolic = somut çalıştırma + sembolik koşul toplama."},
+{w:4,t:"dy",q:"EvoSuite, Java için genetik algoritma kullanarak otomatik test üretir.",o:["Doğru","Yanlış"],a:0,e:"Evo = evrim."},
+{w:4,t:"on",q:"Sembolik çalıştırma ile ilgili hangileri doğrudur?<ol class='onc'><li>I. Değişkenler sembollerle temsil edilir.</li><li>II. Yol koşulları SMT çözücüyle çözülür.</li><li>III. Yol patlaması problemi yaşamaz.</li></ol>",o:["I ve II","Yalnız I","II ve III","I, II ve III"],a:0,e:"Yol patlaması sembolik çalıştırmanın en büyük sorunudur."},
+{w:4,t:"on",q:"Genetik algoritma ile test üretimi hakkında hangileri doğrudur?<ol class='onc'><li>I. Uygunluk fonksiyonu girdinin hedefe yakınlığını ölçer.</li><li>II. Çaprazlama iki iyi bireyin parçalarını birleştirir.</li><li>III. Mutasyon popülasyonu tamamen siler.</li></ol>",o:["I ve II","Yalnız I","I ve III","I, II ve III"],a:0,e:"Mutasyon küçük rastgele bir değişikliktir."},
+{w:4,t:"kod",q:"Birbirinden bağımsız 3 if ifadesi için sembolik çalıştırmada en fazla kaç yol vardır?<pre>if (a &gt; 0) { ... }\nif (b &gt; 0) { ... }\nif (c &gt; 0) { ... }</pre>",o:["8","3","6","9"],a:0,e:"2³ = 8."},
+{w:4,t:"kod",q:"Sembolik çalıştırma hata() satırına ulaşmak için hangi girdiyi üretir?<pre>void f(int x) {\n    if (x * 2 == 50)\n        hata();\n}</pre>",o:["x = 25","x = 50","x = 100","x = 2"],a:0,e:"Yol koşulu 2α = 50, SMT çözücü α = 25 bulur."},
+{w:4,t:"kod",q:"Hedef koşul <code>x == 50</code> ve uygunluk = |x − 50| (küçük olan daha iyi). Hangi birey en uygundur?",o:["x = 47","x = 10","x = 80","x = -50"],a:0,e:"Mesafeler: 3, 40, 30, 100."},
+{w:4,t:"kod",q:"hedef() satırına ulaşan yol koşulu hangisidir?<pre>if (y &gt; 10)\n    if (y &lt; 20)\n        hedef();</pre>",o:["y &gt; 10 ∧ y &lt; 20","y &gt; 10 ∨ y &lt; 20","y ≤ 10 ∧ y ≥ 20","y == 15"],a:0,e:"İki koşul da doğru olmalı: “ve”."},
+{w:4,t:"kod",q:"Concolic çalıştırma x = 3 ile başladı ve <code>if (x &gt; 10)</code> koşulunda yanlış dala gitti. Yeni yolu keşfetmek için SMT çözücüye hangi koşul verilir?",o:["x &gt; 10","x ≤ 10","x == 3","x &lt; 3"],a:0,e:"Son koşul terslenir (x ≤ 10 → x > 10) ve çözülür."},
+{w:4,t:"es",q:"Araç – teknik eşleştirmelerinden hangisi YANLIŞTIR?",o:["Atheris – genetik algoritma ile Java testi","KLEE – C için sembolik çalıştırma","Pex – .NET için dinamik sembolik çalıştırma","EvoSuite – Java için arama tabanlı test"],a:0,e:"Atheris, Google’ın Python için fuzzing aracıdır."},
+{w:4,t:"bos",q:"Arama tabanlı yazılım testinde bir girdinin hedefe ne kadar yakın olduğunu ______ fonksiyonu ölçer.",o:["uygunluk (fitness)","transfer","meet","kahin"],a:0,e:"SBST’nin pusulası."},
+{w:4,t:"sen",q:"Bir ATM yazılımının davranışı durum diyagramıyla modellenmiş; test senaryoları bu diyagramdan otomatik üretiliyor. Bu hangi yaklaşımdır?",o:["Model tabanlı test (MBT)","Maymun testi","Fuzzing","Big Bang entegrasyon"],a:0,e:"Önce model, sonra testler modelden."},
+{w:4,t:"sen",q:"40 bağımsız if içeren bir programda sembolik çalıştırma aracı saatlerce bitmiyor. Sebep nedir?",o:["Yol patlaması","Kahin problemi","Pestisit paradoksu","Bellek sızıntısı"],a:0,e:"2⁴⁰ yol, yaklaşık bir trilyon."},
+// Hafta 5
+{w:5,t:"dy",q:"Temel bloğun ortasına bir dallanmayla dışarıdan girilebilir.",o:["Doğru","Yanlış"],a:1,e:"Temel bloğa sadece ilk satırından girilir."},
+{w:5,t:"dy",q:"DU anomalisi, değişkene atanan değerin hiç kullanılmadan kaybolmasıdır.",o:["Doğru","Yanlış"],a:0,e:"Defined → Undefined: israf."},
+{w:5,t:"dy",q:"Mevcut ifadeler analizinde meet operatörü birleşimdir (∪).",o:["Doğru","Yanlış"],a:1,e:"Kesişimdir (∩): ifade bütün yollarda hesaplanmış olmalı."},
+{w:5,t:"dy",q:"İş listesi algoritması, kafes teorisinin monotonluk ilkesi sayesinde eninde sonunda durur.",o:["Doğru","Yanlış"],a:0,e:"Kümeler tek yönde büyür ve sonludur."},
+{w:5,t:"kod",q:"Bu kodda x için hangi anomali vardır?<pre>int x;\nx = 5;\nx = 7;\nprint(x);</pre>",o:["DD","UR","DU","Anomali yok"],a:0,e:"5 değeri okunmadan 7 ile eziliyor."},
+{w:5,t:"kod",q:"Bu kodda t için hangi anomali vardır?<pre>void f() {\n    int t = hesapla();\n    return;\n}</pre>",o:["DU","UR","DD","Anomali yok"],a:0,e:"Atanan değer hiç kullanılmadan fonksiyon bitiyor."},
+{w:5,t:"kod",q:"Bu kodda kaç temel blok vardır?<pre>a = 1;\nb = 2;\nif (a &gt; b)\n    c = a;\nelse\n    c = b;\nprint(c);</pre>",o:["4","3","5","7"],a:0,e:"{a=1; b=2; if}, {c=a}, {c=b}, {print}."},
+{w:5,t:"kod",q:"IN[B] = {d1, d2, d4}, GEN[B] = {d5}, KILL[B] = {d2, d4} ise OUT[B] nedir?",o:["{d1, d5}","{d1, d2, d4, d5}","{d5}","{d2, d4, d5}"],a:0,e:"{d5} ∪ ({d1,d2,d4} − {d2,d4}) = {d1, d5}."},
+{w:5,t:"kod",q:"Bir blokta <code>d3: x = 4</code> tanımı var. Programda x’in başka tanımları d1 ve d6. Bu bloğun KILL kümesi nedir?",o:["{d1, d6}","{d3}","{d1, d3, d6}","{ }"],a:0,e:"Yeni tanım x’in diğer bütün tanımlarını öldürür."},
+{w:5,t:"kod",q:"<code>x = 10</code> satırından sonra x canlı mıdır?<pre>x = 3;\ny = x + 1;\nx = 10;\nprint(y);</pre>",o:["Hayır, x’in değeri bir daha okunmuyor","Evet, print(y) x’i okur","Evet, atanan her değişken canlıdır","Belirlenemez"],a:0,e:"Canlı = değeri ileride okunacak. x = 10 ölü bir atamadır."},
+{w:5,t:"on",q:"Temel blok için hangileri doğrudur?<ol class='onc'><li>I. Tek girişi ve tek çıkışı vardır.</li><li>II. İçinde if bulunabilir.</li><li>III. İlk satırı çalışırsa bütün satırları çalışır.</li></ol>",o:["I ve III","Yalnız I","I ve II","I, II ve III"],a:0,e:"Dallanma sadece bloğun son satırı olabilir; ortasında olamaz."},
+{w:5,t:"on",q:"Klasik veri akışı problemleri için hangileri doğrudur?<ol class='onc'><li>I. Ulaşan tanımlar ileri yönlüdür.</li><li>II. Canlı değişkenler geri yönlüdür.</li><li>III. Çok meşgul ifadeler birleşim (∪) kullanır.</li></ol>",o:["I ve II","Yalnız I","II ve III","I, II ve III"],a:0,e:"Çok meşgul ifadeler kesişim (∩) kullanır."},
+{w:5,t:"es",q:"Analiz – yön – meet eşleştirmelerinden hangisi doğrudur?",o:["Mevcut ifadeler – ileri – ∩","Canlı değişkenler – ileri – ∩","Ulaşan tanımlar – geri – ∪","Çok meşgul ifadeler – ileri – ∪"],a:0,e:"Ulaşan: ileri ∪, Canlı: geri ∪, Mevcut: ileri ∩, Meşgul: geri ∩."},
+{w:5,t:"es",q:"Anomali – sonuç eşleştirmelerinden hangisi doğrudur?",o:["UR – kritik hata, DU – israf, DD – mantıksal kusur","UR – israf, DU – kritik hata, DD – mantıksal kusur","UR – mantıksal kusur, DU – kritik hata, DD – israf","Üçü de kritik hata"],a:0,e:"UR okunan değer yok, DU unutulan değer, DD ezilen değer."},
+{w:5,t:"es",q:"İş listesi algoritmasında listeden bir blok çekildikten sonraki adım hangisidir?",o:["Önceki (ya da sonraki) bloklara bakılarak yeni IN hesaplanır","Liste tamamen boşaltılır","Bütün kümeler sıfırlanır","Program çalıştırılır"],a:0,e:"Sonra transfer fonksiyonuyla OUT hesaplanır."},
+{w:5,t:"bos",q:"Evrensel transfer fonksiyonu: OUT[B] = ______ ∪ (IN[B] − ______).",o:["GEN[B] / KILL[B]","KILL[B] / GEN[B]","IN[B] / OUT[B]","OUT[B] / GEN[B]"],a:0,e:"Girenden ölenleri çıkar, yeni doğanları ekle."},
+{w:5,t:"sen",q:"Formdan gelen metin temizlenmeden doğrudan SQL sorgusuna ekleniyor. Bu açığı hangi analiz yakalar?",o:["Leke (taint) analizi","Canlı değişken analizi","Kapsama analizi","Maymun testi"],a:0,e:"Kirli kaynak → temizlenmeden → tehlikeli nokta."},
+{w:5,t:"sen",q:"Aynı kod C’de derlenip garip sonuçlar veriyor; Java’ya çevrilince derlenmiyor. Kodda başlatılmamış yerel değişken okunuyor. Hangi anomali?",o:["UR","DU","DD","Anomali yok"],a:0,e:"C çöp değerle devam eder, Java derlemeyi reddeder."},
+// Hafta 6
+{w:6,t:"dy",q:"May analizi hiçbir olasılığı kaçırmamak için kümeleri büyütür; bu yüzden yanlış alarm artabilir.",o:["Doğru","Yanlış"],a:0,e:"Üst yaklaşımın bedeli."},
+{w:6,t:"dy",q:"Must analizinde farklı yollardan gelen bilgiler birleşimle (∪) birleştirilir.",o:["Doğru","Yanlış"],a:1,e:"Must kesişim (∩) kullanır."},
+{w:6,t:"dy",q:"Steensgaard analizi Andersen analizinden daha hassastır.",o:["Doğru","Yanlış"],a:1,e:"Steensgaard daha hızlı ama daha kabadır."},
+{w:6,t:"dy",q:"Akış duyarsız analizde bütün güncellemeler zayıf güncellemedir.",o:["Doğru","Yanlış"],a:0,e:"Sıra bilinmediği için eski bilgi hiçbir zaman silinemez."},
+{w:6,t:"dy",q:"Alan tabanlı analiz, farklı nesnelerin aynı adlı alanlarını tek bir konum sayar.",o:["Doğru","Yanlış"],a:0,e:"Nesneyi yok sayar, sadece alan adına bakar."},
+{w:6,t:"kod",q:"Akış duyarsız Andersen analizinde pts(r) nedir?<pre>p = &amp;a;\nq = &amp;b;\nr = p;\nr = q;</pre>",o:["{a, b}","{b}","{a}","{ }"],a:0,e:"İki kopyalama kısıtı: pts(p) ⊆ pts(r) ve pts(q) ⊆ pts(r)."},
+{w:6,t:"kod",q:"Aynı kod için akış duyarlı analizde son satırdan sonra pts(r) nedir?<pre>p = &amp;a;\nq = &amp;b;\nr = p;\nr = q;</pre>",o:["{b}","{a, b}","{a}","{ }"],a:0,e:"Son atama r = q; r kesin tek değişken olduğu için güçlü güncelleme yapılır."},
+{w:6,t:"kod",q:"pts(r) nedir?<pre>p = &amp;a;\nq = &amp;p;\nr = *q;</pre>",o:["{a}","{p}","{q}","{a, p}"],a:0,e:"Yükleme: pts(q) = {p} olduğu için pts(p) ⊆ pts(r)."},
+{w:6,t:"kod",q:"Andersen analizine göre pts(x) nedir?<pre>x = &amp;a;\np = &amp;x;\nq = &amp;b;\n*p = q;</pre>",o:["{a, b}","{b}","{a}","{x}"],a:0,e:"Saklama: pts(p) = {x}, pts(q) ⊆ pts(x). Andersen akış duyarsız olduğu için a silinmez."},
+{w:6,t:"kod",q:"pt(p) = {a, b} ve pt(q) = {b, c} ise p ile q için ne söylenir?",o:["May alias: ortak konum b var","Alias değiller: kümeler farklı","Must alias","Belirlenemez"],a:0,e:"pt(p) ∩ pt(q) = {b} ≠ ∅."},
+{w:6,t:"on",q:"Andersen analizi için hangileri doğrudur?<ol class='onc'><li>I. <code>p = q</code> için pts(q) ⊆ pts(p) kısıtı üretilir.</li><li>II. Yükleme ve saklama karmaşık kısıttır.</li><li>III. Neredeyse doğrusal zamanda çalışır.</li></ol>",o:["I ve II","Yalnız I","II ve III","I, II ve III"],a:0,e:"Andersen kübik; neredeyse doğrusal olan Steensgaard."},
+{w:6,t:"on",q:"Hocanın notlarına göre hangileri doğrudur?<ol class='onc'><li>I. Ulaşan tanımlar May analizinin tipik kullanım alanıdır.</li><li>II. Kullanılmayan kod eleme Must analizinin tipik kullanım alanıdır.</li><li>III. Güvenlik zafiyet analizi Must analizinin tipik kullanım alanıdır.</li></ol>",o:["I ve II","Yalnız I","I ve III","I, II ve III"],a:0,e:"Güvenlik zafiyet analizi May analizinin kullanım alanıdır."},
+{w:6,t:"es",q:"Deyim – ad eşleştirmelerinden hangisi YANLIŞTIR?",o:["<code>p = *q</code> – saklama","<code>p = &amp;a</code> – adres alma","<code>p = q</code> – kopyalama","<code>*p = q</code> – saklama"],a:0,e:"p = *q yüklemedir (load)."},
+{w:6,t:"es",q:"Hassasiyet boyutu – sorduğu soru eşleştirmelerinden hangisi doğrudur?",o:["Bağlam – fonksiyonu kim çağırdı?","Akış – struct’ın hangi alanı?","Alan – komutların sırası nedir?","Nesne – değişken hangi satırda tanımlandı?"],a:0,e:"Akış = sıra, alan = struct parçaları, nesne = alıcı nesne."},
+{w:6,t:"bos",q:"May analizi ______ yaklaşım, Must analizi ______ yaklaşımdır.",o:["üst / alt","alt / üst","dinamik / statik","rastgele / sistematik"],a:0,e:"May fazlasını içerir, Must kesin olanı."},
+{w:6,t:"sen",q:"Java’da iki farklı listeye farklı türde nesneler ekleniyor; analiz get() sonucunda iki listenin içeriğini karıştırıyor. Hangi hassasiyet bu sorunu çözer?",o:["Nesne duyarlılığı","Alan tabanlı analiz","Akış duyarsızlık","Steensgaard analizi"],a:0,e:"Metot alıcı nesneye göre ayrı analiz edilir."},
+{w:6,t:"sen",q:"Milyonlarca satırlık bir kod tabanında işaretçi analizi birkaç dakikada bitmeli; hassasiyet ikinci planda. Hangi analiz seçilmelidir?",o:["Steensgaard","Andersen","Akış ve bağlam duyarlı analiz","Sembolik çalıştırma"],a:0,e:"Neredeyse doğrusal zaman."},
+{w:6,t:"sen",q:"Bir döngüde 1000 kez malloc çağrılıyor ve analiz bunları tek soyut nesne sayıyor. Bu nesneye <code>*p = q</code> ile yazıldığında hangi güncelleme yapılır?",o:["Zayıf güncelleme","Güçlü güncelleme","Hiç güncelleme yapılmaz","Nesne silinir"],a:0,e:"Özet nesne birden fazla gerçek nesneyi temsil eder; eski bilgi silinemez."},
+// Hafta 7
+{w:7,t:"dy",q:"Kısıtlamaya dayalı analizde kısıtların üretilmesi ve çözülmesi iki ayrı aşamadır.",o:["Doğru","Yanlış"],a:0,e:"Önce üret, sonra çöz."},
+{w:7,t:"dy",q:"Eşitlik kısıtları genellikle kısıt grafında sabit noktaya kadar yayılarak çözülür.",o:["Doğru","Yanlış"],a:1,e:"Eşitlik kısıtları birleştirmeyle (unification) çözülür; yayma kapsama kısıtları içindir."},
+{w:7,t:"dy",q:"0-CFA bağlama duyarlı bir kontrol akış analizidir.",o:["Doğru","Yanlış"],a:1,e:"0-CFA bağlama duyarsızdır."},
+{w:7,t:"kod",q:"Bu kodun tip kısıtları çözüldüğünde ne bulunur?<pre>a = 3;\nb = a &gt; 2;\nc = b + 1;</pre>",o:["Tip hatası: [[b]] hem bool hem int olmalı","Program tip açısından güvenlidir","[[c]] = bool","[[a]] = bool"],a:0,e:"a > 2 karşılaştırması bool üretir, b + 1 ise b’nin int olmasını ister."},
+{w:7,t:"kod",q:"0-CFA’ya göre <code>k()</code> çağrısında çağrılabilecek fonksiyonlar hangileridir?<pre>h = kosul ? f : g;\nk = h;\nk();</pre>",o:["{f, g}","{f}","{g}","{h}"],a:0,e:"{f, g} ⊆ [[h]] ⊆ [[k]]."},
+{w:7,t:"on",q:"Kısıtlamaya dayalı analiz için hangileri doğrudur?<ol class='onc'><li>I. Aynı çözücü farklı analizlerde kullanılabilir.</li><li>II. Büyük programlarda maliyet artabilir.</li><li>III. Rice teoremini aşar ve her zaman kesin sonuç verir.</li></ol>",o:["I ve II","Yalnız I","I ve III","I, II ve III"],a:0,e:"Hiçbir statik analiz Rice teoremini aşamaz."},
+{w:7,t:"es",q:"Kısıt türü – örnek analiz eşleştirmelerinden hangisi doğrudur?",o:["Eşitlik – Steensgaard","Kapsama – tip çıkarımı","Eşitlik – Andersen","Kapsama – Steensgaard"],a:0,e:"Eşitlik: Steensgaard, tip çıkarımı. Kapsama: Andersen, CFA."},
+{w:7,t:"bos",q:"Eşitlik kısıtları ______ algoritmasıyla, kapsama kısıtları ise kısıt grafında ______ ulaşılana kadar yayılarak çözülür.",o:["birleştirme / sabit noktaya","genetik / hedefe","Big Bang / sona","rastgele / kahine"],a:0,e:"Unification ve fixed point."},
+{w:7,t:"sen",q:"Bir dalın çalışması için <code>x &gt; 10 ∧ y == 2x</code> koşulu çıkarılıp çözücüye veriliyor; çözücü x = 11, y = 22 döndürüyor. Bu hangi uygulamadır?",o:["Kısıt tabanlı test üretimi","Maymun testi","Leke analizi","Tip çıkarımı"],a:0,e:"Kısıtın çözümü bir test girdisidir."},
+{w:7,t:"sen",q:"Callback’lerle dolu bir kütüphanede, hangi fonksiyonun çağrılacağı bilinmeden fonksiyonlar arası analiz yapılamıyor. Önce hangi analiz yapılmalıdır?",o:["Kontrol akış analizi (çağrı grafı)","Sınır değer analizi","Bellek profilleme","Kabul testi"],a:0,e:"CFA çağrı grafını çıkarır."},
+// Ek · ISTQB
+{w:8,t:"dy",q:"%100 ifade kapsamı her zaman %100 dal kapsamı anlamına gelir.",o:["Doğru","Yanlış"],a:1,e:"Tersi doğrudur: %100 dal kapsamı %100 ifade kapsamını garanti eder."},
+{w:8,t:"dy",q:"Regresyon testi, yalnızca düzeltilen hatanın tekrar test edilmesidir.",o:["Doğru","Yanlış"],a:1,e:"O tekrar (onay) testidir; regresyon başka yerlerin bozulup bozulmadığına bakar."},
+{w:8,t:"kod",q:"Kod sadece x = 5 ile test edilirse dal kapsamı nedir?<pre>if (x &gt; 0)\n    y = 1;\nelse\n    y = -1;\nprint(y);</pre>",o:["%50","%100","%25","%75"],a:0,e:"İki daldan sadece “doğru” dalı çalıştı: 1/2."},
+{w:8,t:"kod",q:"Bir karar tablosunda 4 bağımsız evet/hayır koşulu var. En fazla kaç kural olur?",o:["16","4","8","12"],a:0,e:"2⁴ = 16."},
+{w:8,t:"kod",q:"Şifre uzunluğu 8–16 karakter olmalı. Eşdeğerlik bölümlemeye göre hangi set her sınıftan bir temsilci içerir?",o:["5, 12, 20","8, 16","10, 11, 12","1, 2, 3"],a:0,e:"Geçersiz kısa, geçerli, geçersiz uzun."},
+{w:8,t:"kod",q:"8–16 aralığı için 3 değerli sınır değer analizinde hangi değerler test edilir?",o:["7, 8, 9, 15, 16, 17","8, 16","7, 17","0, 8, 16, 24"],a:0,e:"Her sınırın altı, kendisi ve üstü."},
+{w:8,t:"on",q:"Severity ve priority için hangileri doğrudur?<ol class='onc'><li>I. Severity hatanın teknik etkisidir.</li><li>II. Priority hatanın ne kadar acil düzeltileceğidir.</li><li>III. İkisi her zaman aynı seviyededir.</li></ol>",o:["I ve II","Yalnız I","II ve III","I, II ve III"],a:0,e:"Düşük ciddiyet + yüksek öncelik mümkündür (ana sayfadaki yazım hatası)."},
+{w:8,t:"es",q:"Hata yaşam döngüsünün doğru sırası hangisidir?",o:["New → Assigned → Open → Fixed → Retest → Closed","New → Fixed → Assigned → Closed → Retest → Open","Assigned → New → Retest → Open → Fixed → Closed","Open → New → Closed → Fixed → Assigned → Retest"],a:0,e:"Retest başarısızsa kayıt Reopened olur."},
+{w:8,t:"sen",q:"Süre kısıtlı. Ödeme modülü ve “Hakkımızda” sayfası test edilecek. Risk temelli teste göre ne yapılmalıdır?",o:["Ödeme modülü önce ve daha derin test edilmeli","İkisine eşit süre ayrılmalı","Önce Hakkımızda sayfası test edilmeli","İkisi de test edilmemeli"],a:0,e:"Risk = olasılık × etki; ödeme modülünün etkisi çok yüksek."}
 ];
 
 /* ===================== KARTLAR ===================== */
@@ -1297,30 +1427,37 @@ function updateProgress(){
 }
 
 /* ===================== TEST ===================== */
-const quizState = { scope:"all", count:20, list:[], i:0, answers:[] };
+const quizState = { scope:"all", count:20, type:"all", list:[], i:0, answers:[] };
 const LET = ["A","B","C","D"];
+const TYPES = { k:"Klasik", dy:"Doğru / Yanlış", on:"Öncüllü (I-II-III)", kod:"Kod / Hesaplama", bos:"Boşluk doldurma", es:"Eşleştirme / Sıralama", sen:"Senaryo" };
+const qt = q => q.t || "k";
+const inScope = q => quizState.scope==="all" || q.w===quizState.scope;
 function renderSetup(){
   const best = store.get("yt-best", {});
   const scopes = [["all","Tümü",QS.length], ...WEEKS.map(w=>[w.id,wl(w.id),QS.filter(q=>q.w===w.id).length])];
   const counts = [[10,"10 soru"],[20,"20 soru"],[30,"30 soru"],["all","Hepsi"]];
+  const types = [["all","Hepsi",QS.filter(inScope).length], ...Object.entries(TYPES).map(([k,l])=>[k,l,QS.filter(q=>inScope(q)&&qt(q)===k).length])].filter(t=>t[0]==="all"||t[2]>0);
+  if(!types.some(t=>t[0]===quizState.type)) quizState.type = "all";
   const pad = s => s + "&nbsp;".repeat(Math.max(0, 9 - s.length));
   $("#quiz").innerHTML = `<div class="card setup">
     <h2>Deneme sınavı</h2>
-    <p class="sub">Soru bankasında ${QS.length} çoktan seçmeli soru var. Şıklar her seferinde karışır. Cevapladığın an doğrusunu ve kısa açıklamasını görürsün.</p>
+    <p class="sub">Soru bankasında ${QS.length} soru var: klasik, doğru/yanlış, öncüllü, kod/hesaplama, boşluk doldurma, eşleştirme/sıralama ve senaryo. Şıklar her seferinde karışır. Cevapladığın an doğrusunu ve kısa açıklamasını görürsün.</p>
     <div class="field"><span class="fl" id="lbl-sc">Kapsam</span><div class="chips" id="sc" role="group" aria-labelledby="lbl-sc">${scopes.map(([v,l,n])=>`<button class="chip" data-v="${v}" style="${v==="all"?"":wc(v)}" aria-pressed="${String(quizState.scope)===String(v)}">${v==="all"?"":'<span class="dot" aria-hidden="true"></span>'}${l}<small>${n}</small></button>`).join("")}</div></div>
+    <div class="field"><span class="fl" id="lbl-ty">Soru tipi</span><div class="chips" id="ty" role="group" aria-labelledby="lbl-ty">${types.map(([v,l,n])=>`<button class="chip" data-v="${v}" aria-pressed="${quizState.type===v}">${l}<small>${n}</small></button>`).join("")}</div></div>
     <div class="field"><span class="fl" id="lbl-cn">Soru sayısı</span><div class="chips" id="cn" role="group" aria-labelledby="lbl-cn">${counts.map(([v,l])=>`<button class="chip" data-v="${v}" aria-pressed="${String(quizState.count)===String(v)}">${l}</button>`).join("")}</div></div>
     <div class="field"><span class="fl">En iyi sonuçların</span><div class="runner">${scopes.map(([v,l])=>{const b=best[v];return `${pad(l)} ${b!=null?`<span class="${b>=70?"p":"f"}">${b>=70?"PASS":"FAIL"} %${b}</span>`:'<span class="m">henüz yok</span>'}`;}).join("<br>")}</div></div>
     <div class="row" style="margin-top:22px"><button class="btn primary" id="go">${icon("play")}Sınavı başlat</button></div>
   </div>`;
   $("#sc").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;quizState.scope=b.dataset.v==="all"?"all":+b.dataset.v;renderSetup();});
   $("#cn").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;quizState.count=b.dataset.v==="all"?"all":+b.dataset.v;renderSetup();});
+  $("#ty").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;quizState.type=b.dataset.v;renderSetup();});
   $("#go").addEventListener("click",()=>startQuiz());
 }
 function startQuiz(list){
-  let pool = list || (quizState.scope==="all" ? QS : QS.filter(q=>q.w===quizState.scope));
+  let pool = list || QS.filter(q=>inScope(q) && (quizState.type==="all" || qt(q)===quizState.type));
   pool = shuffle(pool);
   if(!list && quizState.count!=="all") pool = pool.slice(0, quizState.count);
-  quizState.list = pool.map(q=>({...q, opts: shuffle(q.o.map((t,i)=>({t, ok:i===q.a})))}));
+  quizState.list = pool.map(q=>{ const o = q.o.map((t,i)=>({t, ok:i===q.a})); return {...q, opts: qt(q)==="dy" ? o : shuffle(o)}; });
   quizState.i = 0; quizState.answers = []; quizState.retry = !!list;
   renderQ();
 }
@@ -1331,11 +1468,11 @@ function renderQ(){
   $("#quiz").innerHTML = `<div class="card">
     <div class="qhead"><span>Soru ${s.i+1} / ${n}</span><span class="sc"><span class="p">${icon("check")}${p}</span><span class="f">${icon("x")}${f}</span></span></div>
     <div class="qprog" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${s.i}"><i style="width:${s.i/n*100}%"></i></div>
-    <div style="margin-top:18px"><span class="qwk" style="${wc(q.w)}">${wl(q.w)} · ${wk.title}</span></div>
+    <div class="qmeta"><span class="qwk" style="${wc(q.w)}">${wl(q.w)} · ${wk.title}</span><span class="qtype">${TYPES[qt(q)]}</span></div>
     <div class="qtext" id="qtext">${q.q}</div>
     <div class="opts" id="opts" role="group" aria-labelledby="qtext">${q.opts.map((o,i)=>`<button class="opt" data-i="${i}"><span class="L">${LET[i]}</span><span>${o.t}</span><span class="st"></span></button>`).join("")}</div>
     <div id="fb" aria-live="polite"></div>
-    <div class="qfoot"><span class="kbd"><kbd>A</kbd>–<kbd>D</kbd> ile seç · <kbd>Enter</kbd> ile ilerle</span><div class="row"><button class="btn ghost" id="quit">Sınavı bitir</button><button class="btn primary" id="next" hidden>${s.i+1<n?"Sonraki soru":"Sonucu gör"}${icon("arrow")}</button></div></div>
+    <div class="qfoot"><span class="kbd">${qt(q)==="dy"?"<kbd>D</kbd> / <kbd>Y</kbd>":"<kbd>A</kbd>–<kbd>D</kbd>"} ile seç · <kbd>Enter</kbd> ile ilerle</span><div class="row"><button class="btn ghost" id="quit">Sınavı bitir</button><button class="btn primary" id="next" hidden>${s.i+1<n?"Sonraki soru":"Sonucu gör"}${icon("arrow")}</button></div></div>
   </div>`;
   $("#opts").addEventListener("click",e=>{const b=e.target.closest(".opt");if(b)answer(+b.dataset.i);});
   $("#next").addEventListener("click",next);
@@ -1368,7 +1505,7 @@ function renderResult(){
   const s = quizState, done = s.answers.length, pass = s.answers.filter(a=>a.ok).length, fail = done-pass;
   const pct = done ? Math.round(pass/done*100) : 0;
   if(!s.retry && done===s.list.length){
-    const best = store.get("yt-best",{}), k = String(quizState.scope);
+    const best = store.get("yt-best",{}), k = String(quizState.scope) + (quizState.type==="all" ? "" : ":"+quizState.type);
     if(best[k]==null || pct>best[k]){ best[k]=pct; store.set("yt-best",best); }
   }
   const [title,msg] = pct>=85 ? ["Çok iyi","Bu kapsam hazır, başka haftaya geçebilirsin."] : pct>=70 ? ["İyi","Yanlış yaptığın sorulara bir kez daha bak."] : pct>=50 ? ["Ortalama","Yanlış çıkan haftaların konularını tekrar oku."] : ["Biraz daha çalış","Konuları bir tur daha okuyup tekrar dene."];
@@ -1399,8 +1536,9 @@ document.addEventListener("keydown",e=>{
   if(e.metaKey||e.ctrlKey||e.altKey) return;
   if(e.target.closest && e.target.closest("input,textarea")) return;
   const k = e.key.toUpperCase();
-  const map = {A:0,B:1,C:2,D:3,"1":0,"2":1,"3":2,"4":3};
-  if(k in map && quizState.answers.length<=quizState.i){ e.preventDefault(); answer(map[k]); }
+  const cur = quizState.list[quizState.i];
+  const map = cur && qt(cur)==="dy" ? {D:0,Y:1,A:0,B:1,"1":0,"2":1} : {A:0,B:1,C:2,D:3,"1":0,"2":1,"3":2,"4":3};
+  if(k in map && cur && map[k] < cur.opts.length && quizState.answers.length<=quizState.i){ e.preventDefault(); answer(map[k]); }
   else if(e.key==="Enter" && quizState.answers.length>quizState.i){ e.preventDefault(); next(); }
 });
 
