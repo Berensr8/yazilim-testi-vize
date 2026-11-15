@@ -268,7 +268,9 @@ figure.cfg .ah{fill:var(--muted)}
 .fc .hint svg.i{width:14px;height:14px}
 .fc[aria-expanded="true"]{background:color-mix(in srgb,var(--wc) 9%,var(--surface));border-color:var(--wc)}
 /* ---------- kopya kagidi ---------- */
-.cheat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.cheat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr));gap:16px}
+.cheat-grid>*{min-width:0}
+@media (max-width:640px){.cheat-card{padding:16px}.cheat-card .mini-tbl{display:block;overflow-x:auto}.cheat-card .ch-head{flex-wrap:wrap}}
 .cheat-card{--wc:var(--primary);background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--wc);border-radius:var(--r-l);padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow)}
 .cheat-card .ch-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .cheat-card h3{font-size:1.12rem;font-weight:700;display:flex;align-items:center;gap:8px}
@@ -321,7 +323,7 @@ figure.cfg .ah{fill:var(--muted)}
   <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="i-redo" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></symbol>
   <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
-  <symbol id="i-tap"viewBox="0 0 24 24"><path d="M9 11V5a2 2 0 0 1 4 0v6"/><path d="M13 9a2 2 0 0 1 4 0v3a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.7L3 14a2 2 0 0 1 3.3-2.2L9 15"/></symbol>
+  <symbol id="i-tap" viewBox="0 0 24 24"><path d="M9 11V5a2 2 0 0 1 4 0v6"/><path d="M13 9a2 2 0 0 1 4 0v3a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.7L3 14a2 2 0 0 1 3.3-2.2L9 15"/></symbol>
   <symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
   <symbol id="i-printer" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
 </svg>
