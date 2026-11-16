@@ -221,6 +221,13 @@ figure.cfg .ah{fill:var(--muted)}
 .topic-foot .learn{align-self:auto}
 .btn.tq{border-radius:999px;min-height:44px;font-size:.9rem;color:var(--wc);border-color:color-mix(in srgb,var(--wc) 40%,var(--line))}
 .btn.tq:hover{background:color-mix(in srgb,var(--wc) 10%,var(--surface));color:var(--wc)}
+.wh-acts{display:flex;flex-wrap:wrap;gap:8px}
+.btn.primary small{font-family:var(--f-mono);font-size:.7rem;font-weight:400;opacity:.85;margin-left:4px}
+.week-end{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;margin-top:22px;padding:18px 20px;border:2px dashed color-mix(in srgb,var(--wc) 45%,var(--line));border-radius:var(--r-m);background:color-mix(in srgb,var(--wc) 6%,var(--surface))}
+.week-end>svg{width:28px;height:28px;color:var(--wc);flex:none}
+.week-end .we-t{flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:4px}
+.week-end .we-t span{color:var(--muted);font-size:.9rem}
+.week-end .we-b{display:flex;flex-wrap:wrap;gap:8px}
 .btn.tq small{font-family:var(--f-mono);font-size:.7rem;color:var(--muted);font-weight:400;margin-left:2px}
 .qhead{display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:var(--f-mono);font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
 .qhead .sc{display:flex;gap:12px}
@@ -1587,7 +1594,9 @@ document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",
 document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.go)));
 window.addEventListener("hashchange",()=>show(location.hash.slice(1)));
 const goWeek = id => document.getElementById("w"+id).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"});
-function quizWeek(id){ setSel(id==="all" ? ALL_TOPICS : topicsOf(id)); quizState.type = "all"; quizState.count = id==="all" ? 30 : "all"; startQuiz(); show("test"); }
+const WEEK_N = 20;
+const weekQ = id => QS.filter(q=>q.w===id).length;
+function quizWeek(id, full){ setSel(id==="all" ? ALL_TOPICS : topicsOf(id)); quizState.type = "all"; quizState.count = full ? "all" : id==="all" ? 30 : WEEK_N; startQuiz(); show("test"); }
 function quizTopic(no){ setSel([no]); quizState.type = "all"; quizState.count = "all"; startQuiz(); show("test"); }
 
 /* ===================== KONULAR ===================== */
@@ -1602,7 +1611,7 @@ function renderStudy(){
     <div class="meta"><span>${w.topics.length} başlık</span><span>${QS.filter(q=>q.w===w.id).length} soru</span></div>
     <div class="mini" aria-hidden="true"><i id="mini-${w.id}"></i></div>
     ${w.note?`<span class="src">${w.src||"Notlarda yok · genel kaynak"}</span>`:""}
-    <div class="acts"><button data-read="${w.id}">Oku</button><button data-quiz="${w.id}">Test et</button></div>
+    <div class="acts"><button data-read="${w.id}">Oku</button><button data-quiz="${w.id}">Deneme · ${WEEK_N}</button></div>
   </article>`).join("") + `<article class="wcard all" style="--wc:var(--primary)">
     <span class="num">${icon("check-sq")}</span>
     <h3>Genel deneme</h3>
@@ -1621,7 +1630,7 @@ function renderStudy(){
 
   $("#weeks").innerHTML = WEEKS.map(w=>`<section class="week" id="w${w.id}" style="${wc(w.id)}">
     <div class="week-head"><div class="t"><span class="eyebrow">${wl(w.id)}</span><h2>${w.title}</h2><p>${w.sum}</p></div>
-      <button class="btn primary" data-quiz="${w.id}" style="background:var(--wc);border-color:var(--wc)">${icon("play")}Bu haftayı test et</button></div>
+      <div class="wh-acts"><button class="btn primary" data-quiz="${w.id}" style="background:var(--wc);border-color:var(--wc)">${icon("play")}Haftanın denemesi<small>${WEEK_N} soru</small></button><button class="btn tq" data-quizall="${w.id}">Bütün soruları<small>${weekQ(w.id)} soru</small></button></div></div>
     ${w.note?`<p class="wnote">${icon("info")}<span>${w.note}</span></p>`:""}
     ${w.topics.map(t=>{ const id="learn-"+t.no.replace(".","-"); return `<article class="topic">
       <div class="topic-h"><span class="no">${t.no}</span><h3>${t.t}</h3></div>
@@ -1629,6 +1638,8 @@ function renderStudy(){
       <div class="hook">${icon("bulb")}<div><span class="hk">AKILDA KALSIN</span>${t.hook}</div></div>
       <div class="topic-foot"><label class="learn" for="${id}"><input type="checkbox" id="${id}" data-no="${t.no}" ${learned.has(t.no)?"checked":""}> Öğrendim</label><button class="btn tq" data-tq="${t.no}">${icon("play")}Bu konunun testi<small>${TOPIC_Q[t.no]||0} soru</small></button></div>
     </article>`; }).join("")}
+    <div class="week-end">${icon("check-sq")}<div class="we-t"><b>${wl(w.id)} bitti mi? Haftanın deneme sınavına gir.</b><span>${WEEK_N} soru · haftanın ${w.topics.length} konusunun hepsinden · karışık soru tipleri · şıklar her seferinde karışır</span></div>
+      <div class="we-b"><button class="btn primary" data-quiz="${w.id}" style="background:var(--wc);border-color:var(--wc)">${icon("play")}Denemeyi başlat</button><button class="btn tq" data-quizall="${w.id}">Bütün soruları<small>${weekQ(w.id)}</small></button></div></div>
   </section>`).join("");
 
   const vk = $("#view-konular");
@@ -1639,6 +1650,7 @@ function renderStudy(){
   });
   vk.addEventListener("click",e=>{
     const tq = e.target.closest("[data-tq]"); if(tq) return quizTopic(tq.dataset.tq);
+    const qa = e.target.closest("[data-quizall]"); if(qa) return quizWeek(+qa.dataset.quizall, true);
     const q = e.target.closest("[data-quiz]"); if(q) return quizWeek(q.dataset.quiz==="all" ? "all" : +q.dataset.quiz);
     const r = e.target.closest("[data-read]"); if(r) goWeek(+r.dataset.read);
   });
@@ -1690,7 +1702,11 @@ function renderSetup(){
   $("#quiz").innerHTML = `<div class="card setup">
     <h2>Deneme sınavı</h2>
     <p class="sub">Soru bankasında ${QS.length} soru var. İstediğin haftaları ve konuları seç; çalışmak istemediğin konuları kapatabilirsin. Şıklar her seferinde karışır, cevapladığın an doğrusunu ve açıklamasını görürsün.</p>
-    <div class="field"><span class="fl" id="lbl-sc">Haftalar</span><div class="chips" id="sc" role="group" aria-labelledby="lbl-sc">
+    <div class="field"><span class="fl" id="lbl-qs">Hazır denemeler · dokununca hemen başlar</span><div class="chips" id="qs" role="group" aria-labelledby="lbl-qs">
+      <button class="chip" data-qs="all">Genel deneme<small>30</small></button>
+      ${WEEKS.map(w=>`<button class="chip" data-qs="${w.id}" style="${wc(w.id)}"><span class="dot" aria-hidden="true"></span>${wl(w.id)} denemesi<small>${WEEK_N}</small></button>`).join("")}
+    </div></div>
+    <div class="field"><span class="fl" id="lbl-sc">Ya da kendin seç: haftalar</span><div class="chips" id="sc" role="group" aria-labelledby="lbl-sc">
       <button class="chip" data-w="all" aria-pressed="${allOn ? "true" : sel.size ? "mixed" : "false"}">Tümü<small>${QS.length}</small></button>
       ${wstate.map(({w,st})=>`<button class="chip" data-w="${w.id}" style="${wc(w.id)}" aria-pressed="${st}"><span class="dot" aria-hidden="true"></span>${wl(w.id)}<small>${QS.filter(q=>q.w===w.id).length}</small></button>`).join("")}
     </div></div>
@@ -1706,6 +1722,7 @@ function renderSetup(){
     <div class="field"><span class="fl">En iyi sonuçların</span><div class="runner">${scopes.map(([v,l])=>{const b=best[v];return `${pad(l)} ${b!=null?`<span class="${b>=70?"p":"f"}">${b>=70?"PASS":"FAIL"} %${b}</span>`:'<span class="m">henüz yok</span>'}`;}).join("<br>")}</div></div>
     <div class="row" style="margin-top:22px;align-items:center"><button class="btn primary" id="go" ${pool?"":"disabled"}>${icon("play")}Sınavı başlat</button><span class="go-n">${pool ? `${quizState.count==="all"||quizState.count>pool ? pool : quizState.count} soru sorulacak` : "Seçimde soru yok"}</span></div>
   </div>`;
+  $("#qs").addEventListener("click",e=>{ const b=e.target.closest("[data-qs]"); if(b) quizWeek(b.dataset.qs==="all" ? "all" : +b.dataset.qs); });
   $("#sc").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b) return;
     if(b.dataset.w==="all"){ setSel(allOn ? [] : ALL_TOPICS); }
     else { const id=+b.dataset.w, ts=topicsOf(id), full=ts.every(x=>sel.has(x)); const s2=new Set(sel); ts.forEach(x=> full ? s2.delete(x) : s2.add(x)); setSel([...s2]); }
@@ -1719,11 +1736,27 @@ function renderSetup(){
   $("#ty").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;quizState.type=b.dataset.v;renderSetup();});
   $("#go").addEventListener("click",()=>startQuiz());
 }
+/* Deneme seçimi: konular sırayla dolaşılır (her konudan en az 1), her konudan o ana kadar en az çıkan tipteki soru seçilir. */
+function balancedPick(pool, n){
+  if(n >= pool.length) return shuffle(pool);
+  const by = {}; shuffle(pool).forEach(q=>(by[q.k] = by[q.k] || []).push(q));
+  const keys = shuffle(Object.keys(by)), out = [], tc = {};
+  while(out.length < n){
+    let added = false;
+    for(const k of keys){
+      if(out.length >= n) break;
+      const arr = by[k]; if(!arr.length) continue;
+      arr.sort((a,b)=>(tc[qt(a)]||0)-(tc[qt(b)]||0));
+      const q = arr.shift(); tc[qt(q)] = (tc[qt(q)]||0) + 1; out.push(q); added = true;
+    }
+    if(!added) break;
+  }
+  return shuffle(out);
+}
 function startQuiz(list){
   let pool = list || QS.filter(q=>inScope(q) && (quizState.type==="all" || qt(q)===quizState.type));
   if(!pool.length){ renderSetup(); return; }
-  pool = shuffle(pool);
-  if(!list && quizState.count!=="all") pool = pool.slice(0, quizState.count);
+  pool = (!list && quizState.count!=="all") ? balancedPick(pool, quizState.count) : shuffle(pool);
   quizState.list = pool.map(q=>{ const o = q.o.map((t,i)=>({t, ok:i===q.a})); return {...q, opts: FIXED.has(qt(q)) ? o : shuffle(o)}; });
   quizState.i = 0; quizState.answers = []; quizState.retry = !!list;
   renderQ();
